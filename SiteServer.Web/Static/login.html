@@ -1,0 +1,55 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>充值</title>
+    <script src="../SiteFiles/assets/components/jquery-1.9.1.min.js"></script>    
+</head>
+<body>
+    <ul>
+        <!--<li><input name='sub' class="submit" id='1' onclick='test(this)' type="button" value="确认提交" /></li>
+        <li><input class="return" type="submit" value="返回修改" /></li>-->
+        <li>账号:<input type="text" id="account" /></li>
+        <li>密码:<input type="text" id="password" /></li>
+        <li><input type="button" onclick="fuck_you()" value="登陆" /></li>
+
+
+    </ul>
+    <input type='hidden' value='OK' name='ff' id='ff' />
+    <script>
+
+function fuck_you(){
+    var test = 13;
+    var account = $("#account").val();
+    var password = $("#password").val();
+    //$.ajax({
+    //    url: '/api/administrators/actions/login',
+    //    data: { "account": account, "password": password },
+    //    dataType: 'JSON',
+    //    contentType: 'charset=utf-8',
+    //    type: 'post',
+    //    success: function (data) {
+    //        alert(data);
+    //    },
+    //    error: function () {
+    //        alert("程序错误！");
+    //    }
+    //});
+    $.post('/api/administrators/actions/login', { "account": account, "password": password }, function (data) {
+        console.log(data);
+    })
+
+}
+function test(obj){
+    var _status = obj.id;
+    if(_status != '1' || _status == undefined){
+         $('input[name=sub]').attr('id','0');
+         $('input[name=sub]').attr('value','正在提交...');return false;
+    }else{
+         $('input[name=sub]').attr('id','0');
+        fuck_you();
+    }
+}
+    </script>
+</body>
+</html>  

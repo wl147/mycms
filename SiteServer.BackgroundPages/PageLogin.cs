@@ -19,7 +19,6 @@ namespace SiteServer.BackgroundPages
         private VcManager _vcManager;
 
         protected override bool IsAccessable => true;
-
 	    public void Page_Load(object sender, EventArgs e)
 		{
             if (IsForbidden) return;
@@ -98,7 +97,8 @@ namespace SiteServer.BackgroundPages
 
             BaiRongDataProvider.AdministratorDao.UpdateLastActivityDateAndCountOfLogin(userName);
             Body.AdministratorLogin(userName);
-            PageUtils.Redirect(PageUtils.GetAdminDirectoryUrl(string.Empty));
+            string url= PageUtils.GetAdminDirectoryUrl(string.Empty);
+            PageUtils.Redirect( url);
         }
 
         private string GetMessageHtml(string message) => $@"<div class=""alert alert-error"">{message}</div>";

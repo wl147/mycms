@@ -787,7 +787,8 @@ namespace BaiRong.Core
 
         public static string GetAdminDirectoryUrl(string relatedUrl)
         {
-            return Combine(WebConfigUtils.ApplicationPath, FileConfigManager.Instance.AdminDirectoryName, relatedUrl);
+            string resutl= Combine(WebConfigUtils.ApplicationPath, FileConfigManager.Instance.AdminDirectoryName, relatedUrl);
+            return resutl;//Combine(WebConfigUtils.ApplicationPath, FileConfigManager.Instance.AdminDirectoryName, relatedUrl);
         }
 
         public static string GetSiteServerUrl(string className, NameValueCollection queryString)

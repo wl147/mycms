@@ -16,7 +16,8 @@ namespace BaiRong.Core.Model.Enumerations
 
     public class EContentModelTypeUtils
 	{
-		public static string GetValue(EContentModelType type)
+	
+        public static string GetValue(EContentModelType type)
 		{
 			if (type == EContentModelType.Content)
 			{

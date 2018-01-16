@@ -13,8 +13,8 @@ namespace SiteServer.API.Controllers.Administrators
         [HttpGet, Route(SiteCheckList.Route)]
         public IHttpActionResult Main(string userName)
         {
-            var body = new RequestBody();
-
+             var body = new RequestBody();
+           
             if (!body.IsAdministratorLoggin)
             {
                 return Unauthorized();

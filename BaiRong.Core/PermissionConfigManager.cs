@@ -57,7 +57,6 @@ namespace BaiRong.Core.Configuration
                     if (FileUtils.IsFileExists(path))
                     {
                         pathArrayList.Add(path);
-
                         var doc = new XmlDocument();
                         doc.Load(path);
                         permissionManager.LoadValuesFromConfigurationXml(doc);
@@ -69,7 +68,6 @@ namespace BaiRong.Core.Configuration
                         if (FileUtils.IsFileExists(path))
                         {
                             pathArrayList.Add(path);
-
                             var doc = new XmlDocument();
                             doc.Load(path);
                             permissionManager.LoadValuesFromConfigurationXml(doc);
@@ -284,7 +282,7 @@ namespace BaiRong.Core.Configuration
             }
             if (!isMultiple)
             {
-                GetPermissions(coreNode, generalPermissions);
+                GetPermissions(coreNode, generalPermissions);               
             }
 		}
 

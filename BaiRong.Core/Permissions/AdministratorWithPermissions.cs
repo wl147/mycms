@@ -20,11 +20,8 @@ namespace BaiRong.Core.Permissions
             _rolesKey = PermissionsManager.GetRolesKey(userName);
             _permissionListKey = PermissionsManager.GetPermissionListKey(userName);
         }
-
         public bool IsConsoleAdministrator => EPredefinedRoleUtils.IsConsoleAdministrator(Roles);
-
         public bool IsSystemAdministrator => EPredefinedRoleUtils.IsSystemAdministrator(Roles);
-
         public bool IsAdministrator => EPredefinedRoleUtils.IsAdministrator(Roles);
 
         public List<string> PermissionList

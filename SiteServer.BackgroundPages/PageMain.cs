@@ -58,6 +58,7 @@ namespace SiteServer.BackgroundPages
         }
 
         public void Page_Load(object sender, EventArgs e)
+
         {
             if (IsForbidden) return;
 
@@ -201,7 +202,6 @@ namespace SiteServer.BackgroundPages
             var ltlMenuName = (Literal)e.Item.FindControl("ltlMenuName");
             var ltlMenues = (Literal)e.Item.FindControl("ltlMenues");
             var index = e.Item.ItemIndex;
-
             if (index == 0)
             {
                 if (_publishmentSystemInfo != null && _publishmentSystemInfo.PublishmentSystemId > 0)
@@ -255,7 +255,6 @@ namespace SiteServer.BackgroundPages
                     else
                     {
                         var publishmentSystemUrl = PageUtility.GetPublishmentSystemUrl(_publishmentSystemInfo, string.Empty);
-
                         builder.Append(
                             $@"<li><a href=""{publishmentSystemUrl}"" target=""_blank""><i class=""icon-external-link""></i> 进入站点</a></li>");
                     }
@@ -295,14 +294,13 @@ namespace SiteServer.BackgroundPages
                         {
                             target = tab.Target;
                         }
-
                         //菜单平铺，update by sessionliang at 20151207
                         builder.Append(
                             $@"<span><a href=""{loadingUrl}"" target=""{target}"" style=""padding: 10px 15px;color: #fff;"">{tab
                                 .Text}</a></span>");
                     }
                 }
-
+                  
                 if (builder.Length == 0)
                 {
                     e.Item.Visible = false;

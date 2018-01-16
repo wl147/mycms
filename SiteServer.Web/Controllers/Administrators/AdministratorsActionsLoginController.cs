@@ -4,25 +4,35 @@ using BaiRong.Core;
 using SiteServer.CMS.Controllers.Administrators;
 using SiteServer.CMS.Core;
 using BaiRong.Core.Text;
+ 
 
 namespace SiteServer.API.Controllers.Administrators
 {
+    public class Login
+    {
+        public string account { get; set; }
+        public string password { get; set; }
+        public string vcode { get; set; }
+      
+    }
     [RoutePrefix("api")]
     public class AdministratorsActionsLoginController : ApiController
     {
         [HttpPost, Route(ActionsLogin.Route)]
-        public IHttpActionResult Main()
+        public IHttpActionResult Main(Login model)
         {
             try
             {
                 var body = new RequestBody();
                 var account = body.GetPostString("account");
-                var password = body.GetPostString("password");
+                var password= body.GetPostString("password");
+
+                
+                
                 if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
                 {
                     return Unauthorized();
                 }
-
                 string userName;
                 string errorMessage;
                 if (!BaiRongDataProvider.AdministratorDao.ValidateAccount(account, password, out userName, out errorMessage))
