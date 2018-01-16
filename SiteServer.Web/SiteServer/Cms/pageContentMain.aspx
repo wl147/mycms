@@ -112,7 +112,8 @@
     </script>
 </head>
 <frameset id="frame" framespacing="0" border="false" cols="180,*" frameborder="0" scrolling="yes">
-	<frame name="tree" scrolling="auto" marginwidth="0"  style="display:none" marginheight="0" width="0" src="pageContentTree.aspx?PublishmentSystemID=<%=PublishmentSystemId%>&RightPageURL=pageContent.aspx" >  
+	<%--<frame name="tree" scrolling="auto" marginwidth="0"  style="display:none" marginheight="0" width="0" src="pageContentTree.aspx?PublishmentSystemID=<%=PublishmentSystemId%>&RightPageURL=pageContent.aspx" >--%>
+    <frame name="tree" scrolling="auto" marginwidth="0"  style="display:none" marginheight="0" width="0" src="" >
 	<frame name="content" scrolling="auto" marginwidth="0" marginheight="0" src="../pageBlank.html">
 </frameset>
 <noframes>
