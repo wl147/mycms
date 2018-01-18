@@ -138,7 +138,7 @@
             <form runat="server">
                 <table class="table table-condensed table-hover left-table">
                    <%-- <iframe frameborder="0" id="right" name="right" src="/siteserver/cms/pageContentMain.aspx"></iframe>--%>
-                    <bairong:NodeTree runat="server"></bairong:NodeTree>
+                   <%-- <bairong:NodeTree runat="server"></bairong:NodeTree>--%>
                     <bairong:NodeNaviTree ID="NtLeftMenuSite" runat="server" />
                     <bairong:NavigationTree ID="NtLeftMenuSystem" runat="server" />
                     <tr><td></td></tr>
