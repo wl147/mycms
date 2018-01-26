@@ -23,7 +23,9 @@
 
   <div class="well well-small">
     <asp:Literal ID="ltlContentButtons" runat="server"></asp:Literal>
-    <div id="contentSearch" style="display:none;margin-top:10px;">
+    <div id="contentSearch" style="display:block;margin-top:10px;">
+       分类：
+      <asp:DropDownList ID="ChannelCategory" class="input-medium" runat="server"> </asp:DropDownList>
       时间从：
       <bairong:DateTimeTextBox ID="DateFrom" class="input-small" Columns="12" runat="server" />
       目标：

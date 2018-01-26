@@ -73,7 +73,8 @@ namespace SiteServer.CMS.Provider
         private const string ParmContentTemplateId = "@ContentTemplateID";
         private const string ParmKeywords = "@Keywords";
         private const string ParmDescription = "@Description";
-        private const string ParmExtendValues = "@ExtendValues";
+        private const string ParmExtendValues = "@ExtendValues"; 
+        private const string ParmNodeModelType = "@NodeModelType";
 
         /// <summary>
         /// 使用事务添加节点信息到Node表中
@@ -108,7 +109,7 @@ namespace SiteServer.CMS.Provider
                 nodeInfo.Taxis = 1;
             }
 
-            const string sqlInsertNode = "INSERT INTO siteserver_Node (NodeName, NodeType, PublishmentSystemID, ContentModelID, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, NodeIndexName, NodeGroupNameCollection, Taxis, AddDate, ImageUrl, Content, ContentNum, FilePath, ChannelFilePathRule, ContentFilePathRule, LinkUrl, LinkType, ChannelTemplateID, ContentTemplateID, Keywords, Description, ExtendValues) VALUES (@NodeName, @NodeType, @PublishmentSystemID, @ContentModelID, @ParentID, @ParentsPath, @ParentsCount, @ChildrenCount, @IsLastNode, @NodeIndexName, @NodeGroupNameCollection, @Taxis, @AddDate, @ImageUrl, @Content, @ContentNum, @FilePath, @ChannelFilePathRule, @ContentFilePathRule, @LinkUrl, @LinkType, @ChannelTemplateID, @ContentTemplateID, @Keywords, @Description, @ExtendValues)";
+            const string sqlInsertNode = "INSERT INTO siteserver_Node (NodeName, NodeType, PublishmentSystemID, ContentModelID, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, NodeIndexName, NodeGroupNameCollection, Taxis, AddDate, ImageUrl, Content, ContentNum, FilePath, ChannelFilePathRule, ContentFilePathRule, LinkUrl, LinkType, ChannelTemplateID, ContentTemplateID, Keywords, Description, ExtendValues,NodeModelType) VALUES (@NodeName, @NodeType, @PublishmentSystemID, @ContentModelID, @ParentID, @ParentsPath, @ParentsCount, @ChildrenCount, @IsLastNode, @NodeIndexName, @NodeGroupNameCollection, @Taxis, @AddDate, @ImageUrl, @Content, @ContentNum, @FilePath, @ChannelFilePathRule, @ContentFilePathRule, @LinkUrl, @LinkType, @ChannelTemplateID, @ContentTemplateID, @Keywords, @Description, @ExtendValues,@NodeModelType)";
 
             var insertParms = new IDataParameter[]
             {
@@ -137,7 +138,8 @@ namespace SiteServer.CMS.Provider
                 GetParameter(ParmContentTemplateId, EDataType.Integer, nodeInfo.ContentTemplateId),
                 GetParameter(ParmKeywords, EDataType.NVarChar, 255, nodeInfo.Keywords),
                 GetParameter(ParmDescription, EDataType.NVarChar, 255, nodeInfo.Description),
-                GetParameter(ParmExtendValues, EDataType.NText, nodeInfo.Additional.ToString())
+                GetParameter(ParmExtendValues, EDataType.NText, nodeInfo.Additional.ToString()),
+                GetParameter(ParmNodeModelType, EDataType.Integer, nodeInfo.NodeModelType)
             };
 
             if (nodeInfo.PublishmentSystemId != 0)
@@ -1619,6 +1621,46 @@ ORDER BY Taxis";
             }
 
             return list;
+        }
+        public List<int> GetNodeIdListByLevel( int level,int nodeModelType)
+        {
+            string sqlString;
+                sqlString = $@"SELECT NodeID
+FROM siteserver_Node
+WHERE (ParentsCount = {level} AND NodeModelType={nodeModelType})
+ORDER BY Taxis";           
+            var list = new List<int>();
+
+            using (var rdr = ExecuteReader(sqlString))
+            {
+                while (rdr.Read())
+                {
+                    list.Add(GetInt(rdr, 0));
+                }
+                rdr.Close();
+            }
+
+            return list;
+        }
+        public Dictionary<string ,string> GetNodeIdListLevel(int level,int parentId)
+        {
+            string sqlString;
+            sqlString = $@"SELECT NodeName,NodeId
+FROM siteserver_Node
+WHERE (ParentsCount = {level} AND ParentId = {parentId})
+ORDER BY Taxis";
+            var dic = new Dictionary<string, string >();
+
+            using (var rdr = ExecuteReader(sqlString))
+            {
+                while (rdr.Read())
+                {
+                    dic.Add(GetString(rdr, 0), GetInt(rdr, 1).ToString());
+                }
+                rdr.Close();
+            }
+
+            return dic;
         }
 
         public List<NodeInfo> GetNodeInfoListByParentId(int publishmentSystemId, int parentId)

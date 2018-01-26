@@ -3,6 +3,10 @@ using System.Web.UI;
 using BaiRong.Core;
 using BaiRong.Core.Tabs;
 using SiteServer.BackgroundPages.Core;
+using SiteServer.CMS.Core;
+using SiteServer.CMS.Core.Security;
+using System;
+using BaiRong.Core.Model.Enumerations;
 
 namespace SiteServer.BackgroundPages.Controls
 {
@@ -11,10 +15,59 @@ namespace SiteServer.BackgroundPages.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             var builder = new StringBuilder();
+            GetCmsMenu(builder,ECmsType.News);
+            GetCmsMenu(builder, ECmsType.Study);
+            GetCmsMenu(builder, ECmsType.Partake);
+            GetCmsMenu(builder, ECmsType.Branch);
             BuildNavigationTree(builder, GetTabs(), 0, true);
             writer.Write(builder);
         }
+        protected void GetCmsMenu(StringBuilder builder,ECmsType type )
+        {
+            string title = $@"
+<tr style='display:' treeItemLevel='1'>
+  <td nowrap>
+	<img align=""absmiddle"" style=""cursor: pointer; "" onClick=""displayChildren(this); "" isOpen=""true"" src=""/siteserver/assets/icons/tree/minus.png""/>
+    <img align=""absmiddle"" src=""/siteserver/assets/icons/menu/content.png""/>&nbsp;
+    {ECmsTypeUtils.GetText(type)}
+  </td >
+</tr > ";
+           
+            builder.Append(title);
+            var _publishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(PublishmentSystemId);
+            try
+            {
+                var nodeIdList = DataProvider.NodeDao.GetNodeIdListByLevel(1, ECmsTypeUtils.GetDBType(type));
+                foreach (var nodeId in nodeIdList)
+                {
+                    var nodeInfo = NodeManager.GetNodeInfo(1, nodeId);
+                    if (nodeInfo != null)
+                    {
+                        builder.Append(GetChannelHtml(nodeInfo.PublishmentSystemId, nodeInfo.NodeId, nodeInfo.NodeName));
+                    }
+                    
+                }
 
+            }
+            catch (Exception ex)
+            {
+                PageUtils.RedirectToErrorPage(ex.Message);
+            }
+
+        }
+        protected string GetChannelHtml(int publishmentId,int nodeId,string menuText)
+        {
+            string menuTemplete = $@"
+<tr style='display:' treeItemLevel='2'>
+    <td nowrap>
+         <img align = ""absmiddle"" src = ""/siteserver/assets/icons/tree/empty.gif"" />
+         <img align = ""absmiddle"" src = ""/siteserver/assets/icons/tree/empty.gif"" />
+         <img align = ""absmiddle"" src = ""/siteserver/assets/icons/menu/contents.gif"" /> &nbsp;
+         <a href='/siteserver/cms/pagecontent.aspx?PublishmentSystemID={publishmentId}&NodeID={nodeId}'  target = 'right' onclick = 'openFolderByA(this);' isTreeLink = 'true' >{menuText} </a> &nbsp;
+         </td >
+</tr > ";
+            return menuTemplete;
+        }        
         /// <summary>
         /// Creates the markup for the current TabCollection
         /// </summary>

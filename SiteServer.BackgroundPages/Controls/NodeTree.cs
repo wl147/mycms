@@ -37,15 +37,15 @@ namespace SiteServer.BackgroundPages.Controls
                         {
                             if (!AdminUtility.IsHasChildOwningNodeId(body.AdministratorName, nodeInfo.NodeId)) continue;
                         }
-                        if (nodeId == 1)
-                        {
-                            builder.Append(
-                                @"<a href="" /siteserver/loading.aspx?RedirectType=Loading&amp;RedirectUrl=cms/pageContentMain.aspx?PublishmentSystemID=1""target=""right""onclick=""openFolderByA(this); ""istreelink=""true"" style=""padding-left:20px;font-size:30px;"">内容管理</a>");
-                        }
-                        else
-                        {
+                        //if (nodeId == 1)
+                        //{
+                        //    builder.Append(
+                        //        @"<a href="" /siteserver/loading.aspx?RedirectType=Loading&amp;RedirectUrl=cms/pageContentMain.aspx?PublishmentSystemID=1""target=""right""onclick=""openFolderByA(this); ""istreelink=""true"" style=""padding-left:20px;font-size:30px;"">内容管理</a>");
+                        //}
+                        //else
+                        //{
                             builder.Append(ChannelLoading.GetChannelRowHtml(_publishmentSystemInfo, nodeInfo, enabled, ELoadingType.ContentTree, null, body.AdministratorName));
-                        }                          
+                       //}                          
                         }
                     
                 }

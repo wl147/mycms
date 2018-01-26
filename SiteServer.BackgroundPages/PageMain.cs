@@ -147,6 +147,7 @@ namespace SiteServer.BackgroundPages
 
                     NtLeftMenuSite.FileName = $"~/SiteFiles/Configuration/Menus/{appId}/Management.config";
                     NtLeftMenuSite.PublishmentSystemId = _publishmentSystemInfo.PublishmentSystemId;
+
                     NtLeftMenuSite.PermissionList = permissionList;
 
                     ClientScriptRegisterClientScriptBlock("NodeTreeScript", NodeNaviTreeItem.GetNavigationBarScript());

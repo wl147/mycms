@@ -19,6 +19,12 @@
             <div class="popover-content">
 
                 <table class="table noborder table-hover">
+                     <tr>
+                        <td width="150">栏目模块：</td>
+                        <td>
+                            <asp:DropDownList ID="ChannelModal" AutoPostBack="true" runat="server"></asp:DropDownList>
+                        </td>
+                    </tr>
                     <tr>
                         <td width="150">父栏目：</td>
                         <td>

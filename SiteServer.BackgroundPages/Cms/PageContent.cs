@@ -29,6 +29,7 @@ namespace SiteServer.BackgroundPages.Cms
 
         public DateTimeTextBox DateFrom;
         public DropDownList SearchType;
+        public DropDownList ChannelCategory;
         public TextBox Keyword;
 
         private NodeInfo nodeInfo;
@@ -61,7 +62,9 @@ namespace SiteServer.BackgroundPages.Cms
             tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
             tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
             styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
-
+            var styleInfoList2 = TableStyleManager.GetTableStyleInfoList(tableStyle, "siteserver_Node", relatedIdentities);
+            Dictionary<string ,string> category = DataProvider.NodeDao.GetNodeIdListLevel(2, nodeID);
+            
             if (nodeInfo.Additional.IsPreviewContents)
             {
                 new Action(() =>
@@ -69,7 +72,7 @@ namespace SiteServer.BackgroundPages.Cms
                     DataProvider.ContentDao.DeletePreviewContents(PublishmentSystemId, tableName, nodeInfo);
                 }).BeginInvoke(null, null);
             }
-
+           
             if (!HasChannelPermissions(nodeID, AppManager.Cms.Permission.Channel.ContentView, AppManager.Cms.Permission.Channel.ContentAdd, AppManager.Cms.Permission.Channel.ContentEdit, AppManager.Cms.Permission.Channel.ContentDelete, AppManager.Cms.Permission.Channel.ContentTranslate))
             {
                 if (!Body.IsAdministratorLoggin)
@@ -117,7 +120,7 @@ namespace SiteServer.BackgroundPages.Cms
             if (!IsPostBack)
             {
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
-                BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
+                //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
                 ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
@@ -133,7 +136,14 @@ namespace SiteServer.BackgroundPages.Cms
                         }
                     }
                 }
-
+                if (category != null)
+                {
+                    foreach (var chanelCategory in category)
+                    {
+                            var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
+                        ChannelCategory.Items.Add(listitem);
+                    }
+                }
                 //添加隐藏属性
                 SearchType.Items.Add(new ListItem("内容ID", ContentAttribute.Id));
                 SearchType.Items.Add(new ListItem("添加者", ContentAttribute.AddUserName));

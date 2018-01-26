@@ -91,7 +91,9 @@ namespace SiteServer.CMS.Model
 
 	public class NodeInfo
 	{
-	    private string _contentModelId;
+        private int _nodeModelType;
+        public int NodeModelType { get; set; }
+        private string _contentModelId;
 	    private string _extendValues;
 
 		public NodeInfo()
@@ -123,7 +125,9 @@ namespace SiteServer.CMS.Model
             Keywords = string.Empty;
             Description = string.Empty;
             _extendValues = string.Empty;
-		}
+            _nodeModelType = 0;
+
+        }
 
         public NodeInfo(int nodeId, string nodeName, ENodeType nodeType, int publishmentSystemId, string contentModelId, int parentId, string parentsPath, int parentsCount, int childrenCount, bool isLastNode, string nodeIndexName, string nodeGroupNameCollection, int taxis, DateTime addDate, string imageUrl, string content, int contentNum, string filePath, string channelFilePathRule, string contentFilePathRule, string linkUrl, ELinkType linkType, int channelTemplateId, int contentTemplateId, string keywords, string description, string extendValues) 
 		{
@@ -155,6 +159,7 @@ namespace SiteServer.CMS.Model
             Description = description;
             _extendValues = extendValues;
 		}
+
 
         public NodeInfo(NodeInfo nodeInfo)
         {

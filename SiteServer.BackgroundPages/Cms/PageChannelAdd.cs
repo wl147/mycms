@@ -16,6 +16,7 @@ namespace SiteServer.BackgroundPages.Cms
 {
     public class PageChannelAdd : BasePageCms
     {
+        public DropDownList ChannelModal;
         public DropDownList ParentNodeID;
         public TextBox NodeName;
         public TextBox NodeIndexName;
@@ -81,10 +82,9 @@ namespace SiteServer.BackgroundPages.Cms
             if (!IsPostBack)
             {
                 BreadCrumb(AppManager.Cms.LeftMenu.IdContent, "添加栏目", string.Empty);
-
+                ChannelModalItemsAdd();
                 NodeManager.AddListItems(ParentNodeID.Items, PublishmentSystemInfo, true, true, true, Body.AdministratorName);
                 ControlUtils.SelectListItems(ParentNodeID, _nodeId.ToString());
-
                 var contentModelInfoList = ContentModelManager.GetContentModelInfoList(PublishmentSystemInfo);
                 foreach (var modelInfo in contentModelInfoList)
                 {
@@ -132,6 +132,18 @@ namespace SiteServer.BackgroundPages.Cms
             {
                 channelControl.SetParameters(Request.Form, false, IsPostBack);
             }
+        }
+
+        private void ChannelModalItemsAdd()
+        {
+            ChannelModal.Items.Add(GetListItem(ECmsType.News));
+            ChannelModal.Items.Add(GetListItem(ECmsType.Study));
+            ChannelModal.Items.Add(GetListItem(ECmsType.Partake));
+            ChannelModal.Items.Add(GetListItem(ECmsType.Branch));
+        }
+        private ListItem GetListItem(ECmsType type)
+        {
+            return new ListItem(ECmsTypeUtils.GetText(type), ECmsTypeUtils.GetDBType(type).ToString());
         }
 
         public void ParentNodeID_SelectedIndexChanged(object sender, EventArgs e)
@@ -278,6 +290,7 @@ namespace SiteServer.BackgroundPages.Cms
                     nodeInfo.ContentTemplateId = (ContentTemplateID.Items.Count > 0) ? int.Parse(ContentTemplateID.SelectedValue) : 0;
 
                     nodeInfo.AddDate = DateTime.Now;
+                    nodeInfo.NodeModelType = Convert.ToInt32((ChannelModal.SelectedValue));
                     insertNodeId = DataProvider.NodeDao.InsertNodeInfo(nodeInfo);
                     //栏目选择投票样式后，内容
                 }
