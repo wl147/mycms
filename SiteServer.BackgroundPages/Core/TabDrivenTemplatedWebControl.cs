@@ -4,6 +4,9 @@ using System.Globalization;
 using System.Web.UI;
 using BaiRong.Core;
 using BaiRong.Core.Tabs;
+using SiteServer.CMS.Core;
+using SiteServer.CMS.Core.Security;
+using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Core
 {
@@ -131,6 +134,76 @@ namespace SiteServer.BackgroundPages.Core
                 return new TabCollection();
             }
 		}
+        protected TabCollection GetAllTabs(int publishmentSystemId)
+        {
+            if (tabs != null)
+            {
+                return tabs;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(FileName))
+                {
+                    var path = FileLocation;
+                    var tc = TabCollection.GetTabs(path);
+                    foreach (Tab tab in tc.Tabs)
+                    {
+                        if (!tab.HasChildren &&StringUtils.EqualsIgnoreCase("cms",tab.MenuType))
+                        {
+                            var nodeIdList = DataProvider.NodeDao.GetHomeSiteNodeIdList();
+                            foreach (var nodeId in nodeIdList)
+                            {                                
+                                var nodeInfo = NodeManager.GetNodeInfo(1, nodeId);
+                                if (tab.Id != null && tab.Id.Equals(NodeManager.GetNodeModel(nodeInfo),StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (nodeInfo != null)
+                                    {
+                                        List<Tab> tabList = tab.ChildrenChannels;
+                                        Tab tabChannel = ChannelInfoToTable(nodeInfo, publishmentSystemId);
+                                        tabList.Add(tabChannel);
+                                        if (tabList != null && tabList.Count > 0)
+                                        {
+                                            tab.Children = TabListToArray(tabList);
+                                        }
+                                    }
+                                }                                                      
+                            }
+                        }
+                    }
+                    return tc;
+                }
+                return new TabCollection();
+            }
+        }
+        /// <summary>
+        /// 栏目信息转菜单
+        /// </summary>
+        /// <param name="nodeInfo"></param>
+        /// <param name="publishmentSystemId"></param>
+        /// <returns></returns>
+        protected Tab ChannelInfoToTable(NodeInfo nodeInfo,int publishmentSystemId)
+        {
+            Tab tab = new Tab();
+            tab.Text = nodeInfo.NodeName;
+            tab.Permissions = "cms_contentView,cms_contentAdd";
+            tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";
+            tab.IconUrl = "menu/itemContainer.png";
+            tab.KeepQueryString = true;
+            tab.Target = "right";
+            tab.MenuType = "cmsItem";
+            tab.NodeId = nodeInfo.NodeId;
+            
+            return tab;
+        }
+        protected Tab[] TabListToArray(List<Tab> tabs)
+        {
+            Tab[] Children = new Tab[tabs.Count];
+            for (int i= 0; i < tabs.Count; i++)
+            {
+                Children[i] = tabs[i];
+            }
+            return Children;
+        }
 		#endregion
 
 		#region Tab Helpers

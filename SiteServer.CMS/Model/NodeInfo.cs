@@ -129,7 +129,7 @@ namespace SiteServer.CMS.Model
 
         }
 
-        public NodeInfo(int nodeId, string nodeName, ENodeType nodeType, int publishmentSystemId, string contentModelId, int parentId, string parentsPath, int parentsCount, int childrenCount, bool isLastNode, string nodeIndexName, string nodeGroupNameCollection, int taxis, DateTime addDate, string imageUrl, string content, int contentNum, string filePath, string channelFilePathRule, string contentFilePathRule, string linkUrl, ELinkType linkType, int channelTemplateId, int contentTemplateId, string keywords, string description, string extendValues) 
+        public NodeInfo(int nodeId, string nodeName, ENodeType nodeType, int publishmentSystemId, string contentModelId, int parentId, string parentsPath, int parentsCount, int childrenCount, bool isLastNode, string nodeIndexName, string nodeGroupNameCollection, int taxis, DateTime addDate, string imageUrl, string content, int contentNum, string filePath, string channelFilePathRule, string contentFilePathRule, string linkUrl, ELinkType linkType, int channelTemplateId, int contentTemplateId, string keywords, string description, string extendValues,int nodeModelType) 
 		{
 			NodeId = nodeId;
 			NodeName = nodeName;
@@ -157,8 +157,39 @@ namespace SiteServer.CMS.Model
             ContentTemplateId = contentTemplateId;
             Keywords = keywords;
             Description = description;
+            NodeModelType = nodeModelType;
             _extendValues = extendValues;
 		}
+        public NodeInfo(int nodeId, string nodeName, ENodeType nodeType, int publishmentSystemId, string contentModelId, int parentId, string parentsPath, int parentsCount, int childrenCount, bool isLastNode, string nodeIndexName, string nodeGroupNameCollection, int taxis, DateTime addDate, string imageUrl, string content, int contentNum, string filePath, string channelFilePathRule, string contentFilePathRule, string linkUrl, ELinkType linkType, int channelTemplateId, int contentTemplateId, string keywords, string description, string extendValues)
+        {
+            NodeId = nodeId;
+            NodeName = nodeName;
+            NodeType = nodeType;
+            PublishmentSystemId = publishmentSystemId;
+            _contentModelId = contentModelId;
+            ParentId = parentId;
+            ParentsPath = parentsPath;
+            ParentsCount = parentsCount;
+            ChildrenCount = childrenCount;
+            IsLastNode = isLastNode;
+            NodeIndexName = nodeIndexName;
+            NodeGroupNameCollection = nodeGroupNameCollection;
+            Taxis = taxis;
+            AddDate = addDate;
+            ImageUrl = imageUrl;
+            Content = content;
+            ContentNum = contentNum;
+            FilePath = filePath;
+            ChannelFilePathRule = channelFilePathRule;
+            ContentFilePathRule = contentFilePathRule;
+            LinkUrl = linkUrl;
+            LinkType = linkType;
+            ChannelTemplateId = channelTemplateId;
+            ContentTemplateId = contentTemplateId;
+            Keywords = keywords;
+            Description = description;
+            _extendValues = extendValues;
+        }
 
 
         public NodeInfo(NodeInfo nodeInfo)

@@ -44,7 +44,7 @@ namespace BaiRong.Core.Tabs
 			var tc = CacheUtils.Get(filePath) as TabCollection;
 			if(tc == null)
 			{
-				tc = (TabCollection)Serializer.ConvertFileToObject(filePath,typeof(TabCollection));
+				tc = (TabCollection)Serializer.ConvertFileToObject(filePath,typeof(TabCollection));              
 				CacheUtils.Max(filePath,tc,new CacheDependency(filePath));
 			}
 			return tc;

@@ -571,6 +571,19 @@ namespace SiteServer.CMS.Core
             }
             return false;
         }
+        public static string GetNodeModel(NodeInfo nodeInfo)
+        {
+            string retval = string.Empty;
+                switch (nodeInfo.NodeModelType)
+                {
+                    case 1:retval = "News"; break;
+                    case 2: retval = "Study"; break;
+                    case 3: retval = "Join"; break;
+                    case 4: retval = "Branch"; break;
+                    default:break;
+                }
+            return retval;
+        }
     }
 
 }

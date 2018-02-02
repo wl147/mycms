@@ -103,6 +103,16 @@ namespace SiteServer.CMS.Core
             }
             return list;
         }
+        public static List<int> GetPublishmentSystemIdListByParentId(int parentId)
+        {
+            var pairList = GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
+            var list = new List<int>();
+            foreach (var pair in pairList)
+            {
+                list.Add(pair.Key);
+            }
+            return list;
+        }
 
         public static List<int> GetPublishmentSystemIdList(EPublishmentSystemType publishmentSystemType)
         {
@@ -371,6 +381,35 @@ namespace SiteServer.CMS.Core
                 sl.Add(pair);
             }
             CacheUtils.Max(CacheKey, sl);
+            return sl;
+        }
+        public static List<KeyValuePair<int, PublishmentSystemInfo>> GetPublishmentSystemInfoKeyValuePairListByParentId(int parentId)
+        {
+
+            //if (CacheUtils.Get(CacheKey) != null) return CacheUtils.Get(CacheKey) as List<KeyValuePair<int, PublishmentSystemInfo>>;
+            //int ParentCount = 0;
+            var list = DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
+            if (list != null && list.Count > 0)
+            {
+                foreach (var pair in list)
+                {
+                    var publishmentSystemInfo = pair.Value;
+                    if (publishmentSystemInfo != null)
+                    {
+                        var childList = GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
+                    }
+                }
+            }
+            var sl = new List<KeyValuePair<int, PublishmentSystemInfo>>();
+            foreach (var pair in list)
+            {
+                var publishmentSystemInfo = pair.Value;
+                if (publishmentSystemInfo == null) continue;
+
+                publishmentSystemInfo.PublishmentSystemDir = GetPublishmentSystemDir(list, publishmentSystemInfo);
+                sl.Add(pair);
+            }
+            //CacheUtils.Max(CacheKey, sl);
             return sl;
         }
 

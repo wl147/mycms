@@ -195,6 +195,7 @@
     <Compile Include="Cms\PageResumeView.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Controls\SiteTree.cs" />
     <Compile Include="Controls\UEditor.cs" />
     <Compile Include="Core\AreaTreeItem.cs" />
     <Compile Include="Core\ChannelLoading.cs" />
@@ -207,6 +208,8 @@
     <Compile Include="Core\DepartmentTreeItem.cs" />
     <Compile Include="Core\GovPublicCategoryTreeItem.cs" />
     <Compile Include="Core\AjaxManager.cs" />
+    <Compile Include="Core\SiteLoading.cs" />
+    <Compile Include="Core\SiteTreeItem.cs" />
     <Compile Include="Core\TabDrivenTemplatedWebControl.cs" />
     <Compile Include="Controls\NavigationTree.cs" />
     <Compile Include="Core\NavigationTreeItem.cs" />

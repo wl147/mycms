@@ -112,6 +112,32 @@ namespace SiteServer.CMS.Core.Security
             }
             return false;
         }
+        public static bool IsOwningNodeIdByPublishmentSystem(string administratorName, int nodeId)
+        {
+            var permissions = PermissionsManager.GetPermissions(administratorName);
+            if (permissions.IsConsoleAdministrator)
+            {
+                return true;
+            }
+            if (ProductPermissionsManager.Current.OwningNodeIdListByPublishmentId.Contains(nodeId))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool IsOwningNodeIdAll(string administratorName, int nodeId)
+        {
+            var permissions = PermissionsManager.GetPermissions(administratorName);
+            if (permissions.IsSystemAdministrator)
+            {
+                return true;
+            }
+            if (ProductPermissionsManager.Current.OwningNodeIdListAll.Contains(nodeId))
+            {
+                return true;
+            }
+            return false;
+        }
 
         public static bool IsHasChildOwningNodeId(string administratorName, int nodeId)
         {

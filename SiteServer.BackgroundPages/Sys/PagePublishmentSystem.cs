@@ -21,7 +21,6 @@ namespace SiteServer.BackgroundPages.Sys
         public void Page_Load(object sender, EventArgs e)
         {
             if (IsForbidden) return;
-
             if (Body.IsQueryExists("PublishmentSystemID") && (Body.IsQueryExists("Up") || Body.IsQueryExists("Down")))
             {
                 var publishmentSystemId = Body.GetQueryInt("PublishmentSystemID");
@@ -42,7 +41,6 @@ namespace SiteServer.BackgroundPages.Sys
                 }
 
             }
-
             if (!IsPostBack)
             {
                 BreadCrumbSys(AppManager.Sys.LeftMenu.Site, "系统站点管理", AppManager.Sys.Permission.SysSite);

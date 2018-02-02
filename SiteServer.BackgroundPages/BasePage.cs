@@ -67,14 +67,14 @@ namespace SiteServer.BackgroundPages
 
             base.Render(writer);
 
-            if (!IsAccessable && !IsSinglePage)
-            {
-                writer.Write($@"<script type=""text/javascript"">
-if (window.top.location.href.toLowerCase().indexOf(""main.aspx"") == -1){{
-	window.top.location.href = ""{PageInitialization.GetRedirectUrl()}"";
-}}
-</script>");
-            }
+//            if (!IsAccessable && !IsSinglePage)
+//            {
+//                writer.Write($@"<script type=""text/javascript"">
+//if (window.top.location.href.toLowerCase().indexOf(""main.aspx"") == -1){{
+//	window.top.location.href = ""{PageInitialization.GetRedirectUrl()}"";
+//}}
+//</script>");
+//            }
 
             if (!string.IsNullOrEmpty(_scripts))
             {

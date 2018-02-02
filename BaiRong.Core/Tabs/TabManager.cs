@@ -3,7 +3,7 @@ using System.Collections;
 namespace BaiRong.Core.Tabs
 {
     public class TabManager
-	{
+    {
         public static bool IsValid(Tab tab, IList permissionList)
         {
             if (!string.IsNullOrEmpty(tab.Ban))
@@ -47,5 +47,33 @@ namespace BaiRong.Core.Tabs
             //ITab valid, but no roles
             return true;
         }
-	}
+        public static bool IsValidChannels(Tab tab, IList permissionList)
+        {
+            //if (!string.IsNullOrEmpty(tab.Ban))
+            //{
+            //    return false;
+            //}
+            //if (tab.HasPermissions)
+            //{
+            //    if (permissionList != null && permissionList.Count > 0)
+            //    {
+            //        var tabPermissions = tab.Permissions.Split(',');
+            //        foreach (var tabPermission in tabPermissions)
+            //        {
+            //            if (permissionList.Contains(tabPermission))
+            //                return true;
+            //        }
+            //    }
+
+            //    //ITab valid, but invalid role set
+            //    return false;
+            //}
+
+            ////ITab valid, but no roles
+            //return true;
+            //return AdminUtility.IsOwningNodeIdByPublishmentSystem(body.AdministratorName, nodeInfo.NodeId);
+            return false;
+        }
+       
+    }
 }

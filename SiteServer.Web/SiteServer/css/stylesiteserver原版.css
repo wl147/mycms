@@ -2,7 +2,6 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    min-width: 1280px;
 }
 
 ::-webkit-scrollbar-track-piece {
@@ -16,15 +15,15 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #e0e0e0;
+    background-color: #c2c2c2;
     background-clip: padding-box;
-    border: 0px solid #979797;
+    border: 1px solid #979797;
     min-height: 28px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    border: 0px solid #e0e0e0;
-    background-color: #d0d0d0;
+    border: 1px solid #636363;
+    background-color: #929292;
 }
 
 html, html .halflings {
@@ -1141,16 +1140,16 @@ label, input, button, select, textarea {
     float: left;
     color: #fff;
     font-size: 20px;
-    margin-top: 1px;
-    width: 350px;
-    height: 35px;
+    margin-top: 5px;
+    width: 160px;
+    height: 32px;
     padding-bottom: 2px;
-    background: url("../images/wcmLogo.png") no-repeat;
+    background: url("../images/siteserver.png") no-repeat;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio:2) {
     #navigation #siteserver {
-        background: url("../images/wcmLogo.png") no-repeat;
+        background: url("../images/siteserver.png") no-repeat;
         background-size: 22px 22px;
     }
 }
@@ -1396,7 +1395,7 @@ label, input, button, select, textarea {
 }
 
 #navigation .user .dropdown>a:hover {
-    background: rgb(160,0,40) !important;
+    background: #1b67af;
 }
 
 #navigation .user .dropdown>a img {
@@ -6053,7 +6052,7 @@ a.tag_select, .tag_wrap .tag_select:hover {
 }
 
 #feedback_btn a i {
-    color: #cc0033;
+    color: #1B926C;
     font-size: 22px;
 }
 
@@ -6269,7 +6268,7 @@ a.pbtn {
 .left-table td {
     border-width: 0 !important;
     padding-left: 10px !important;
-    height: 26px;
+    height: 26px !important;
     line-height: 26px !important;
 }
 
@@ -6278,8 +6277,7 @@ a.pbtn {
 }
 
 .left-table td.active {
-    background-color: rgb(255,255,255) !important;
-    color: white !important;
+    background-color: #c2c2c2 !important;
 }
 
 .left-table a {
@@ -6287,11 +6285,9 @@ a.pbtn {
 }
 
 .left-table a:hover {
-    color: rgb(250,250,250) !important;
+    color: #222;
     text-decoration: none;
 }
-
-
 
 .right {
     position: absolute;
@@ -6303,7 +6299,7 @@ a.pbtn {
 }
 
 .reight_p {
-    left: 40px;
+    left: 0px;
 }
 
 .main {
@@ -6327,12 +6323,11 @@ a.pbtn {
 }
 
 #navigation #siteserver {
-    background: url(../images/wcmLogo.png) no-repeat;
+    background: url(../images/siteserver.png) no-repeat;
 }
 
 #navigation {
-    /*background: url(../images/navigationBg.png);*/
-    background-color:#cc0033
+    background: url(../images/navigationBg.png);
 }
 
 #navigation .main-nav>li>a {
@@ -6345,7 +6340,7 @@ a.pbtn {
 }
 
 #navigation .main-nav>li.active>a {
-    background: rgb(160,0,40);
+    background: #1B926C;
     color: #fff;
 }
 
@@ -6354,15 +6349,15 @@ a.pbtn {
 }
 
 #navigation .main-nav>li.active>a:hover {
-    background: #cc0033;
+    background: #1B926C;
 }
 
 #navigation .toggle-nav:hover {
-    background-color: #cc3366;
+    background-color: #1d9d74;
 }
 
 #navigation .main-nav>li.active.open>a {
-    background: #cc0033;
+    background: #1B926C;
     text-decoration: none;
     color: #fff;
 }
@@ -6380,11 +6375,11 @@ a.pbtn {
 }
 
 #navigation .dropdown-menu>li>a:hover {
-    background: #cc3366;
+    background: #1d9d74;
 }
 
 #navigation .main-nav>li.open>a {
-    background: #cc0033;
+    background: #1B926C;
 }
 
 .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus {
@@ -6393,131 +6388,13 @@ a.pbtn {
 }
 
 #navigation .user .dropdown.open {
-    background: #cc0033;
+    background: #1B926C;
 }
 
 #navigation .user .dropdown>a:hover {
-    background: #cc0033;
+    background: #1B926C;
 }
 
 #navigation .user .icon-nav>li>a:hover {
-    background: #cc0033;
-}
-
-
-/*sanye: left narrey box*/
-.forced-hide{
-    /*background-color:#c2c2c2 !important;*/
-}
-
-.onlyIcon{
-    display: block;
-    width:48px;
-    height: 48px !important;
-    overflow: hidden;
-}
-
-.onlyIcon img:nth-child(2){
-    display: inline-block;
-    padding: 15px 50px 30px 0px;
-    cursor: pointer;
-}
-
-.forced-hide [treeitemlevel="2"],
-.forced-hide [treeitemlevel="3"],
-.forced-hide [treeitemlevel="4"],
-.forced-hide [treeitemlevel="5"]
-{
-     height: 0px;
-     display: block;
- }
-
-.forced-hide [treeitemlevel="2"] td,
-.forced-hide [treeitemlevel="3"] td,
-.forced-hide [treeitemlevel="4"] td,
-.forced-hide [treeitemlevel="5"] td
-{
-    height: 0px;
-    display: none;
-    padding: 0 10px !important;   
-}
-
-.forced-hide td{
-    line-height: 0px !important;
-}
-
-
-/*主菜单改造*/
-#left img[isopen]{
-    float:right;
-    margin-top: 4px;
-    /*opacity: 0.2;*/
-}
-/*主菜单改造*/
-#left [treeitemlevel="1"] {
-       color:#cc0033 !important;
-}
-
-#left [treeitemlevel="1"]  a{
-       color:#cc0033 !important;
-}
-
-#left [treeitemlevel="1"]  a:hover{
-       color:white !important;
-}
-
-#left [treeitemlevel="1"] img[isopen]{
-    background: url(../assets/icons/tree/plus-1.png)  no-repeat; 
-}
-#left [treeitemlevel="1"] img[isopen=true]{
-    background: url(../assets/icons/tree/plus-2.png)  no-repeat;
-}
-
-#left [treeitemlevel="2"],
-#left [treeitemlevel="3"],
-#left [treeitemlevel="4"] ,
-#left [treeitemlevel="5"] ,
-#left [treeitemlevel="6"] ,
-#left [treeitemlevel="7"]{
-    cursor:pointer;
-}
-
-/*主菜单改造*/
-#left [treeitemlevel="2"] img[isopen],
-#left [treeitemlevel="3"] img[isopen],
-#left [treeitemlevel="4"] img[isopen],
-#left [treeitemlevel="5"] img[isopen],
-#left [treeitemlevel="6"] img[isopen],
-#left [treeitemlevel="7"] img[isopen]
-{
-    background: url(../assets/icons/tree/plus-0.png)  no-repeat;
-}
-#left [treeitemlevel="2"] img[isopen=true],
-#left [treeitemlevel="3"] img[isopen=true],
-#left [treeitemlevel="4"] img[isopen=true],
-#left [treeitemlevel="5"] img[isopen=true],
-#left [treeitemlevel="6"] img[isopen=true],
-#left [treeitemlevel="7"] img[isopen=true]{
-    background: url(../assets/icons/tree/minus-0.png) no-repeat;
-}
-
-
-
-/*主框架色调改造*/
-.table tr.info td {
-    background-color:#f7f0d9 !important;
-    color:red;
-}
-
-.fa-spin {
-    -webkit-animation: fa-spin 4s infinite linear;
-    animation: fa-spin 4s infinite linear;
-}
-
-.fa-fw {
-    width: 20px;
-}
-
-.fa-2x {
-    font-size: 20px;
+    background: #1B926C;
 }

@@ -10,6 +10,7 @@ namespace SiteServer.CMS.Provider
     public class SystemPermissionsDao : DataProviderBase
     {
         private const string SqlSelectAllByRoleName = "SELECT RoleName, PublishmentSystemID, NodeIDCollection, ChannelPermissions, WebsitePermissions FROM siteserver_SystemPermissions WHERE RoleName = @RoleName ORDER BY PublishmentSystemID DESC";
+        private const string SqlSelectAllByRoleNameByPublishmentId = "SELECT RoleName, PublishmentSystemID, NodeIDCollection, ChannelPermissions, WebsitePermissions FROM siteserver_SystemPermissions WHERE RoleName = @RoleName and PublishmentSystemId=@ParmPublishmentId";
 
         private const string SqlInsert = "INSERT INTO siteserver_SystemPermissions (RoleName, PublishmentSystemID, NodeIDCollection, ChannelPermissions, WebsitePermissions) VALUES (@RoleName, @PublishmentSystemID, @NodeIDCollection, @ChannelPermissions, @WebsitePermissions)";
         private const string SqlDelete = "DELETE FROM siteserver_SystemPermissions WHERE RoleName = @RoleName";
@@ -18,7 +19,9 @@ namespace SiteServer.CMS.Provider
         private const string ParmPublishmentSystemId = "@PublishmentSystemID";
         private const string ParmNodeIdCollection = "@NodeIDCollection";
         private const string ParmChannelPermissions = "@ChannelPermissions";
-        private const string ParmWebsitePermissions = "@WebsitePermissions";
+        private const string ParmWebsitePermissions = "@WebsitePermissions"; 
+        private const string ParmPublishmentId = "@ParmPublishmentId";
+
 
         public void InsertWithTrans(SystemPermissionsInfo info, IDbTransaction trans)
         {
@@ -109,6 +112,29 @@ namespace SiteServer.CMS.Provider
 
             return list;
         }
+        public List<SystemPermissionsInfo> GetSystemPermissionsInfoListByPublishmentId(string roleName,int publishmentId)
+        {
+            var list = new List<SystemPermissionsInfo>();
+
+            var parms = new IDataParameter[]
+            {
+                GetParameter(ParmRoleRoleName, EDataType.NVarChar, 255, roleName),
+                GetParameter(ParmPublishmentId, EDataType.Integer, 255, publishmentId)
+            };
+
+            using (var rdr = ExecuteReader(SqlSelectAllByRoleNameByPublishmentId, parms))
+            {
+                while (rdr.Read())
+                {
+                    var i = 0;
+                    var info = new SystemPermissionsInfo(GetString(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i));
+                    list.Add(info);
+                }
+                rdr.Close();
+            }
+
+            return list;
+        }
 
         public Dictionary<int, List<string>> GetWebsitePermissionSortedList(string[] roles)
         {
@@ -139,6 +165,42 @@ namespace SiteServer.CMS.Provider
             foreach (var roleName in roles)
             {
                 var systemPermissionsInfoList = GetSystemPermissionsInfoList(roleName);
+                foreach (var systemPermissionsInfo in systemPermissionsInfoList)
+                {
+                    var nodeIdStrList = TranslateUtils.StringCollectionToStringList(systemPermissionsInfo.NodeIdCollection);
+                    foreach (var nodeIdStr in nodeIdStrList)
+                    {
+                        var nodeId = TranslateUtils.ToInt(nodeIdStr);
+                        //if (!allNodeIDArrayList.Contains(nodeID))
+                        //{
+                        //    continue;//此角色包含的栏目已被删除
+                        //}
+                        var list = new List<string>();
+                        if (sortedlist.ContainsKey(nodeId))
+                        {
+                            list = sortedlist[nodeId];
+                        }
+
+                        var channelPermissionList = TranslateUtils.StringCollectionToStringList(systemPermissionsInfo.ChannelPermissions);
+                        foreach (var channelPermission in channelPermissionList)
+                        {
+                            if (!list.Contains(channelPermission)) list.Add(channelPermission);
+                        }
+                        sortedlist[nodeId] = list;
+                    }
+                }
+            }
+
+            return sortedlist;
+        }
+        public Dictionary<int, List<string>> GetChannelPermissionListByPublishmentId(string[] roles,int publishmentId)
+        {
+            var sortedlist = new Dictionary<int, List<string>>();
+
+            //ArrayList allNodeIDArrayList = DataProvider.NodeDAO.GetNodeIDArrayList();//所有存在的栏目ID
+            foreach (var roleName in roles)
+            {
+                var systemPermissionsInfoList = GetSystemPermissionsInfoListByPublishmentId(roleName,publishmentId);
                 foreach (var systemPermissionsInfo in systemPermissionsInfoList)
                 {
                     var nodeIdStrList = TranslateUtils.StringCollectionToStringList(systemPermissionsInfo.NodeIdCollection);

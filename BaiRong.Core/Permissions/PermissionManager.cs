@@ -59,6 +59,10 @@ namespace BaiRong.Core.Permissions
         {
             return $"User_ChannelPermissionDict_{userName}";
         }
+        public static string GetChannelPermissionDictKeyByPublishmentId(string userName)
+        {
+            return $"User_ChannelPermissionDictionary_{userName}";
+        }
 
         public static string GetGovInteractPermissionDictKey(string userName)
         {
@@ -78,6 +82,14 @@ namespace BaiRong.Core.Permissions
         public static string GetOwningNodeIdListKey(string userName)
         {
             return $"User_OwningNodeIDList_{userName}";
+        }
+        public static string GetOwningNodeIdListKeyByPublishmentId(string userName)
+        {
+            return $"User_OwningNodeIDListByPublishmentId_{userName}";
+        }
+        public static string GetOwningNodeIdListAllKey(string userName)
+        {
+            return $"User_OwningNodeIDListAll_{userName}";
         }
 
         public static List<string> GetCackeKeyStartStringList(string userName)

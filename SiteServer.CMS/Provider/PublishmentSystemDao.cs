@@ -18,6 +18,8 @@ namespace SiteServer.CMS.Provider
 
         private const string SqlSelectPublishmentSystemAll = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML FROM siteserver_PublishmentSystem ORDER BY Taxis";
 
+        private const string SqlSelectPublishmentSystemAllByParentId = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML FROM siteserver_PublishmentSystem WHERE ParentPublishmentSystemId=@ParentPublishmentSystemId ORDER BY Taxis";
+
         private const string SqlSelectAllWithNode = "SELECT p.PublishmentSystemID, p.PublishmentSystemName, p.PublishmentSystemType, p.AuxiliaryTableForContent, p.AuxiliaryTableForGovPublic, p.AuxiliaryTableForGovInteract, p.AuxiliaryTableForVote, p.AuxiliaryTableForJob, p.IsCheckContentUseLevel, p.CheckContentLevel, p.PublishmentSystemDir, p.PublishmentSystemUrl, p.IsHeadquarters, p.ParentPublishmentSystemID, p.Taxis, n.NodeName FROM siteserver_PublishmentSystem p INNER JOIN siteserver_Node n ON (p.PublishmentSystemID = n.NodeID) ORDER BY p.IsHeadquarters DESC, p.ParentPublishmentSystemID, p.Taxis DESC, n.NodeID";
 
         private const string SqlInsertPublishmentSystem = "INSERT INTO siteserver_PublishmentSystem (PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML) VALUES (@PublishmentSystemID, @PublishmentSystemName, @PublishmentSystemType, @AuxiliaryTableForContent, @AuxiliaryTableForGovPublic, @AuxiliaryTableForGovInteract, @AuxiliaryTableForVote, @AuxiliaryTableForJob, @IsCheckContentUseLevel, @CheckContentLevel, @PublishmentSystemDir, @PublishmentSystemUrl, @IsHeadquarters, @ParentPublishmentSystemID, @Taxis, @SettingsXML)";
@@ -50,6 +52,7 @@ namespace SiteServer.CMS.Provider
         private const string ParmParentPublishmentsystemid = "@ParentPublishmentSystemID";
         private const string ParmTaxis = "@Taxis";
         private const string ParmSettingsXml = "@SettingsXML";
+        private const string ParmParentPublishmentSystemId="@ParentPublishmentSystemId";
 
         public void InsertWithTrans(PublishmentSystemInfo info, IDbTransaction trans)
         {
@@ -202,7 +205,19 @@ namespace SiteServer.CMS.Provider
 
             return list;
         }
+        public List<KeyValuePair<int, PublishmentSystemInfo>> GetPublishmentSystemInfoKeyValuePairListByParentId(int parentId)
+        {
+            var list = new List<KeyValuePair<int, PublishmentSystemInfo>>();
 
+            var publishmentSystemInfoList = GetPublishmentSystemInfoListByParentId(parentId);
+            foreach (var publishmentSystemInfo in publishmentSystemInfoList)
+            {
+                var entry = new KeyValuePair<int, PublishmentSystemInfo>(publishmentSystemInfo.PublishmentSystemId, publishmentSystemInfo);
+                list.Add(entry);
+            }
+
+            return list;
+        }
         protected List<int> GetPublishmentSystemIdList(DateTime sinceDate)
         {
             var list = new List<int>();
@@ -226,6 +241,25 @@ namespace SiteServer.CMS.Provider
             var list = new List<PublishmentSystemInfo>();
 
             using (var rdr = ExecuteReader(SqlSelectPublishmentSystemAll))
+            {
+                while (rdr.Read())
+                {
+                    var i = 0;
+                    var publishmentSystemInfo = new PublishmentSystemInfo(GetInt(rdr, i++), GetString(rdr, i++), EPublishmentSystemTypeUtils.GetEnumType(GetString(rdr, i++)), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i));
+                    list.Add(publishmentSystemInfo);
+                }
+                rdr.Close();
+            }
+            return list;
+        }
+        private List<PublishmentSystemInfo> GetPublishmentSystemInfoListByParentId(int parentId)
+        {
+            var list = new List<PublishmentSystemInfo>();
+            var parms = new IDataParameter[]
+           {
+                GetParameter(ParmParentPublishmentSystemId, EDataType.Integer, parentId)
+           };
+            using (var rdr = ExecuteReader(SqlSelectPublishmentSystemAllByParentId, parms))
             {
                 while (rdr.Read())
                 {

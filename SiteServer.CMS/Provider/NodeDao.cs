@@ -1590,7 +1590,27 @@ WHERE (ParentsPath LIKE '{nodeId},%') OR
 
             return list;
         }
+        public List<int> GetHomeSiteNodeIdList()
+        {
+            string sqlString;
+            sqlString = $@"SELECT NodeID
+FROM siteserver_Node
+WHERE  ParentID=1
+ORDER BY Taxis";
+            var list = new List<int>();
 
+            using (var rdr = ExecuteReader(sqlString))
+            {
+                while (rdr.Read())
+                {
+                    list.Add(GetInt(rdr, 0));
+                }
+                rdr.Close();
+            }
+
+            return list;
+
+        }
         public List<int> GetNodeIdListByParentId(int publishmentSystemId, int parentId)
         {
             string sqlString;
@@ -1708,7 +1728,7 @@ ORDER BY Taxis";
         {
             var ht = new Hashtable();
             string sqlString =
-                $@"SELECT NodeID, NodeName, NodeType, PublishmentSystemID, ContentModelID, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, NodeIndexName, NodeGroupNameCollection, Taxis, AddDate, ImageUrl, Content, ContentNum, FilePath, ChannelFilePathRule, ContentFilePathRule, LinkUrl, LinkType, ChannelTemplateID, ContentTemplateID, Keywords, Description, ExtendValues
+                $@"SELECT NodeID, NodeName, NodeType, PublishmentSystemID, ContentModelID, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, NodeIndexName, NodeGroupNameCollection, Taxis, AddDate, ImageUrl, Content, ContentNum, FilePath, ChannelFilePathRule, ContentFilePathRule, LinkUrl, LinkType, ChannelTemplateID, ContentTemplateID, Keywords, Description, ExtendValues, NodeModelType
 FROM siteserver_Node 
 WHERE (PublishmentSystemID = {publishmentSystemId} AND (NodeID = {publishmentSystemId} OR ParentID > 0))
 ORDER BY Taxis";
@@ -1718,7 +1738,7 @@ ORDER BY Taxis";
                 while (rdr.Read())
                 {
                     var i = 0;
-                    var nodeInfo = new NodeInfo(GetInt(rdr, i++), GetString(rdr, i++), ENodeTypeUtils.GetEnumType(GetString(rdr, i++)), GetInt(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetBool(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetDateTime(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), ELinkTypeUtils.GetEnumType(GetString(rdr, i++)), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i));
+                    var nodeInfo = new NodeInfo(GetInt(rdr, i++), GetString(rdr, i++), ENodeTypeUtils.GetEnumType(GetString(rdr, i++)), GetInt(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetBool(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetDateTime(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), ELinkTypeUtils.GetEnumType(GetString(rdr, i++)), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetInt(rdr, i));
                     ht.Add(nodeInfo.NodeId, nodeInfo);
                 }
                 rdr.Close();

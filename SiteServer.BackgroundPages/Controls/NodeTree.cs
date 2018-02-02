@@ -28,11 +28,12 @@ namespace SiteServer.BackgroundPages.Controls
             {
                 try
                 {
-                    var nodeIdList = DataProvider.NodeDao.GetNodeIdListByParentId(_publishmentSystemInfo.PublishmentSystemId, 0);
+                    var nodeIdList = DataProvider.NodeDao.GetNodeIdListByParentId(_publishmentSystemInfo.PublishmentSystemId,0);
                     foreach (var nodeId in nodeIdList)
                     {
                         var nodeInfo = NodeManager.GetNodeInfo(_publishmentSystemInfo.PublishmentSystemId, nodeId);
                         var enabled = AdminUtility.IsOwningNodeId(body.AdministratorName, nodeInfo.NodeId);
+                        //var enabled2 = AdminUtility.IsOwningNodeIdByPublishmentSystem(body.AdministratorName, nodeInfo.NodeId);
                         if (!enabled)
                         {
                             if (!AdminUtility.IsHasChildOwningNodeId(body.AdministratorName, nodeInfo.NodeId)) continue;

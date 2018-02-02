@@ -76,7 +76,7 @@ namespace SiteServer.BackgroundPages.Core
 
 		public string GetTrHtml()
 		{
-            var displayHtml = _isDisplay ? StringUtils.Constants.ShowElementStyle : StringUtils.Constants.HideElementStyle;
+            var displayHtml =  _isDisplay ? StringUtils.Constants.ShowElementStyle : StringUtils.Constants.HideElementStyle;
 			string trElementHtml = $@"
 <tr style='{displayHtml}' treeItemLevel='{_parentsCount + 1}'>
 	<td nowrap>
@@ -101,6 +101,7 @@ namespace SiteServer.BackgroundPages.Core
                 if (_hasChildren)
                 {
                     htmlBuilder.Append(
+
                         _selected
                             ? $"<img align=\"absmiddle\" style=\"cursor:pointer;\" onClick=\"displayChildren(this);\" isOpen=\"true\" src=\"{_iconMinusUrl}\"/>"
                             : $"<img align=\"absmiddle\" style=\"cursor:pointer;\" onClick=\"displayChildren(this);\" isOpen=\"false\" src=\"{_iconPlusUrl}\"/>");
@@ -108,6 +109,7 @@ namespace SiteServer.BackgroundPages.Core
                 else
                 {
                     htmlBuilder.Append($"<img align=\"absmiddle\" src=\"{_iconEmptyUrl}\"/>");
+                   // htmlBuilder.Append($"<img align=\"absmiddle\" style=\"cursor:pointer;\" onClick=\"displayChildren(this);\" isOpen=\"false\" src=\"{_iconPlusUrl}\"/>");
                 }
             }
             else
@@ -295,7 +297,12 @@ function displayChildren(element){
 	}
 }
 var isNodeTree = {isNodeTree};
+
+$(function(){  
+   displayChildren($(""img[isopen = 'false']"") );
+});  
 </script>
+
 ";
 			var item = new NavigationTreeItem();
 			script = script.Replace("{iconEmptyUrl}", item._iconEmptyUrl);

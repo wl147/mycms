@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace BaiRong.Core.Tabs
@@ -24,6 +25,8 @@ namespace BaiRong.Core.Tabs
         private string _iconUrl;
         private string _ban;
         private string _addtionalString;
+        private string _menuType;
+        private int _nodeId;
 
         /// <summary>
         /// Property Text (string)
@@ -160,6 +163,18 @@ namespace BaiRong.Core.Tabs
             set { _addtionalString = value; }
         }
 
+        [XmlAttribute("menuType")]
+        public string MenuType
+        {
+            get { return _menuType; }
+            set { _menuType = value; }
+        }
+        public int NodeId
+        {
+            get { return _nodeId; }
+            set { _nodeId = value; }
+        }
+
 
         /// <summary>
         /// Property Children (Tab[])
@@ -169,6 +184,23 @@ namespace BaiRong.Core.Tabs
         {
             get { return _children; }
             set { _children = value; }
+        }
+        public List<Tab> ChildrenChannels
+        {
+            get
+            {
+                if(Children!=null&&Children.Length>0)
+                {
+                    List<Tab> tabs = new List<Tab>();
+                    foreach(Tab tab in Children)
+                    {
+                        tabs.Add(tab);
+                    }
+                    return tabs;
+                }
+                return new List<Tab>();
+            }
+ 
         }
 
         public bool HasChildren => Children != null && Children.Length > 0;
