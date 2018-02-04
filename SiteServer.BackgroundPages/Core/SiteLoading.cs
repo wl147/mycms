@@ -15,10 +15,12 @@ namespace SiteServer.BackgroundPages.Core
         {
             return NodeTreeItem.GetScript(publishmentSystemInfo, loadingType, additional);
         }
-        public static string GetChannelRowHtml(PublishmentSystemInfo publishmentSystemInfo, bool enabled, ELoadingType loadingType, NameValueCollection additional, string administratorName)
+        public static string GetSiteHtml(PublishmentSystemInfo publishmentSystemInfo,int carrentMainId)
         {
+            var siteTreeItem = SiteTreeItem.CreateInstance(publishmentSystemInfo, carrentMainId);
+            var title=SiteTreeItem.
             //            var nodeTreeItem = NodeTreeItem.CreateInstance(nodeInfo, enabled, administratorName);
-            //            var title = nodeTreeItem.GetItemHtml(loadingType, "PageChannel.GetRedirectUrl(publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)", additional);
+                        var title = nodeTreeItem.GetItemHtml(loadingType, "PageChannel.GetRedirectUrl(publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)", additional);
 
             //            var rowHtml = string.Empty;
 

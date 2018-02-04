@@ -7,6 +7,7 @@ using SiteServer.CMS.Core;
 using SiteServer.CMS.Core.Security;
 using SiteServer.CMS.Model;
 using SiteServer.CMS.Model.Enumerations;
+using System.Collections.Generic;
 
 namespace SiteServer.BackgroundPages.Controls
 {
@@ -28,9 +29,9 @@ namespace SiteServer.BackgroundPages.Controls
             {
                 try
                 {
-                    var publishmentSystemIdList = PublishmentSystemManager.GetPublishmentSystemIdListByParentId(publishmentSystemId);
+                    //var publishmentSystemIdList = PublishmentSystemManager.GetPublishmentSystemIdListByParentId(publishmentSystemId);
 
-                    //var nodeIdList = DataProvider.NodeDao.GetNodeIdListByParentId(_publishmentSystemInfo.PublishmentSystemId, 0);
+                    var  publishmentSystemIdList = new List<int>() { 1, 2, 3 };
                     foreach (var publishmentSystem in publishmentSystemIdList)
                     {
                         var publishmentSystemInfo= PublishmentSystemManager.GetPublishmentSystemInfo(publishmentSystem);

@@ -48,7 +48,9 @@ namespace SiteServer.CMS.Model
         private int _taxis;
         private string _settingsXml = string.Empty;
         private PublishmentSystemInfoExtend _additional;
-
+        //ÐÂÔö×Ö¶Î
+        private int _parentsCount;
+        private int _childrentCount;
         public PublishmentSystemInfo()
 		{
 		}
@@ -72,8 +74,28 @@ namespace SiteServer.CMS.Model
             _taxis = taxis;
             _settingsXml = settingsXml;
 		}
+        public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, string auxiliaryTableForContent, string auxiliaryTableForGovPublic, string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount)
+        {
+            _publishmentSystemId = publishmentSystemId;
+            _publishmentSystemName = publishmentSystemName;
+            _publishmentSystemType = publishmentSystemType;
+            _auxiliaryTableForContent = auxiliaryTableForContent;
+            _auxiliaryTableForGovPublic = auxiliaryTableForGovPublic;
+            _auxiliaryTableForGovInteract = auxiliaryTableForGovInteract;
+            _auxiliaryTableForVote = auxiliaryTableForVote;
+            _auxiliaryTableForJob = auxiliaryTableForJob;
+            _isCheckContentUseLevel = isCheckContentUseLevel;
+            _checkContentLevel = checkContentLevel;
+            _publishmentSystemDir = publishmentSystemDir;
+            _publishmentSystemUrl = publishmentSystemUrl;
+            _isHeadquarters = isHeadquarters;
+            _parentPublishmentSystemId = parentPublishmentSystemId;
+            _taxis = taxis;
+            _settingsXml = settingsXml;
+            _parentsCount = parentsCount;
+        }
 
-		[XmlIgnore]
+        [XmlIgnore]
 		public int PublishmentSystemId
 		{
 			get{ return _publishmentSystemId; }
@@ -189,7 +211,19 @@ namespace SiteServer.CMS.Model
                 _settingsXml = value;
             }
         }
+        [XmlIgnore]
+        public int ParentsCount
+        {
+            get { return _parentsCount; }
+            set { _parentsCount = value; }
+        }
 
+        [XmlIgnore]
+        public int ChildrenCount
+        {
+            get { return _childrentCount; }
+            set { _childrentCount = value; }
+        }
         public PublishmentSystemInfoExtend Additional => _additional ?? (_additional = new PublishmentSystemInfoExtend(_settingsXml));
 	}
 }
