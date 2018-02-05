@@ -74,7 +74,7 @@ namespace SiteServer.CMS.Model
             _taxis = taxis;
             _settingsXml = settingsXml;
 		}
-        public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, string auxiliaryTableForContent, string auxiliaryTableForGovPublic, string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount)
+        public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, string auxiliaryTableForContent, string auxiliaryTableForGovPublic, string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount,int childrenCount)
         {
             _publishmentSystemId = publishmentSystemId;
             _publishmentSystemName = publishmentSystemName;
@@ -93,6 +93,7 @@ namespace SiteServer.CMS.Model
             _taxis = taxis;
             _settingsXml = settingsXml;
             _parentsCount = parentsCount;
+            _childrentCount = childrenCount;
         }
 
         [XmlIgnore]

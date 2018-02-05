@@ -23,6 +23,7 @@ namespace SiteServer.BackgroundPages.Ajax
         private const string TypeSiteTemplateDownload = "SiteTemplateDownload";
         private const string TypeSiteTemplateZip = "SiteTemplateZip";
         private const string TypeGetLoadingChannels = "GetLoadingChannels";
+        private const string TypeGetLoadingSites = "GetLoadingSites";
 
         public static string GetCountArrayUrl()
         {
@@ -74,6 +75,14 @@ namespace SiteServer.BackgroundPages.Ajax
                 {"type", TypeGetLoadingChannels }
             });
         }
+        public static string GetGetLoadingSitesUrl()
+        {
+            return PageUtils.GetAjaxUrl(nameof(AjaxOtherService), new NameValueCollection
+            {
+                {"type", TypeGetLoadingSites }
+            });
+        }
+
 
         public static string GetGetLoadingChannelsParameters(int publishmentSystemId, ELoadingType loadingType, NameValueCollection additional)
         {
@@ -90,6 +99,7 @@ namespace SiteServer.BackgroundPages.Ajax
             var type = Request["type"];
             var retval = new NameValueCollection();
             string retString = null;
+            string retSiteString = null;
             var body = new RequestBody();
 
             if (type == TypeGetCountArray)
@@ -118,6 +128,13 @@ namespace SiteServer.BackgroundPages.Ajax
                 var additional = Request["additional"];
                 retString = GetLoadingChannels(publishmentSystemId, parentId, loadingType, additional, body);
             }
+            else if(type== TypeGetLoadingSites)
+            {
+                var parentId = TranslateUtils.ToInt(Request["parentID"]);
+                var loadingType = Request["loadingType"];
+                var additional = Request["additional"];
+                retSiteString = GetLoadingSites(parentId);
+            }
             //else if (type == "GetLoadingGovPublicCategories")
             //{
             //    string classCode = base.Request["classCode"];
@@ -145,6 +162,10 @@ namespace SiteServer.BackgroundPages.Ajax
             if (retString != null)
             {
                 Page.Response.Write(retString);
+                Page.Response.End();
+            }else if (retSiteString!=null)
+            {
+                Page.Response.Write(retSiteString);
                 Page.Response.End();
             }
             else
@@ -292,6 +313,22 @@ namespace SiteServer.BackgroundPages.Ajax
             foreach (string html in arraylist)
             {
                 builder.Append(html);
+            }
+            return builder.ToString();
+        }
+        public string GetLoadingSites(int parentId)
+        {
+            var arrayList = new ArrayList();
+            var sitesIdList = DataProvider.PublishmentSystemDao.GetPublishmentSystemIdListByParent(parentId);
+            foreach(int siteId in sitesIdList)
+            {
+                var siteInfo = PublishmentSystemManager.GetPublishmentSystemInfo(siteId);
+                arrayList.Add(SiteLoading.GetSiteRowHtml(siteInfo, -1));
+            }
+            StringBuilder builder = new StringBuilder();
+            foreach(string item in arrayList)
+            {
+                builder.Append(item);
             }
             return builder.ToString();
         }

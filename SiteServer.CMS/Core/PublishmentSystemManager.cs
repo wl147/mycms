@@ -28,7 +28,7 @@ namespace SiteServer.CMS.Core
 
         public static PublishmentSystemInfo GetPublishmentSystemInfo(int publishmentSystemId)
         {
-            var list = GetPublishmentSystemInfoKeyValuePairList();
+            var list = GetPublishmentSystemInfoKeyValuePairListAll();
 
             foreach (var pair in list)
             {
@@ -383,6 +383,23 @@ namespace SiteServer.CMS.Core
             CacheUtils.Max(CacheKey, sl);
             return sl;
         }
+        public static List<KeyValuePair<int, PublishmentSystemInfo>> GetPublishmentSystemInfoKeyValuePairListAll()
+        {
+            if (CacheUtils.Get(CacheKeyAll) != null) return CacheUtils.Get(CacheKeyAll) as List<KeyValuePair<int, PublishmentSystemInfo>>;
+
+            var list = DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoKeyValuePairList();
+            var sl = new List<KeyValuePair<int, PublishmentSystemInfo>>();
+            foreach (var pair in list)
+            {
+                var publishmentSystemInfo = pair.Value;
+                if (publishmentSystemInfo == null) continue;
+
+                publishmentSystemInfo.PublishmentSystemDir = GetPublishmentSystemDir(list, publishmentSystemInfo);
+                sl.Add(pair);
+            }
+            CacheUtils.Max(CacheKeyAll, sl);
+            return sl;
+        }
         public static List<KeyValuePair<int, PublishmentSystemInfo>> GetPublishmentSystemInfoKeyValuePairListByParentId(int parentId)
         {
 
@@ -434,6 +451,7 @@ namespace SiteServer.CMS.Core
         /****************** Cache *********************/
 
         private const string CacheKey = "SiteServer.CMS.Core.PublishmentSystemManager";
+        private const string CacheKeyAll = "SiteServer.CMS.Core.PublishmentSystemManagerAll";
 
         public static List<PublishmentSystemInfo> GetWritingPublishmentSystemInfoList(string adminUserName)
         {

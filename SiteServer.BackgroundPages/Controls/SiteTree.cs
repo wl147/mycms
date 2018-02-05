@@ -28,31 +28,13 @@ namespace SiteServer.BackgroundPages.Controls
             if (Page.Request.QueryString["PublishmentSystemID"] != null)
             {
                 try
-                {
-                    //var publishmentSystemIdList = PublishmentSystemManager.GetPublishmentSystemIdListByParentId(publishmentSystemId);
-
+                {                   
                     var  publishmentSystemIdList = new List<int>() { 1, 2, 3 };
                     foreach (var publishmentSystem in publishmentSystemIdList)
                     {
-                        var publishmentSystemInfo= PublishmentSystemManager.GetPublishmentSystemInfo(publishmentSystem);
-                        //var nodeInfo = NodeManager.GetNodeInfo(_publishmentSystemInfo.PublishmentSystemId, nodeId);
-                        //var enabled = AdminUtility.IsOwningNodeId(body.AdministratorName, nodeInfo.NodeId);
-                        //var enabled2 = AdminUtility.IsOwningNodeIdByPublishmentSystem(body.AdministratorName, nodeInfo.NodeId);
-                        //if (!enabled)
-                        //{
-                        //    if (!AdminUtility.IsHasChildOwningNodeId(body.AdministratorName, nodeInfo.NodeId)) continue;
-                        //}
-                        //if (nodeId == 1)
-                        //{
-                        //    builder.Append(
-                        //        @"<a href="" /siteserver/loading.aspx?RedirectType=Loading&amp;RedirectUrl=cms/pageContentMain.aspx?PublishmentSystemID=1""target=""right""onclick=""openFolderByA(this); ""istreelink=""true"" style=""padding-left:20px;font-size:30px;"">内容管理</a>");
-                        //}
-                        //else
-                        //{
-                        builder.Append(SiteLoading.GetChannelRowHtml(_publishmentSystemInfo, true, ELoadingType.ContentTree, null, body.AdministratorName));
-                        //}                          
+                        var publishmentSystemInfo= PublishmentSystemManager.GetPublishmentSystemInfo(publishmentSystem);                      
+                        builder.Append(SiteLoading.GetSiteRowHtml(publishmentSystemInfo, publishmentSystemId));                       
                     }
-
                 }
                 catch (Exception ex)
                 {
