@@ -205,18 +205,18 @@ namespace SiteServer.BackgroundPages
             var index = e.Item.ItemIndex;
             if (index == 0)
             {
-                if (_publishmentSystemInfo != null && _publishmentSystemInfo.PublishmentSystemId > 0)
-                {
-                    ltlMenuLi.Text = @"<li class=""active"">";
-                    ltlMenuName.Text =
-                        $@"{EPublishmentSystemTypeUtils.GetIconHtml(_publishmentSystemInfo.PublishmentSystemType)}&nbsp;{_publishmentSystemInfo
-                            .PublishmentSystemName}";
-                }
-                else
-                {
-                    ltlMenuLi.Text = @"<li>";
-                    ltlMenuName.Text = "站点管理";
-                }
+                //if (_publishmentSystemInfo != null && _publishmentSystemInfo.PublishmentSystemId > 0)
+                //{
+                //    ltlMenuLi.Text = @"<li class=""active"">";
+                //    ltlMenuName.Text =
+                //        $@"{EPublishmentSystemTypeUtils.GetIconHtml(_publishmentSystemInfo.PublishmentSystemType)}&nbsp;{_publishmentSystemInfo
+                //            .PublishmentSystemName}";
+                //}
+                //else
+                //{
+                //    ltlMenuLi.Text = @"<li>";
+                //    ltlMenuName.Text = "站点管理";
+                //}
 
                 var builder = new StringBuilder();
 

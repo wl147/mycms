@@ -195,6 +195,9 @@
     <Compile Include="Cms\PageResumeView.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageSiteContentAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Controls\SiteTree.cs" />
     <Compile Include="Controls\UEditor.cs" />
     <Compile Include="Core\AreaTreeItem.cs" />
@@ -259,6 +262,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Sys\ModalTableStyleValidateAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sys\PagePublishmentSystemDetails.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Sys\PageTableStyle.cs">

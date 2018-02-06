@@ -330,6 +330,7 @@
     <Content Include="SiteServer\Cms\pageLeftSiteSelect.aspx" />
     <Content Include="SiteServer\Cms\pageNodeGroup.aspx" />
     <Content Include="SiteServer\Cms\pageProgressBar.aspx" />
+    <Content Include="SiteServer\Cms\PagePublishmentSystem.aspx" />
     <Content Include="SiteServer\Cms\pageRedirect.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedField.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedFieldItem.aspx" />
@@ -341,6 +342,7 @@
     <Content Include="SiteServer\Cms\pageSeoSiteMapBaidu.aspx" />
     <Content Include="SiteServer\Cms\pageSeoSiteMapGoogle.aspx" />
     <Content Include="SiteServer\Cms\pageServiceStl.aspx" />
+    <Content Include="SiteServer\Cms\pagesitecontentadd.aspx" />
     <Content Include="SiteServer\Cms\pageStlTag.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyle.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyleChannel.aspx" />
@@ -454,6 +456,20 @@
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.cs">
+      <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.designer.cs">
+      <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagesitecontentadd.aspx.cs">
+      <DependentUpon>pagesitecontentadd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagesitecontentadd.aspx.designer.cs">
+      <DependentUpon>pagesitecontentadd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

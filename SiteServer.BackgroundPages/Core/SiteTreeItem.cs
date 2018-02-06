@@ -20,6 +20,9 @@ namespace SiteServer.BackgroundPages.Core
         private readonly string _iconPlusUrl;
         private readonly string _iconAddSiteUrl;
         private readonly string _iconDeleteSiteUrl;
+        private readonly string _iconMinusUrlHeader;
+        private readonly string _iconOpenUrl;
+        private readonly string _iconTreeMiddle;
 
         private bool _enabled = true;
         private PublishmentSystemInfo _publishmentSystemInfo;
@@ -34,9 +37,12 @@ namespace SiteServer.BackgroundPages.Core
             _iconOpenedFolderUrl = PageUtils.Combine(treeDirectoryUrl, "openedfolder.gif");
             _iconEmptyUrl = PageUtils.Combine(treeDirectoryUrl, "empty.gif");
             _iconMinusUrl = PageUtils.Combine(treeDirectoryUrl, "minus.png");
+            _iconMinusUrlHeader= PageUtils.Combine(treeDirectoryUrl, "minus.gif");
             _iconPlusUrl = PageUtils.Combine(treeDirectoryUrl, "plus.png");
             _iconAddSiteUrl= PageUtils.Combine(treeDirectoryUrl, "addSite.png");
             _iconDeleteSiteUrl=PageUtils.Combine(treeDirectoryUrl, "deleteSite.png");
+            _iconOpenUrl= PageUtils.Combine(treeDirectoryUrl, "tree_plusmiddle.gif"); 
+            _iconTreeMiddle= PageUtils.Combine(treeDirectoryUrl, "tree_middle.gif");
         }
         public static SiteTreeItem CreateInstance(PublishmentSystemInfo publishmentSystemInfo,int currentMainId)
         {
@@ -73,11 +79,11 @@ namespace SiteServer.BackgroundPages.Core
                 htmlBuilder.Append($@"<img align=""absmiddle"" src=""{_iconEmptyUrl}"" />");
             }
 
-            htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemadd.aspx?publishmentSystemType=WCM"" target=""content"" title=""{_publishmentSystemInfo}""><img align=""absmiddle"" border=""0"" src=""{_iconFolderUrl}"" />{_publishmentSystemInfo.PublishmentSystemName}</a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""{_publishmentSystemInfo}"">{_publishmentSystemInfo.PublishmentSystemName}</a>&nbsp;");
 
-            htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemadd.aspx?publishmentSystemType=WCM"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
 
-            htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemadd.aspx?publishmentSystemType=WCM"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
 
             return htmlBuilder.ToString();
         }
