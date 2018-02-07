@@ -79,11 +79,11 @@ namespace SiteServer.BackgroundPages.Core
                 htmlBuilder.Append($@"<img align=""absmiddle"" src=""{_iconEmptyUrl}"" />");
             }
 
-            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""{_publishmentSystemInfo}"">{_publishmentSystemInfo.PublishmentSystemName}</a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx?PublishmentSystemID={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""{_publishmentSystemInfo}"">{_publishmentSystemInfo.PublishmentSystemName}</a>&nbsp;");
 
-            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""PageSiteAdd.aspx?PublishmentSystemID={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
 
-            htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
+            htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemdelete.aspx?NodeId={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
 
             return htmlBuilder.ToString();
         }

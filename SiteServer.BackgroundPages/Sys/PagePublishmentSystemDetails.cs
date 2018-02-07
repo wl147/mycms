@@ -5,6 +5,7 @@ using BaiRong.Core;
 using BaiRong.Core.Model.Enumerations;
 using SiteServer.CMS.Core;
 using SiteServer.CMS.Model;
+using System.Collections.Generic;
 
 namespace SiteServer.BackgroundPages.Sys
 {
@@ -21,33 +22,19 @@ namespace SiteServer.BackgroundPages.Sys
         public void Page_Load(object sender, EventArgs e)
         {
             if (IsForbidden) return;
-            if (Body.IsQueryExists("PublishmentSystemID") && (Body.IsQueryExists("Up") || Body.IsQueryExists("Down")))
-            {
-                var publishmentSystemId = Body.GetQueryInt("PublishmentSystemID");
-
-                if (Body.IsQueryExists("Up") && Body.GetQueryBool("Up"))
-                {
-                    //上升
-                    DataProvider.PublishmentSystemDao.UpdateTaxisToUp(publishmentSystemId);
-                    //清楚缓存
-                    PublishmentSystemManager.ClearCache(false);
-                }
-                else
-                {
-                    //下降
-                    DataProvider.PublishmentSystemDao.UpdateTaxisToDown(publishmentSystemId);
-                    //清楚缓存
-                    PublishmentSystemManager.ClearCache(false);
-                }
-
-            }
+                       
             if (!IsPostBack)
             {
+                var currentPublishmentSystemId = Body.GetQueryInt("PublishmentSystemID");
+                var publishmentSystemList= DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoListByParentId(currentPublishmentSystemId);
+                List<int> list = new List<int>();   
+                foreach(var site in publishmentSystemList)
+                {
+                    list.Add(site.PublishmentSystemId);
+                }       
                 BreadCrumbSys(AppManager.Sys.LeftMenu.Site, "组织机构", AppManager.Sys.Permission.SysSite);
-
-                _hqSiteId = DataProvider.PublishmentSystemDao.GetPublishmentSystemIdByIsHeadquarters();
-
-                dgContents.DataSource = PublishmentSystemManager.GetPublishmentSystemIdList();
+                _hqSiteId = currentPublishmentSystemId;
+                dgContents.DataSource = list;//DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoListByParentId(currentPublishmentSystemId);
                 dgContents.ItemDataBound += dgContents_ItemDataBound;
                 dgContents.DataBind();
             }
@@ -63,41 +50,41 @@ namespace SiteServer.BackgroundPages.Sys
                 {
                     var ltlPublishmentSystemName = e.Item.FindControl("ltlPublishmentSystemName") as Literal;
                     var ltlPublishmentSystemType = e.Item.FindControl("ltlPublishmentSystemType") as Literal;
-                    var ltlPublishmentSystemDir = e.Item.FindControl("ltlPublishmentSystemDir") as Literal;
-                    var ltlAddDate = e.Item.FindControl("ltlAddDate") as Literal;
-                    var ltlChangeType = e.Item.FindControl("ltlChangeType") as Literal;
-                    var ltlDelete = e.Item.FindControl("ltlDelete") as Literal;
+                    var ltlPublishmentSystemAdress = e.Item.FindControl("ltlPublishmentSystemAdress") as Literal;
+                    var ltlOperation = e.Item.FindControl("ltlOperation") as Literal;
+                    //var ltlChangeType = e.Item.FindControl("ltlChangeType") as Literal;
+                    //var ltlDelete = e.Item.FindControl("ltlDelete") as Literal;
 
-                    var ltUpLink = e.Item.FindControl("ltUpLink") as Literal;
-                    var ltDownLink = e.Item.FindControl("ltDownLink") as Literal;
+                    //var ltUpLink = e.Item.FindControl("ltUpLink") as Literal;
+                    //var ltDownLink = e.Item.FindControl("ltDownLink") as Literal;
 
                     ltlPublishmentSystemName.Text = GetPublishmentSystemNameHtml(publishmentSystemInfo);
-                    ltlPublishmentSystemType.Text = EPublishmentSystemTypeUtils.GetHtml(publishmentSystemInfo.PublishmentSystemType);
-                    ltlPublishmentSystemDir.Text = publishmentSystemInfo.PublishmentSystemDir;
-                    ltlAddDate.Text = DateUtils.GetDateString(NodeManager.GetAddDate(publishmentSystemID, publishmentSystemID));
+                    ltlPublishmentSystemAdress.Text = publishmentSystemInfo.Address;
+                    ltlPublishmentSystemType.Text = publishmentSystemInfo.OrganizationTypeId.ToString()+"--类型表未建立，此数字代表id";
+                    ltlOperation.Text = $@"<a href=""PageSiteEdit.aspx?PublishmentSystemId={publishmentSystemInfo.PublishmentSystemId}"" target=""content"">操作</a>";
                     var upUrl = PageUtils.GetSysUrl(nameof(PagePublishmentSystem), new NameValueCollection
                     {
                         {"Up", "True" },
                         {"PublishmentSystemID", publishmentSystemID.ToString() }
                     });
-                    ltUpLink.Text = $@"<a href=""{upUrl}""><img src=""../Pic/icon/up.gif"" border=""0"" alt=""上升""/></a>";
+                    //ltUpLink.Text = $@"<a href=""{upUrl}""><img src=""../Pic/icon/up.gif"" border=""0"" alt=""上升""/></a>";
 
                     var downUrl = PageUtils.GetSysUrl(nameof(PagePublishmentSystem), new NameValueCollection
                     {
                         {"Down", "True" },
                         {"PublishmentSystemID", publishmentSystemID.ToString() }
                     });
-                    ltDownLink.Text = $@"<a href=""{downUrl}""><img src=""../Pic/icon/down.gif"" border=""0"" alt=""下降""/></a>";
+                    //ltDownLink.Text = $@"<a href=""{downUrl}""><img src=""../Pic/icon/down.gif"" border=""0"" alt=""下降""/></a>";
 
-                    if (publishmentSystemInfo.ParentPublishmentSystemId == 0 && (_hqSiteId == 0 || publishmentSystemID == _hqSiteId))
-                    {
-                        ltlChangeType.Text = GetChangeHtml(publishmentSystemID, publishmentSystemInfo.IsHeadquarters);
-                    }
+                    //if (publishmentSystemInfo.ParentPublishmentSystemId == 0 && (_hqSiteId == 0 || publishmentSystemID == _hqSiteId))
+                    //{
+                    //    ltlChangeType.Text = GetChangeHtml(publishmentSystemID, publishmentSystemInfo.IsHeadquarters);
+                    //}
 
-                    if (publishmentSystemInfo.IsHeadquarters == false)
-                    {
-                        ltlDelete.Text = $@"<a href=""{PagePublishmentSystemDelete.GetRedirectUrl(publishmentSystemID)}"">删除</a>";
-                    }
+                    //if (publishmentSystemInfo.IsHeadquarters == false)
+                    //{
+                    //    ltlDelete.Text = $@"<a href=""{PagePublishmentSystemDelete.GetRedirectUrl(publishmentSystemID)}"">删除</a>";
+                    //}
                 }
             }
         }

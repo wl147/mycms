@@ -23,63 +23,24 @@
                 </asp:TemplateColumn>
                 <asp:TemplateColumn HeaderText="地址">
                     <ItemTemplate>
+                        <asp:Literal ID="ltlPublishmentSystemAdress" runat="server"></asp:Literal>
+                    </ItemTemplate>
+                </asp:TemplateColumn>
+                <asp:TemplateColumn HeaderText="类型">
+                    <ItemTemplate>
                         <asp:Literal ID="ltlPublishmentSystemType" runat="server"></asp:Literal>
                     </ItemTemplate>
                     <ItemStyle Width="110" CssClass="center" />
                 </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="类型">
-                    <ItemTemplate>
-                        <asp:Literal ID="ltlPublishmentSystemDir" runat="server"></asp:Literal>
-                    </ItemTemplate>
-                </asp:TemplateColumn>
+                
                 <asp:TemplateColumn HeaderText="操作">
                     <ItemTemplate>
-                        <asp:Literal ID="ltlAddDate" runat="server"></asp:Literal>
+                        <asp:Literal ID="ltlOperation" runat="server"></asp:Literal>
                     </ItemTemplate>
                     <ItemStyle Width="70" HorizontalAlign="left" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="保存为站点模板">
-                    <ItemTemplate>
-                        <nobr><a href="pageSiteTemplateSave.aspx?PublishmentSystemID=<%# Container.DataItem%>">保存</a></nobr>
-                    </ItemTemplate>
-                    <ItemStyle Width="100" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="修改属性">
-                    <ItemTemplate>
-                        <nobr><a href="pagePublishmentSystemEdit.aspx?PublishmentSystemID=<%# Container.DataItem%>">修改</a></nobr>
-                    </ItemTemplate>
-                    <ItemStyle Width="60" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="站点路径转移">
-                    <ItemTemplate>
-                        <asp:Literal ID="ltlChangeType" runat="server"></asp:Literal>
-                    </ItemTemplate>
-                    <ItemStyle Width="90" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="整站替换">
-                    <ItemTemplate>
-                        <nobr><a href="pagePublishmentSystemReplace.aspx?PublishmentSystemID=<%# Container.DataItem%>">替换</a></nobr>
-                    </ItemTemplate>
-                    <ItemStyle Width="60" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="整站删除">
-                    <ItemTemplate>
-                        <asp:Literal ID="ltlDelete" runat="server"></asp:Literal>
-                    </ItemTemplate>
-                    <ItemStyle Width="60" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="上升">
-                    <ItemTemplate>
-                        <asp:Literal ID="ltUpLink" runat="server"></asp:Literal>
-                    </ItemTemplate>
-                    <ItemStyle Width="60" CssClass="center" />
-                </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="下降">
-                    <ItemTemplate>
-                        <asp:Literal ID="ltDownLink" runat="server"></asp:Literal>
-                    </ItemTemplate>
-                    <ItemStyle Width="60" CssClass="center" />
-                </asp:TemplateColumn>
+                </asp:TemplateColumn>                                    
+               
+              
             </Columns>
         </asp:DataGrid>
 

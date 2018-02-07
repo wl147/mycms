@@ -51,6 +51,19 @@ namespace SiteServer.CMS.Model
         //ÐÂÔö×Ö¶Î
         private int _parentsCount;
         private int _childrentCount;
+        private int _areaId;
+        private string _areaName;
+        private int _organizationTypeId;
+        private string _organizationTypeName;
+        private int _organizationCategoryId;
+        private string _organizationCategoryName;
+        private string _telePhone;
+        private string _imageUrl;
+        private string _address;
+        private string _basicFacts;
+        private string _characteristic;
+        private string _administratorAccount;
+
         public PublishmentSystemInfo()
 		{
 		}
@@ -74,7 +87,13 @@ namespace SiteServer.CMS.Model
             _taxis = taxis;
             _settingsXml = settingsXml;
 		}
-        public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, string auxiliaryTableForContent, string auxiliaryTableForGovPublic, string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount,int childrenCount)
+        public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, 
+            string auxiliaryTableForContent, string auxiliaryTableForGovPublic, 
+            string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, 
+            bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, 
+            bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount,int childrenCount,
+            int areaId,int organizationTypeId,int organizationCategoryId,
+            string telePhone,string imageUrl,string address,string basicFacts,string characteristic,string administratorAccount)
         {
             _publishmentSystemId = publishmentSystemId;
             _publishmentSystemName = publishmentSystemName;
@@ -94,6 +113,18 @@ namespace SiteServer.CMS.Model
             _settingsXml = settingsXml;
             _parentsCount = parentsCount;
             _childrentCount = childrenCount;
+            _areaId = areaId;
+            //_areaName = areaName;
+            _organizationTypeId = organizationTypeId;
+           // _organizationTypeName = organizationTypeName;
+            _organizationCategoryId = organizationCategoryId;
+            //_organizationCategoryName = organizationCategoryName;
+            _telePhone = telePhone;
+            _imageUrl = imageUrl;
+            _address = address;
+            _basicFacts = basicFacts;
+            _characteristic = characteristic;
+            _administratorAccount = administratorAccount;
         }
 
         [XmlIgnore]
@@ -226,5 +257,174 @@ namespace SiteServer.CMS.Model
             set { _childrentCount = value; }
         }
         public PublishmentSystemInfoExtend Additional => _additional ?? (_additional = new PublishmentSystemInfoExtend(_settingsXml));
-	}
+
+        public int AreaId
+        {
+            get
+            {
+                return _areaId;
+            }
+
+            set
+            {
+                _areaId = value;
+            }
+        }
+
+        public string AreaName
+        {
+            get
+            {
+                return _areaName;
+            }
+
+            set
+            {
+                _areaName = value;
+            }
+        }
+
+        public int OrganizationTypeId
+        {
+            get
+            {
+                return _organizationTypeId;
+            }
+
+            set
+            {
+                _organizationTypeId = value;
+            }
+        }
+
+        public string OrganizationTypeName
+        {
+            get
+            {
+                return _organizationTypeName;
+            }
+
+            set
+            {
+                _organizationTypeName = value;
+            }
+        }
+
+        public string OrganizationCategoryName
+        {
+            get
+            {
+                return _organizationCategoryName;
+            }
+
+            set
+            {
+                _organizationCategoryName = value;
+            }
+        }
+
+        public int OrganizationCategory
+        {
+            get
+            {
+                return _organizationCategoryId;
+            }
+
+            set
+            {
+                _organizationCategoryId = value;
+            }
+        }
+
+        public string TelePhone
+        {
+            get
+            {
+                return TelePhone1;
+            }
+
+            set
+            {
+                TelePhone1 = value;
+            }
+        }
+
+        public string TelePhone1
+        {
+            get
+            {
+                return _telePhone;
+            }
+
+            set
+            {
+                _telePhone = value;
+            }
+        }
+
+        public string ImageUrl
+        {
+            get
+            {
+                return _imageUrl;
+            }
+
+            set
+            {
+                _imageUrl = value;
+            }
+        }
+
+        public string Address
+        {
+            get
+            {
+                return _address;
+            }
+
+            set
+            {
+                _address = value;
+            }
+        }
+
+        public string BasicFacts
+        {
+            get
+            {
+                return _basicFacts;
+            }
+
+            set
+            {
+                _basicFacts = value;
+            }
+        }
+
+        public string Characteristic
+        {
+            get
+            {
+                return _characteristic;
+            }
+
+            set
+            {
+                _characteristic = value;
+            }
+        }
+
+        public string AdministratorAccount
+        {
+            get
+            {
+                return _administratorAccount;
+            }
+
+            set
+            {
+                _administratorAccount = value;
+            }
+        }
+    }
 }

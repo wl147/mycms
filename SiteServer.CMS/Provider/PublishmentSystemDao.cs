@@ -18,8 +18,11 @@ namespace SiteServer.CMS.Provider
 
         private const string SqlSelectPublishmentSystemAll = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML FROM siteserver_PublishmentSystem ORDER BY Taxis";
 
-        private const string SqlSelectPublishmentSystemAllField = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML, ParentsCount,  ChildrenCount FROM siteserver_PublishmentSystem ORDER BY Taxis";
-
+        private const string SqlSelectPublishmentSystemAllField = @"SELECT a.PublishmentSystemID, a.PublishmentSystemName, a.PublishmentSystemType, a.AuxiliaryTableForContent, a.AuxiliaryTableForGovPublic, a.AuxiliaryTableForGovInteract, a.AuxiliaryTableForVote, a.AuxiliaryTableForJob, a.IsCheckContentUseLevel, a.CheckContentLevel, a.PublishmentSystemDir, a.PublishmentSystemUrl, a.IsHeadquarters, a.ParentPublishmentSystemID, a.Taxis, a.SettingsXML, a.ParentsCount,  a.ChildrenCount,
+b.AreaId,b.OrganizationTypeId,b.OrganizationCategory, b.TelePhone,b.ImageUrl,b.Adrress,b.BasicFacts,b.Characteristic,b.AdministratorAccount
+FROM siteserver_PublishmentSystem as a,siteserver_PublishmentSystemDetails as b
+WHERE a.PublishmentSystemId=b.PublishmentSystemId
+ORDER BY a.Taxis";
         private const string SqlSelectPublishmentSystemAllByParentId = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML FROM siteserver_PublishmentSystem WHERE ParentPublishmentSystemId=@ParentPublishmentSystemId ORDER BY Taxis";
 
         private const string SqlSelectAllWithNode = "SELECT p.PublishmentSystemID, p.PublishmentSystemName, p.PublishmentSystemType, p.AuxiliaryTableForContent, p.AuxiliaryTableForGovPublic, p.AuxiliaryTableForGovInteract, p.AuxiliaryTableForVote, p.AuxiliaryTableForJob, p.IsCheckContentUseLevel, p.CheckContentLevel, p.PublishmentSystemDir, p.PublishmentSystemUrl, p.IsHeadquarters, p.ParentPublishmentSystemID, p.Taxis, n.NodeName FROM siteserver_PublishmentSystem p INNER JOIN siteserver_Node n ON (p.PublishmentSystemID = n.NodeID) ORDER BY p.IsHeadquarters DESC, p.ParentPublishmentSystemID, p.Taxis DESC, n.NodeID";
@@ -264,14 +267,14 @@ namespace SiteServer.CMS.Provider
                 while (rdr.Read())
                 {
                     var i = 0;
-                    var publishmentSystemInfo = new PublishmentSystemInfo(GetInt(rdr, i++), GetString(rdr, i++), EPublishmentSystemTypeUtils.GetEnumType(GetString(rdr, i++)), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++),GetInt(rdr,i++),GetInt(rdr,i));
+                    var publishmentSystemInfo = new PublishmentSystemInfo(GetInt(rdr, i++), GetString(rdr, i++), EPublishmentSystemTypeUtils.GetEnumType(GetString(rdr, i++)), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++),GetString(rdr,i));
                     list.Add(publishmentSystemInfo);
                 }
                 rdr.Close();
             }
             return list;
         }
-        private List<PublishmentSystemInfo> GetPublishmentSystemInfoListByParentId(int parentId)
+        public List<PublishmentSystemInfo> GetPublishmentSystemInfoListByParentId(int parentId)
         {
             var list = new List<PublishmentSystemInfo>();
             var parms = new IDataParameter[]

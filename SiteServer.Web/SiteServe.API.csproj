@@ -342,7 +342,9 @@
     <Content Include="SiteServer\Cms\pageSeoSiteMapBaidu.aspx" />
     <Content Include="SiteServer\Cms\pageSeoSiteMapGoogle.aspx" />
     <Content Include="SiteServer\Cms\pageServiceStl.aspx" />
+    <Content Include="SiteServer\Cms\PageSiteAdd.aspx" />
     <Content Include="SiteServer\Cms\pagesitecontentadd.aspx" />
+    <Content Include="SiteServer\Cms\PageSiteEdit.aspx" />
     <Content Include="SiteServer\Cms\pageStlTag.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyle.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyleChannel.aspx" />
@@ -463,12 +465,26 @@
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.designer.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\PageSiteAdd.aspx.cs">
+      <DependentUpon>PageSiteAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageSiteAdd.aspx.designer.cs">
+      <DependentUpon>PageSiteAdd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\pagesitecontentadd.aspx.cs">
       <DependentUpon>pagesitecontentadd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SiteServer\Cms\pagesitecontentadd.aspx.designer.cs">
       <DependentUpon>pagesitecontentadd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageSiteEdit.aspx.cs">
+      <DependentUpon>PageSiteEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageSiteEdit.aspx.designer.cs">
+      <DependentUpon>PageSiteEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
