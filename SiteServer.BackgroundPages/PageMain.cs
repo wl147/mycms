@@ -24,6 +24,7 @@ namespace SiteServer.BackgroundPages
         public NavigationTree NtLeftMenuSystem;
         public Repeater RptTopMenu;
         public Literal LtlUserName;
+        public Literal LtlSiteName;
 
         private string _menuId = string.Empty;
         private PublishmentSystemInfo _publishmentSystemInfo = new PublishmentSystemInfo();
@@ -62,6 +63,7 @@ namespace SiteServer.BackgroundPages
         {
             if (IsForbidden) return;
 
+            LtlSiteName .Text= PublishmentSystemManager.GetPublishmentSystemInfo(Body.AdministratorInfo.PublishmentSystemId).PublishmentSystemName;
             LtlUserName.Text = AdminManager.GetDisplayName(Body.AdministratorName, true);
 
             _menuId = Body.GetQueryString("menuID");

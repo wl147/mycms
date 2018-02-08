@@ -379,6 +379,30 @@ namespace BaiRong.Core.Provider
             }
             return sqlString;
         }
+        public string GetSelectCommandSite(bool isConsoleAdministrator, string creatorUserName, int departmentId,int PublishmentSystemId)
+        {
+            string sqlString;
+            if (departmentId == 0)
+            {
+                sqlString = "SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator";
+                if (!isConsoleAdministrator)
+                {
+                    sqlString =
+                        $"SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator WHERE PublishmentSystemId = '{PageUtils.FilterSql(PublishmentSystemId.ToString())}'";
+                }
+            }
+            else
+            {
+                sqlString =
+                    $"SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator WHERE DepartmentID = {departmentId}";
+                if (!isConsoleAdministrator)
+                {
+                    sqlString =
+                        $"SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator WHERE CreatorUserName = '{PageUtils.FilterSql(creatorUserName)}' AND DepartmentID = {departmentId}";
+                }
+            }
+            return sqlString;
+        }
 
         public string GetSelectCommand(string searchWord, string roleName, int dayOfLastActivity, bool isConsoleAdministrator, string creatorUserName, int departmentId, int areaId)
         {

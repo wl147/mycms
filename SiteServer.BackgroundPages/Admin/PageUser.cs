@@ -11,9 +11,8 @@ using SiteServer.BackgroundPages.Core;
 
 namespace SiteServer.BackgroundPages.Admin
 {
-    public class PageAdministrator : BasePage
+    public class PageUser : BasePage
     {
-        public DropDownList RoleName;
         public DropDownList PageNum;
         public DropDownList Order;
         public TextBox Keyword;
@@ -35,7 +34,7 @@ namespace SiteServer.BackgroundPages.Admin
 
         public static string GetRedirectUrl(int departmentId)
         {
-            return PageUtils.GetAdminUrl(nameof(PageAdministrator), new NameValueCollection
+            return PageUtils.GetAdminUrl(nameof(PageUser), new NameValueCollection
             {
                 {"departmentID", departmentId.ToString()}
             });
@@ -131,7 +130,7 @@ namespace SiteServer.BackgroundPages.Admin
             {
                 spContents.ItemsPerPage = TranslateUtils.ToInt(PageNum.SelectedValue) == 0 ? StringUtils.Constants.PageSize : TranslateUtils.ToInt(PageNum.SelectedValue);
 
-                spContents.SelectCommand = BaiRongDataProvider.AdministratorDao.GetSelectCommandSite(permissioins.IsConsoleAdministrator, Body.AdministratorName, _departmentId,Body.AdministratorInfo.PublishmentSystemId);
+                spContents.SelectCommand = BaiRongDataProvider.AdministratorDao.GetSelectCommandSite(permissioins.IsConsoleAdministrator, Body.AdministratorName, _departmentId, Body.AdministratorInfo.PublishmentSystemId);
                 spContents.SortField = BaiRongDataProvider.AdministratorDao.GetSortFieldName();
                 spContents.SortMode = SortMode.ASC;
             }
@@ -155,27 +154,11 @@ namespace SiteServer.BackgroundPages.Admin
             {
                 Selected = true
             };
-            RoleName.Items.Add(theListItem);
 
             var allRoles = permissioins.IsConsoleAdministrator ? BaiRongDataProvider.RoleDao.GetAllRoles() : BaiRongDataProvider.RoleDao.GetAllRolesByCreatorUserName(Body.AdministratorName);
 
             var allPredefinedRoles = EPredefinedRoleUtils.GetAllPredefinedRoleName();
-            foreach (var roleName in allRoles)
-            {
-                if (allPredefinedRoles.Contains(roleName))
-                {
-                    var listitem = new ListItem(EPredefinedRoleUtils.GetText(EPredefinedRoleUtils.GetEnumType(roleName)), roleName);
-                    RoleName.Items.Add(listitem);
-                }
-            }
-            foreach (var roleName in allRoles)
-            {
-                if (!allPredefinedRoles.Contains(roleName))
-                {
-                    var listitem = new ListItem(roleName, roleName);
-                    RoleName.Items.Add(listitem);
-                }
-            }
+            
 
             ddlAreaID.Items.Add(new ListItem("<全部区域>", "0"));
             var areaIdList = AreaManager.GetAreaIdList();
@@ -194,7 +177,6 @@ namespace SiteServer.BackgroundPages.Admin
 
             if (Body.IsQueryExists("PageNum"))
             {
-                ControlUtils.SelectListItems(RoleName, Body.GetQueryString("RoleName"));
                 ControlUtils.SelectListItems(PageNum, Body.GetQueryString("PageNum"));
                 Keyword.Text = Body.GetQueryString("Keyword");
                 ControlUtils.SelectListItems(ddlAreaID, Body.GetQueryString("AreaID"));
@@ -333,7 +315,7 @@ namespace SiteServer.BackgroundPages.Admin
                 {
                     var url = GetRedirectUrl(_departmentId);
                     _pageUrl = url +
-                                    $"&RoleName={RoleName.SelectedValue}&PageNum={PageNum.SelectedValue}&Keyword={Keyword.Text}&AreaID={ddlAreaID.SelectedValue}&LastActivityDate={LastActivityDate.SelectedValue}&Order={Order.SelectedValue}";
+                                    $"&PageNum={PageNum.SelectedValue}&Keyword={Keyword.Text}&AreaID={ddlAreaID.SelectedValue}&LastActivityDate={LastActivityDate.SelectedValue}&Order={Order.SelectedValue}";
                 }
                 return _pageUrl;
             }

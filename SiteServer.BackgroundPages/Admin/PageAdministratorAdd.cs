@@ -195,7 +195,8 @@ namespace SiteServer.BackgroundPages.Admin
                         Email = tbEmail.Text,
                         Mobile = tbMobile.Text,
                         DepartmentId = TranslateUtils.ToInt(ddlDepartmentID.SelectedValue),
-                        AreaId = TranslateUtils.ToInt(ddlAreaID.SelectedValue)
+                        AreaId = TranslateUtils.ToInt(ddlAreaID.SelectedValue),
+                        PublishmentSystemId = Body.AdministratorInfo.PublishmentSystemId
                     };
 
                     if (!string.IsNullOrEmpty(BaiRongDataProvider.AdministratorDao.GetUserNameByEmail(tbEmail.Text)))

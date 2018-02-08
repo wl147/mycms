@@ -15,7 +15,7 @@ using SiteServer.CMS.Model.Enumerations;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PagesiteContentEdit : BasePageCms
+    public class PagesiteContentEdit:BasePageCms
     {
         public TextBox PublishmentSystemArea;
         public TextBox PublishmentSystemName;
@@ -43,18 +43,24 @@ namespace SiteServer.BackgroundPages.Cms
                 PublishmentSystemCategory.Items.Add(new ListItem(PublishmentSystemInfo.OrganizationCategory.ToString(), "0"));
                 TelePhone.Text = publishmentSystemInfo.TelePhone;
                 Address.Text = publishmentSystemInfo.Address;
-                var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
+                //    var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
+                //try
+                //{
+                //    var formCollectionBasicFacts = new NameValueCollection();
+                //    formCollectionBasicFacts[NodeAttribute.Content] = publishmentSystemInfo.BasicFacts;
+                //    BasicFactsContent.SetParameters(new PublishmentSystemInfo(), "Content", new NameValueCollection(), true, false);
 
-                var formCollectionBasicFacts = new NameValueCollection();
-                formCollectionBasicFacts[NodeAttribute.Content] = publishmentSystemInfo.BasicFacts;
-                BasicFactsContent.SetParameters(PublishmentSystemInfo, NodeAttribute.Content, formCollectionBasicFacts, true, IsPostBack);
-
-                var formCollectionCharacteristicContent = new NameValueCollection();
-                formCollectionCharacteristicContent[NodeAttribute.Content] = publishmentSystemInfo.Characteristic;
-                BasicFactsContent.SetParameters(PublishmentSystemInfo, NodeAttribute.Content, formCollectionCharacteristicContent, true, IsPostBack);
+                //    var formCollectionCharacteristicContent = new NameValueCollection();
+                //    formCollectionCharacteristicContent[NodeAttribute.Content] = publishmentSystemInfo.Characteristic;
+                //    BasicFactsContent.SetParameters(PublishmentSystemInfo, NodeAttribute.Content, formCollectionCharacteristicContent, true, IsPostBack);
+                //}
+                //catch(Exception ex)
+                //{
+                //}
+               
 
             }
-        }
+            }
 
 
     }

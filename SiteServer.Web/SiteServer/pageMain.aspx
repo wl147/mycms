@@ -59,7 +59,7 @@
     <div id="navigation">
         <div class="container-fluid">
             <div>
-                <a href="http://www.siteserver.cn" target="_blank" id="siteserver"></a>
+                <a href="/siteserver" target="_blank" id="siteserver"><asp:Literal ID="LtlSiteName" runat="server" /></a>
                 <a href="javascript:;" target="_self" class="toggle-nav" rel="tooltip" data-placement="bottom" title="显示/隐藏左侧菜单"><i class="icon-arrow-left"></i></a>
             </div>
             <ul class='main-nav'>

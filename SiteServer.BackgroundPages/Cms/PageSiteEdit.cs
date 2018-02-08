@@ -30,7 +30,7 @@ namespace SiteServer.BackgroundPages.Cms
 
         public void Page_Load(object sender, EventArgs e)
         {
-            if (IsForbidden) return;          
+            if (IsForbidden) return;
 
             if (!IsPostBack)
             {

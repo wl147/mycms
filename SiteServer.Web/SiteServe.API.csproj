@@ -155,6 +155,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SiteServer\Admin\modalAdminPassword.aspx" />
+    <Content Include="SiteServer\Admin\modalAdminSelect.aspx" />
+    <Content Include="SiteServer\Admin\modalAdminView.aspx" />
+    <Content Include="SiteServer\Admin\modalAreaAdd.aspx" />
+    <Content Include="SiteServer\Admin\modalDepartmentAdd.aspx" />
+    <Content Include="SiteServer\Admin\modalDepartmentSelect.aspx" />
+    <Content Include="SiteServer\Admin\modalPermissionsSet.aspx" />
+    <Content Include="SiteServer\Admin\pageAdministrator.aspx" />
+    <Content Include="SiteServer\Admin\pageAdministratorAdd.aspx" />
+    <Content Include="SiteServer\Admin\pageArea.aspx" />
+    <Content Include="SiteServer\Admin\pageConfigurationAdministrator.aspx" />
+    <Content Include="SiteServer\Admin\pageDepartment.aspx" />
+    <Content Include="SiteServer\Admin\pageDepartmentMain.aspx" />
+    <Content Include="SiteServer\Admin\pageDepartmentTree.aspx" />
+    <Content Include="SiteServer\Admin\pageRole.aspx" />
+    <Content Include="SiteServer\Admin\pageRoleAdd.aspx" />
+    <Content Include="SiteServer\Admin\pageRoleAddPublishmentSystemPermissions.aspx" />
+    <Content Include="SiteServer\Admin\PageUser.aspx" />
     <Content Include="SiteServer\Cms\js\contentAdd.js" />
     <Content Include="SiteServer\Cms\js\jquery.imgareaselect\css\border-anim-h.gif" />
     <Content Include="SiteServer\Cms\js\jquery.imgareaselect\css\border-anim-v.gif" />
@@ -458,6 +476,13 @@
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteServer\Admin\PageUser.aspx.cs">
+      <DependentUpon>PageUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Admin\PageUser.aspx.designer.cs">
+      <DependentUpon>PageUser.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -9,9 +9,10 @@ namespace BaiRong.Core.Provider
 	{
         private const string ParmRoleName = "@RoleName";
         private const string ParmCreatorUsername= "@CreatorUserName";
-        private const string ParmDescription = "@Description";
+        private const string ParmDescription = "@Description"; 
+            private const string ParmPublishmentSystemId = "@PublishmentSystemId";
 
-		public string GetRoleDescription(string roleName)
+        public string GetRoleDescription(string roleName)
 		{
 			var roleDescription = string.Empty;
             var sqlString = "SELECT Description FROM bairong_Roles WHERE RoleName = @RoleName";
@@ -73,8 +74,30 @@ namespace BaiRong.Core.Provider
 
             return new string[0];
         }
+        public string[] GetAllRoles(int publishmentSystemId)
+        {
+            var tmpUserNames = string.Empty;
+            string sqlSelect = $@"SELECT RoleName FROM bairong_Roles WHERE PublishmentSystemId ={PageUtils.FilterSql(publishmentSystemId.ToString())} ORDER BY RoleName";
 
-		public ArrayList GetRoleNameArrayListByCreatorUserName(string creatorUserName)
+            using (var rdr = ExecuteReader(sqlSelect))
+            {
+                while (rdr.Read())
+                {
+                    tmpUserNames += GetString(rdr, 0) + ",";
+                }
+                rdr.Close();
+            }
+
+            if (tmpUserNames.Length > 0)
+            {
+                tmpUserNames = tmpUserNames.Substring(0, tmpUserNames.Length - 1);
+                return tmpUserNames.Split(',');
+            }
+
+            return new string[0];
+        }
+
+        public ArrayList GetRoleNameArrayListByCreatorUserName(string creatorUserName)
 		{
 			var arraylist = new ArrayList();
 
@@ -97,14 +120,44 @@ namespace BaiRong.Core.Provider
 			}
 			return arraylist;
 		}
+        public ArrayList GetRoleNameArrayListByPublishmentSystemId(int publishmentSystemId)
+        {
+            var arraylist = new ArrayList();
 
-		public string[] GetAllRolesByCreatorUserName(string creatorUserName)
+            if (publishmentSystemId>0)
+            {
+                var sqlString = "SELECT RoleName FROM bairong_Roles WHERE PublishmentSystemId = @PublishmentSystemId";
+                var parms = new IDataParameter[]
+                {
+                    GetParameter(ParmPublishmentSystemId, EDataType.NVarChar, 255, publishmentSystemId)
+                };
+
+                using (var rdr = ExecuteReader(sqlString, parms))
+                {
+                    while (rdr.Read())
+                    {
+                        arraylist.Add(GetString(rdr, 0));
+                    }
+                    rdr.Close();
+                }
+            }
+            return arraylist;
+        }
+
+        public string[] GetAllRolesByCreatorUserName(string creatorUserName)
 		{
 			var roleNameArrayList = GetRoleNameArrayListByCreatorUserName(creatorUserName);
 			var roleArray = new string[roleNameArrayList.Count];
 			roleNameArrayList.CopyTo(roleArray);
 			return roleArray;
 		}
+        public string[] GetAllRolesByPublishmentSystemId(int publishmentSystemId)
+        {
+            var roleNameArrayList = GetRoleNameArrayListByPublishmentSystemId(publishmentSystemId);
+            var roleArray = new string[roleNameArrayList.Count];
+            roleNameArrayList.CopyTo(roleArray);
+            return roleArray;
+        }
 
         public string[] GetRolesForUser(string userName)
         {

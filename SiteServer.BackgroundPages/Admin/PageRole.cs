@@ -100,7 +100,7 @@ namespace SiteServer.BackgroundPages.Admin
 				}
 				else
 				{
-                    dgContents.DataSource = GetDataSetByRoles(BaiRongDataProvider.RoleDao.GetAllRolesByCreatorUserName(Body.AdministratorName));
+                    dgContents.DataSource = GetDataSetByRoles(BaiRongDataProvider.RoleDao.GetAllRolesByPublishmentSystemId(Body.AdministratorInfo.PublishmentSystemId));
 				}
                 dgContents.ItemDataBound += dgContents_ItemDataBound;
                 dgContents.DataBind();

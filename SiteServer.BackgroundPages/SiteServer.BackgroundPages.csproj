@@ -177,6 +177,9 @@
     <Compile Include="Admin\PageDepartmentTree.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Admin\PageUser.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Ajax\AjaxUploadService.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

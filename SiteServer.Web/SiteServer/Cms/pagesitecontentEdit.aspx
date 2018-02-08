@@ -55,14 +55,14 @@
           <td width="160">详细地址：</td>
           <td><asp:TextBox Columns="25" MaxLength="50" id="Address" runat="server"/></td>
         </tr>
-         <tr>
+       <%--  <tr>
           <td width="160">概况：</td>
           <td colspan="2"><bairong:TextEditorControl ID="BasicFactsContent" runat="server"></bairong:TextEditorControl></td>
         </tr>
          <tr>
           <td width="160">特色：</td>
           <td colspan="2"><bairong:TextEditorControl ID="CharacteristicContent" runat="server"></bairong:TextEditorControl></td>
-        </tr>
+        </tr>--%>
         
     </table>
 
@@ -70,7 +70,7 @@
       <table class="table noborder">
         <tr>
           <td class="center">
-            <asp:Button class="btn btn-primary" id="Submit" text="修 改" OnClick="Submit_OnClick" runat="server"/>
+            <asp:Button class="btn btn-primary" id="Submit" text="修 改" runat="server"/>
             <input type="button" class="btn" value="返 回" onClick="javascript:location.href='pagePublishmentSystem.aspx';" />
           </td>
         </tr>
