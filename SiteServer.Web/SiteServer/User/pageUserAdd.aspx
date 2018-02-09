@@ -94,6 +94,79 @@
                                         ErrorMessage=" *" ForeColor="red" Display="Dynamic" runat="server" />
                                 </td>
                             </tr>
+                            <tr>
+                                <td>性别：</td>
+                                <td>
+                                    <asp:TextBox ID="TbGender" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>身份证号码：</td>
+                                <td>
+                                    <asp:TextBox ID="TbIdCode" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>所属机构：</td>
+                                <td>
+                                    <asp:TextBox ID="TbPublishmentSystemName" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>职位：</td>
+                                <td>
+                                    <asp:TextBox ID="TbPosition" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>流动党员：</td>
+                                <td>
+                                    <asp:TextBox ID="TbFlowPartyMember" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>民族：</td>
+                                <td>
+                                    <asp:TextBox ID="TbNation" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>籍贯：</td>
+                                <td>
+                                    <asp:TextBox ID="TbNativePlace" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>座机：</td>
+                                <td>
+                                    <asp:TextBox ID="TbTelePhone" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>紧急联系人姓名：</td>
+                                <td>
+                                    <asp:TextBox ID="TbEmergencyName" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                                <tr>
+                                <td>紧急联系人电话：</td>
+                                <td>
+                                    <asp:TextBox ID="TbEmergencyMobile" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                                <tr>
+                                <td>紧急联系人关系：</td>
+                                <td>
+                                    <asp:TextBox ID="TbEmergencyRalationship" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+                                <tr>
+                                <td>通讯地址：</td>
+                                <td>
+                                    <asp:TextBox ID="TbAddress" runat="server"></asp:TextBox>                                   
+                                </td>
+                            </tr>
+
                         </table>
                     </div>
 

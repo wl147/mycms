@@ -468,13 +468,54 @@ namespace BaiRong.Core.Provider
                 WeiBo = GetString(rdr, i++),
                 Interests = GetString(rdr, i++),
                 Signature = GetString(rdr, i++),
-                ExtendValues = GetString(rdr, i)
+                ExtendValues = GetString(rdr, i++),
+                Nation = GetString(rdr, i++),
+                NativePlace = GetString(rdr, i++),
+                PublishmentSystemId = GetInt(rdr, i++),
+                IdCode= GetString(rdr, i++),
+                Additional = GetUserInfoExtend( rdr,i)
             };
             if (string.IsNullOrEmpty(userInfo.DisplayName))
             {
                 userInfo.DisplayName = userInfo.UserName;
             }
             return userInfo;
+        }
+        private UserInfoExtend GetUserInfoExtend(IDataReader rdr,int i)
+        {
+            UserInfoExtend additional = new UserInfoExtend(string.Empty);
+            additional.TelePhone = GetString(rdr, i++);
+            additional.EmergencyName = GetString(rdr, i++);
+            additional.EmergencyMobile = GetString(rdr, i++);
+            additional.EmergencyRalationShip = GetString(rdr, i++);
+            additional.PostalAddress = GetString(rdr, i++);
+            additional.ExtraContactWay = GetString(rdr, i++);
+            additional.PersonalSatus = GetString(rdr, i++);
+            //additional.Education = GetString(rdr, i++);
+            additional.Degree = GetString(rdr, i++);
+            additional.WorkTime = GetString(rdr, i++);
+            additional.NewStratum = GetString(rdr, i++);
+            additional.TechnicalPost = GetString(rdr, i++);
+            additional.WorkPlace = GetString(rdr, i++);
+            additional.WorkAttribute = GetString(rdr, i++);
+            additional.EnterPriseType = GetString(rdr, i++);
+            additional.EnterPriseScale = GetString(rdr, i++);
+            additional.MediumOrganizationType = GetString(rdr, i++);
+            additional.JoinPartyTime = GetString(rdr, i++);
+            additional.JoinTime = GetString(rdr, i++);
+            additional.ApplyJoinPartyTime = GetString(rdr, i++);
+            additional.ConfirmActiveTime = GetString(rdr, i++);
+            additional.ConversionTime = GetString(rdr, i++);
+            additional.GoOutTime = GetString(rdr, i++);
+            additional.GoOutIssuingTime = GetString(rdr, i++);
+            additional.GoOutPlace = GetString(rdr, i++);
+            additional.GoOutReason = GetString(rdr, i++);
+            additional.PartyMemberAdd = GetString(rdr, i++);
+            additional.PartyMemberAddTime = GetString(rdr, i++);
+            additional.HomeAddress = GetString(rdr, i++);
+            additional.Resume = GetString(rdr, i++);
+            additional.Remarks = GetString(rdr, i);
+            return additional;
         }
 
         public UserInfo GetUserInfoByUserName(string userName)
@@ -576,6 +617,29 @@ namespace BaiRong.Core.Provider
             UserInfo userInfo = null;
             const string sqlString = "SELECT UserID, UserName, Password, PasswordFormat, PasswordSalt, GroupID, CreateDate, LastResetPasswordDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CountOfWriting, IsChecked, IsLockedOut, DisplayName, Email, Mobile, AvatarUrl, Organization, Department, Position, Gender, Birthday, Education, Graduation, Address, WeiXin, QQ, WeiBo, Interests, Signature, ExtendValues FROM bairong_Users WHERE UserID = @UserID";
 
+            var parms = new IDataParameter[]
+            {
+                GetParameter(ParmUserId, EDataType.Integer, userId)
+            };
+
+            using (var rdr = ExecuteReader(sqlString, parms))
+            {
+                if (rdr.Read())
+                {
+                    userInfo = GetUserInfo(rdr);
+                }
+                rdr.Close();
+            }
+            return userInfo;
+        }
+        public UserInfo GetUserInfoAll(int userId)
+        {
+            if (userId <= 0) return null;
+
+            UserInfo userInfo = null;
+            const string sqlString = @"SELECT a.UserID, a.UserName, a.Password, a.PasswordFormat, a.PasswordSalt, a.GroupID, a.CreateDate, a.LastResetPasswordDate, a.LastActivityDate, a.CountOfLogin, a.CountOfFailedLogin, a.CountOfWriting, a.IsChecked, a.IsLockedOut, a.DisplayName, a.Email, a.Mobile, a.AvatarUrl, a.Organization, a.Department, a.Position, a.Gender, a.Birthday, a.Education, a.Graduation,a.Address, a.WeiXin, a.QQ, a.WeiBo, a.Interests, a.Signature, a.ExtendValues,a.Nation,a.NativePlace,a.PublishmentSystemId,a.IdCode,
+b.TelePhone, b.EmergencyName,b.EmergencyMobile,b.EmergencyRalationShip,b.PostalAddress,b.ExtraContactWay,b.PersonalSatus,b.Degree,b.WorkTime,b.NewStratum,b.TechnicalPost,b.WorkPlace,b.WorkAttribute,b.EnterPriseType,b.EnterPriseScale,b.MediumOrganizationType,b.JoinPartyTime,b.JoinTime,b.ApplyJoinPartyTime,b.ConfirmActiveTime,b.ConversionTime,b.GoOutTime,b.GoOutIssuingTime,b.GoOutPlace,b.GoOutReason,b.PartyMemberAdd,b.PartyMemberAddTime,b.HomeAddress,b.Resume,b.Remarks
+FROM bairong_Users as a,bairong_UsersExtend as b WHERE a.UserId = b.Id AND UserID =@UserID";
             var parms = new IDataParameter[]
             {
                 GetParameter(ParmUserId, EDataType.Integer, userId)
@@ -1011,6 +1075,10 @@ namespace BaiRong.Core.Provider
             string whereString = $"WHERE IsChecked = '{isChecked}'";
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(TableName, SqlUtils.Asterisk, whereString);
         }
+        public string GetSelectCommandAll(bool isChecked,int userTypeId)
+        {
+            return $"SELECT * FROM bairong_Users as a,bairong_UsersExtend as b WHERE a.UserId = b.Id and a.IsChecked = '{isChecked}' AND a.UserTypeId={userTypeId}";
+        }
 
         public string GetSelectCommand(string searchWord, int dayOfCreate, int dayOfLastActivity, bool isChecked, int groupId, int loginCount, string searchType)
         {
@@ -1060,6 +1128,58 @@ namespace BaiRong.Core.Provider
             if (whereBuilder.Length > 0)
             {
                 whereString = $"WHERE IsChecked = '{isChecked}' {whereBuilder}";
+            }
+
+            return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(TableName, SqlUtils.Asterisk, whereString);
+        }
+        public string GetSelectCommandAll(string searchWord, int dayOfCreate, int dayOfLastActivity, bool isChecked, int groupId, int loginCount, string searchType,int userTypeId)
+        {
+            var whereBuilder = new StringBuilder();
+
+            if (dayOfCreate > 0)
+            {
+                whereBuilder.Append(" AND ");
+
+                var dateTime = DateTime.Now.AddDays(-dayOfCreate);
+                whereBuilder.Append($"(CreateDate >= '{dateTime:yyyy-MM-dd}')");
+            }
+
+            if (dayOfLastActivity > 0)
+            {
+                whereBuilder.Append(" AND ");
+
+                var dateTime = DateTime.Now.AddDays(-dayOfLastActivity);
+                whereBuilder.Append($"(LastActivityDate >= '{dateTime:yyyy-MM-dd}') ");
+            }
+
+            if (groupId > 0)
+            {
+                whereBuilder.Append(" AND ");
+                whereBuilder.Append($" GroupID = {groupId}");
+            }
+
+            if (string.IsNullOrEmpty(searchType))
+            {
+                whereBuilder.Append(" AND ");
+                whereBuilder.Append(
+                    $"(UserName LIKE '%{PageUtils.FilterSql(searchWord)}%' OR EMAIL LIKE '%{PageUtils.FilterSql(searchWord)}%')");
+            }
+            else
+            {
+                whereBuilder.Append(" AND ");
+                whereBuilder.Append($"({searchType} LIKE '%{searchWord}%') ");
+            }
+
+            if (loginCount > 0)
+            {
+                whereBuilder.Append(" AND ");
+                whereBuilder.Append($"(CountOfLogin > {loginCount})");
+            }
+
+            var whereString = string.Empty;
+            if (whereBuilder.Length > 0)
+            {
+                whereString = $"WHERE UserTypeId={userTypeId} AND IsChecked = '{isChecked}' {whereBuilder}";
             }
 
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(TableName, SqlUtils.Asterisk, whereString);

@@ -76,8 +76,21 @@
 
         <table class="table table-bordered table-hover">
             <tr class="info thead">
-                <td>登录名</td>
-                <td>显示名</td>
+                 <td width="60">ID</td>
+                 <td width="100">手机号码</td>
+                 <td width="100">姓名</td>
+                 <td width="80">性别</td>
+                 <td width="80">年龄</td>
+                 <td width="100">职务</td>
+                 <td width="100">所属机构</td>
+                 <td width="100">入党时间</td>
+                 <td width="100">正能量值</td>
+                 <td width="60">流动党员</td>
+                 <td width="60">状态</td>
+                 <td width="60">重设密码</td>
+                 <td width="100">操作</td>
+                <%--<td>登录名</td>--%>
+               <%-- <td>显示名</td>
                 <td>邮箱</td>
                 <td>手机</td>
                 <td>注册时间</td>
@@ -86,12 +99,56 @@
                 <td>用户组</td>
                 <td class="center" width="60">投稿数量</td>
                 <td class="center" width="60">&nbsp;</td>
-                <td class="center" width="60">&nbsp;</td>
+                <td class="center" width="60">&nbsp;</td>--%>
                 <td width="20"><input onclick="_checkFormAll(this.checked)" type="checkbox" /></td>
             </tr>
             <asp:Repeater ID="RptContents" runat="server">
                 <ItemTemplate>
                     <tr>
+                        <td>
+                            <asp:Literal ID="ltlID" runat="server"></asp:Literal>
+                        </td>
+                        <td>
+                            <asp:Literal ID="ltlMobilePhone" runat="server"></asp:Literal>
+                        </td>
+                        <td>
+                            <asp:Literal ID="ltlUserName" runat="server"></asp:Literal>
+                        </td>
+                        <td>
+                            <asp:Literal ID="ltlUserSex" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlUserAge" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlUserPosition" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlUserPublishmentSystem" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlJoinPartyTime" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlPositiveEnergyValue" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlFlowPartyMember" runat="server"></asp:Literal>
+                        </td>
+                         <td class="center">
+                            <asp:Literal ID="ltlStatus" runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
+                            <asp:HyperLink NavigateUrl="javascript:;" ID="HyperLink1" Text="重设密码" runat="server"></asp:HyperLink>
+                        </td>
+                        <td class="center">
+                            <asp:HyperLink ID="hlEditLink" Text="编辑" runat="server"></asp:HyperLink>
+                        </td>
+                        <td class="center">
+                            <asp:Literal ID="ltlSelect" runat="server"></asp:Literal>
+                        </td>
+                    </tr>
+                   <%-- <tr>
                         <td>
                             <asp:Literal ID="ltlUserName" runat="server"></asp:Literal>
                         </td>
@@ -128,7 +185,7 @@
                         <td class="center">
                             <asp:Literal ID="ltlSelect" runat="server"></asp:Literal>
                         </td>
-                    </tr>
+                    </tr>--%>
                 </ItemTemplate>
             </asp:Repeater>
         </table>
@@ -137,12 +194,12 @@
 
         <ul class="breadcrumb breadcrumb-button">
             <asp:Button class="btn btn-success" ID="BtnAdd" Text="添加用户" runat="server" />
-            <asp:Button class="btn" ID="BtnAddToGroup" Text="设置用户组" runat="server" />
+           <%-- <asp:Button class="btn" ID="BtnAddToGroup" Text="设置用户组" runat="server" />--%>
             <asp:Button class="btn" ID="BtnLock" Text="锁定用户" runat="server" />
             <asp:Button class="btn" ID="BtnUnLock" Text="解除锁定" runat="server" />
             <asp:Button class="btn" ID="BtnDelete" Text="删 除" runat="server" />
-            <asp:Button class="btn" ID="BtnExport" Text="导出Excel" runat="server" />
-            <asp:Button class="btn" ID="BtnImport" Text="导入Excel" runat="server" />
+          <%--  <asp:Button class="btn" ID="BtnExport" Text="导出Excel" runat="server" />
+            <asp:Button class="btn" ID="BtnImport" Text="导入Excel" runat="server" />--%>
         </ul>
 
     </form>
