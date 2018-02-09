@@ -74,6 +74,75 @@ namespace BaiRong.Core.Model
             WeiBo = SqlUtils.EvalString(dataItem, "WeiBo");
             Interests = SqlUtils.EvalString(dataItem, "Interests");
             Signature = SqlUtils.EvalString(dataItem, "Signature");
+            PositiveEnergyValue= SqlUtils.EvalInt(dataItem, "PositiveEnergyValue");
+            FlowPartyMember= SqlUtils.EvalInt(dataItem, "FlowPartyMember");
+            PublishmentSystemId = SqlUtils.EvalInt(dataItem, "PublishmentSystemId");
+            //public int UserId { get; set; }
+            //public string TelePhone { get; set; }
+            //public string EmergencyName { get; set; }
+            //public string EmergencyMobile { get; set; }
+            //public string EmergencyRalationShip { get; set; }
+            //public string PostalAddress { get; set; }
+            //public string ExtraContactWay { get; set; }
+            //public string PersonalSatus { get; set; }
+            //public string Education { get; set; }
+            //public string Degree { get; set; }
+            //public string WorkTime { get; set; }
+            //public string FirstSituation { get; set; }
+            //public string NewStratum { get; set; }
+            //public string TechnicalPost { get; set; }
+            //public string WorkPlace { get; set; }
+            //public string WorkAttribute { get; set; }
+            //public string EnterPriseType { get; set; }
+            //public string EnterPriseScale { get; set; }
+            //public string MediumOrganizationType { get; set; }
+            //public DateTime JoinPartyTime { get; set; }
+            //public DateTime JoinTime { get; set; }
+            //public DateTime ApplyJoinPartyTime { get; set; }
+            //public DateTime ConfirmActiveTime { get; set; }
+            //public DateTime ConversionTime { get; set; }
+            //public DateTime GoOutTime { get; set; }
+            //public DateTime GoOutIssuingTime { get; set; }
+            //public string GoOutPlace { get; set; }
+            //public string GoOutReason { get; set; }
+            //public string PartyMemberAdd { get; set; }
+            //public DateTime PartyMemberAddTime { get; set; }
+            //public string HomeAddress { get; set; }
+            //public string Resume { get; set; }
+            //public string Remarks { get; set; }
+            Additional.UserId= SqlUtils.EvalInt(dataItem, "UserID");
+            Additional.TelePhone = SqlUtils.EvalString(dataItem, "TelePhone");
+            Additional.EmergencyName = SqlUtils.EvalString(dataItem, "EmergencyName");
+            Additional.EmergencyMobile = SqlUtils.EvalString(dataItem, "EmergencyMobile");
+            Additional.EmergencyRalationShip = SqlUtils.EvalString(dataItem, "EmergencyRalationShip");
+            Additional.PostalAddress = SqlUtils.EvalString(dataItem, "PostalAddress");
+            Additional.ExtraContactWay = SqlUtils.EvalString(dataItem, "ExtraContactWay");
+            Additional.PersonalSatus = SqlUtils.EvalString(dataItem, "PersonalSatus");
+            Additional.Education = SqlUtils.EvalString(dataItem, "Education");
+            Additional.Degree = SqlUtils.EvalString(dataItem, "Degree");
+            Additional.WorkTime = SqlUtils.EvalString(dataItem, "WorkTime");
+            Additional.NewStratum = SqlUtils.EvalString(dataItem, "NewStratum");
+            Additional.TechnicalPost = SqlUtils.EvalString(dataItem, "TechnicalPost");
+            Additional.WorkPlace = SqlUtils.EvalString(dataItem, "WorkPlace");
+            Additional.WorkAttribute = SqlUtils.EvalString(dataItem, "WorkAttribute");
+            Additional.EnterPriseType = SqlUtils.EvalString(dataItem, "EnterPriseType");
+            Additional.EnterPriseScale = SqlUtils.EvalString(dataItem, "EnterPriseScale");
+            Additional.MediumOrganizationType = SqlUtils.EvalString(dataItem, "MediumOrganizationType");
+            Additional.JoinPartyTime = SqlUtils.EvalString(dataItem, "JoinPartyTime");
+            Additional.JoinTime = SqlUtils.EvalString(dataItem, "JoinTime");
+            Additional.ApplyJoinPartyTime = SqlUtils.EvalString(dataItem, "ApplyJoinPartyTime");
+            Additional.ConfirmActiveTime = SqlUtils.EvalString(dataItem, "ConfirmActiveTime");
+            Additional.ConversionTime = SqlUtils.EvalString(dataItem, "ConversionTime");
+            Additional.GoOutTime = SqlUtils.EvalString(dataItem, "GoOutTime");
+            Additional.GoOutIssuingTime = SqlUtils.EvalString(dataItem, "GoOutIssuingTime");
+            Additional.GoOutPlace = SqlUtils.EvalString(dataItem, "GoOutPlace");
+            Additional.GoOutReason = SqlUtils.EvalString(dataItem, "GoOutReason");
+            Additional.PartyMemberAdd = SqlUtils.EvalString(dataItem, "PartyMemberAdd");
+            Additional.PartyMemberAddTime = SqlUtils.EvalString(dataItem, "PartyMemberAddTime");
+            Additional.HomeAddress = SqlUtils.EvalString(dataItem, "HomeAddress");
+            Additional.Resume = SqlUtils.EvalString(dataItem, "Resume");
+            Additional.Remarks = SqlUtils.EvalString(dataItem, "Remarks");
+
         }
 
         public int UserId { get; set; }
@@ -139,6 +208,18 @@ namespace BaiRong.Core.Model
         public string Signature { get; set; }
 
         public string ExtendValues { get; set; }
+
+        public int PositiveEnergyValue { get; set;}
+
+        public int FlowPartyMember { get; set; }
+
+        public int PublishmentSystemId { get; set; }
+
+        public string Nation { get; set; }
+
+        public string NativePlace { get; set; }
+
+        public string IdCode { get; set; }
 
         private UserInfoExtend _additional;
         public UserInfoExtend Additional

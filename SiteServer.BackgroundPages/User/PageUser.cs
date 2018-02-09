@@ -5,6 +5,7 @@ using BaiRong.Core.Model;
 using BaiRong.Core.Model.Enumerations;
 using SiteServer.BackgroundPages.Controls;
 using SiteServer.BackgroundPages.Core;
+using SiteServer.CMS.Core;
 
 namespace SiteServer.BackgroundPages.User
 {
@@ -23,7 +24,7 @@ namespace SiteServer.BackgroundPages.User
         public SqlCountPager SpContents;
 
         public Button BtnAdd;
-        public Button BtnAddToGroup;
+        //public Button BtnAddToGroup;
         public Button BtnLock;
         public Button BtnUnLock;
         public Button BtnDelete;
@@ -109,12 +110,12 @@ namespace SiteServer.BackgroundPages.User
             {
                 SpContents.ItemsPerPage = TranslateUtils.ToInt(DdlPageNum.SelectedValue) == 0 ? 25 : TranslateUtils.ToInt(DdlPageNum.SelectedValue);
 
-                SpContents.SelectCommand = BaiRongDataProvider.UserDao.GetSelectCommand(true);
+                SpContents.SelectCommand = BaiRongDataProvider.UserDao.GetSelectCommandAll(true, Body.GetQueryInt("UserTypeId"));
             }
             else
             {
                 SpContents.ItemsPerPage = Body.GetQueryInt("PageNum") == 0 ? StringUtils.Constants.PageSize : Body.GetQueryInt("PageNum");
-                SpContents.SelectCommand = BaiRongDataProvider.UserDao.GetSelectCommand(Body.GetQueryString("Keyword"), Body.GetQueryInt("CreationDate"), Body.GetQueryInt("LastActivityDate"), true, Body.GetQueryInt("GroupID"), Body.GetQueryInt("LoginCount"), Body.GetQueryString("SearchType"));
+                SpContents.SelectCommand = BaiRongDataProvider.UserDao.GetSelectCommandAll(Body.GetQueryString("Keyword"), Body.GetQueryInt("CreationDate"), Body.GetQueryInt("LastActivityDate"), true, Body.GetQueryInt("GroupID"), Body.GetQueryInt("LoginCount"), Body.GetQueryString("SearchType"),Body.GetQueryInt("TypeId"));
             }
 
             RptContents.ItemDataBound += rptContents_ItemDataBound;
@@ -178,7 +179,7 @@ namespace SiteServer.BackgroundPages.User
             }
 
             var showPopWinString = ModalAddToUserGroup.GetOpenWindowString();
-            BtnAddToGroup.Attributes.Add("onclick", showPopWinString);
+           // BtnAddToGroup.Attributes.Add("onclick", showPopWinString);
 
             var backgroundUrl = GetRedirectUrl();
 
@@ -194,9 +195,9 @@ namespace SiteServer.BackgroundPages.User
             BtnDelete.Attributes.Add("onclick", PageUtils.GetRedirectStringWithCheckBoxValueAndAlert(
                 $"{backgroundUrl}?Delete=True", "UserIDCollection", "UserIDCollection", "请选择需要删除的会员！", "此操作将删除所选会员，确认吗？"));
 
-            BtnImport.Attributes.Add("onclick", ModalUserImport.GetOpenWindowString());
+            //BtnImport.Attributes.Add("onclick", ModalUserImport.GetOpenWindowString());
 
-            BtnExport.Attributes.Add("onclick", ModalUserExport.GetOpenWindowString());
+            //BtnExport.Attributes.Add("onclick", ModalUserExport.GetOpenWindowString());
 
             SpContents.DataBind();
         }
@@ -207,33 +208,61 @@ namespace SiteServer.BackgroundPages.User
 
             var userInfo = new UserInfo(e.Item.DataItem);
 
+            var ltlID = (Literal)e.Item.FindControl("ltlID");
+            var ltlMobilePhone = (Literal)e.Item.FindControl("ltlMobilePhone");
             var ltlUserName = (Literal)e.Item.FindControl("ltlUserName");
-            var ltlDisplayName = (Literal)e.Item.FindControl("ltlDisplayName");
-            var ltlGroupName = (Literal)e.Item.FindControl("ltlGroupName");
-            var ltlEmail = (Literal)e.Item.FindControl("ltlEmail");
-            var ltlMobile = (Literal)e.Item.FindControl("ltlMobile");
-            var ltlLastActivityDate = (Literal)e.Item.FindControl("ltlLastActivityDate");
-            var ltlLoginCount = (Literal)e.Item.FindControl("ltlLoginCount");
-            var ltlCreationDate = (Literal)e.Item.FindControl("ltlCreationDate");
-            var ltlWritingCount = (Literal)e.Item.FindControl("ltlWritingCount");
-            var ltlSelect = (Literal)e.Item.FindControl("ltlSelect");
-            var hlChangePassword = (HyperLink)e.Item.FindControl("hlChangePassword");
+            var ltlUserSex = (Literal)e.Item.FindControl("ltlUserSex");
+            var ltlUserAge = (Literal)e.Item.FindControl("ltlUserAge");
+            var ltlUserPosition = (Literal)e.Item.FindControl("ltlUserPosition");
+            var ltlUserPublishmentSystem= (Literal)e.Item.FindControl("ltlUserPublishmentSystem");
+            var ltlJoinPartyTime = (Literal)e.Item.FindControl("ltlJoinPartyTime");
+            var ltlPositiveEnergyValue = (Literal)e.Item.FindControl("ltlPositiveEnergyValue");
+            var ltlFlowPartyMember = (Literal)e.Item.FindControl("ltlFlowPartyMember");
+            var ltlStatus = (Literal)e.Item.FindControl("ltlStatus");
             var hlEditLink = (HyperLink)e.Item.FindControl("hlEditLink");
+            var ltlSelect = (Literal)e.Item.FindControl("ltlSelect");
 
-            ltlUserName.Text = GetUserNameHtml(userInfo);
-            ltlDisplayName.Text = userInfo.DisplayName;
-            ltlEmail.Text = userInfo.Email;
-            ltlMobile.Text = userInfo.Mobile;
-            ltlGroupName.Text = UserGroupManager.GetGroupName(userInfo.GroupId);
-            ltlLastActivityDate.Text = DateUtils.GetDateAndTimeString(userInfo.LastActivityDate);
-            ltlLoginCount.Text = userInfo.CountOfLogin.ToString();
-            ltlCreationDate.Text = DateUtils.GetDateAndTimeString(userInfo.CreateDate);
 
+            ltlID.Text = userInfo.UserId.ToString();
+            ltlMobilePhone.Text = userInfo.Mobile;
+            ltlUserName.Text = userInfo.UserName;
+            ltlUserSex.Text = userInfo.Gender;
+            ltlUserAge.Text = userInfo.Birthday;
+            ltlUserPosition.Text = userInfo.Position;
+            ltlUserPublishmentSystem.Text = PublishmentSystemManager.GetPublishmentSystemInfo(userInfo.PublishmentSystemId).PublishmentSystemName;
+            ltlJoinPartyTime.Text = userInfo.Additional.JoinPartyTime;
+            ltlPositiveEnergyValue.Text = userInfo.PositiveEnergyValue.ToString();
+            ltlFlowPartyMember.Text = userInfo.FlowPartyMember.ToString();
+            ltlStatus.Text = userInfo.IsLockedOut.ToString();
             hlEditLink.NavigateUrl = PageUserAdd.GetRedirectUrlToEdit(userInfo.UserId, GetRedirectUrl());
-            hlChangePassword.Attributes.Add("onclick", ModalUserPassword.GetOpenWindowString(userInfo.UserName));
             ltlSelect.Text = $@"<input type=""checkbox"" name=""UserIDCollection"" value=""{userInfo.UserId}"" />";
+            //var ltlUserName = (Literal)e.Item.FindControl("ltlUserName");
+            //var ltlDisplayName = (Literal)e.Item.FindControl("ltlDisplayName");
+            //var ltlGroupName = (Literal)e.Item.FindControl("ltlGroupName");
+            //var ltlEmail = (Literal)e.Item.FindControl("ltlEmail");
+            //var ltlMobile = (Literal)e.Item.FindControl("ltlMobile");
+            //var ltlLastActivityDate = (Literal)e.Item.FindControl("ltlLastActivityDate");
+            //var ltlLoginCount = (Literal)e.Item.FindControl("ltlLoginCount");
+            //var ltlCreationDate = (Literal)e.Item.FindControl("ltlCreationDate");
+            //var ltlWritingCount = (Literal)e.Item.FindControl("ltlWritingCount");
+            //var ltlSelect = (Literal)e.Item.FindControl("ltlSelect");
+            //var hlChangePassword = (HyperLink)e.Item.FindControl("hlChangePassword");
+            //var hlEditLink = (HyperLink)e.Item.FindControl("hlEditLink");
 
-            ltlWritingCount.Text = userInfo.CountOfWriting.ToString();
+            //ltlUserName.Text = GetUserNameHtml(userInfo);
+            //ltlDisplayName.Text = userInfo.DisplayName;
+            //ltlEmail.Text = userInfo.Email;
+            //ltlMobile.Text = userInfo.Mobile;
+            //ltlGroupName.Text = UserGroupManager.GetGroupName(userInfo.GroupId);
+            //ltlLastActivityDate.Text = DateUtils.GetDateAndTimeString(userInfo.LastActivityDate);
+            //ltlLoginCount.Text = userInfo.CountOfLogin.ToString();
+            //ltlCreationDate.Text = DateUtils.GetDateAndTimeString(userInfo.CreateDate);
+
+            //hlEditLink.NavigateUrl = PageUserAdd.GetRedirectUrlToEdit(userInfo.UserId, GetRedirectUrl());
+            //hlChangePassword.Attributes.Add("onclick", ModalUserPassword.GetOpenWindowString(userInfo.UserName));
+            //ltlSelect.Text = $@"<input type=""checkbox"" name=""UserIDCollection"" value=""{userInfo.UserId}"" />";
+
+            //ltlWritingCount.Text = userInfo.CountOfWriting.ToString();
         }
 
         private string GetUserNameHtml(UserInfo userInfo)

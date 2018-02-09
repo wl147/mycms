@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using BaiRong.Core;
 using BaiRong.Core.Model;
 using BaiRong.Core.Model.Enumerations;
+using SiteServer.CMS.Core;
 
 namespace SiteServer.BackgroundPages.User
 {
@@ -18,6 +19,19 @@ namespace SiteServer.BackgroundPages.User
         public TextBox TbEmail;
         public TextBox TbMobile;
         public Button BtnReturn;
+        public TextBox TbGender;
+        public TextBox TbIdCode;
+        public TextBox TbPublishmentSystemName;
+        public TextBox TbPosition;
+        public TextBox TbFlowPartyMember;
+        public TextBox TbNation;
+        public TextBox TbNativePlace;
+        public TextBox TbTelePhone;
+        public TextBox TbEmergencyName;
+        public TextBox TbEmergencyMobile;
+        public TextBox TbEmergencyRalationship;
+        public TextBox TbAddress;
+
 
         private int _userId;
         private string _returnUrl;
@@ -54,7 +68,7 @@ namespace SiteServer.BackgroundPages.User
             LtlPageTitle.Text = pageTitle;
             if (_userId > 0)
             {
-                var userInfo = BaiRongDataProvider.UserDao.GetUserInfo(_userId);
+                var userInfo = BaiRongDataProvider.UserDao.GetUserInfoAll(_userId);
                 if (userInfo != null)
                 {
                     TbUserName.Text = userInfo.UserName;
@@ -63,6 +77,18 @@ namespace SiteServer.BackgroundPages.User
                     PhPassword.Visible = false;
                     TbEmail.Text = userInfo.Email;
                     TbMobile.Text = userInfo.Mobile;
+                    TbGender.Text = userInfo.Gender;
+                    TbIdCode.Text = userInfo.IdCode;
+                    TbPublishmentSystemName.Text = PublishmentSystemManager.GetPublishmentSystemInfo(userInfo.PublishmentSystemId).PublishmentSystemName;
+                    TbPosition.Text = userInfo.Position;
+                    TbFlowPartyMember.Text = userInfo.FlowPartyMember.ToString();
+                    TbNation.Text = userInfo.Nation;
+                    TbNativePlace.Text = userInfo.NativePlace;
+                    TbTelePhone.Text = userInfo.Additional.TelePhone;
+                    TbEmergencyName.Text = userInfo.Additional.EmergencyName;
+                    TbEmergencyMobile.Text = userInfo.Additional.EmergencyMobile;
+                    TbEmergencyRalationship.Text = userInfo.Additional.EmergencyRalationShip;
+                    TbAddress.Text = userInfo.Additional.PostalAddress;
                 }
             }
 
