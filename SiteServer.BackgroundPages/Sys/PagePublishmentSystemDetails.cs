@@ -6,6 +6,7 @@ using BaiRong.Core.Model.Enumerations;
 using SiteServer.CMS.Core;
 using SiteServer.CMS.Model;
 using System.Collections.Generic;
+using SiteServer.CMS.Provider;
 
 namespace SiteServer.BackgroundPages.Sys
 {
@@ -42,6 +43,7 @@ namespace SiteServer.BackgroundPages.Sys
 
         void dgContents_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
+            var mechanismDao = new MechanismDao();
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 var publishmentSystemID = (int)e.Item.DataItem;
@@ -60,7 +62,7 @@ namespace SiteServer.BackgroundPages.Sys
 
                     ltlPublishmentSystemName.Text = GetPublishmentSystemNameHtml(publishmentSystemInfo);
                     ltlPublishmentSystemAdress.Text = publishmentSystemInfo.Address;
-                    ltlPublishmentSystemType.Text = publishmentSystemInfo.OrganizationTypeId.ToString()+"--类型表未建立，此数字代表id";
+                    ltlPublishmentSystemType.Text = mechanismDao.GetMechanismTypeTextById(publishmentSystemInfo.OrganizationTypeId); //publishmentSystemInfo.OrganizationTypeId.ToString()+"--类型表未建立，此数字代表id";
                     ltlOperation.Text = $@"<a href=""PageSiteEdit.aspx?PublishmentSystemId={publishmentSystemInfo.PublishmentSystemId}"" target=""content"">操作</a>";
                     var upUrl = PageUtils.GetSysUrl(nameof(PagePublishmentSystem), new NameValueCollection
                     {

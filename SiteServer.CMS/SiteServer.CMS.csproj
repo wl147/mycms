@@ -208,6 +208,7 @@
     <Compile Include="Controllers\Writing\ActionsGetContents.cs" />
     <Compile Include="Controllers\Writing\ActionsGetContent.cs" />
     <Compile Include="Core\ContentUtility.cs" />
+    <Compile Include="Provider\MechanismDao.cs" />
     <Compile Include="StlParser\Model\StlAttribute.cs" />
     <Compile Include="StlParser\StlElement\StlTemplate.cs" />
     <Compile Include="Wcm\GovInteract\GovInteractApplyManager.cs" />
