@@ -57,7 +57,7 @@
         </tr>
            <tr>
           <td width="160">社区文化展示图片：</td>
-          <td><asp:TextBox Columns="25" MaxLength="50" id="TextBox1" runat="server"/></td>
+          <td><asp:TextBox Columns="25" MaxLength="50" id="ImageUrl" runat="server"/></td>
         </tr>
         <tr>
           <td width="160">详细地址：</td>

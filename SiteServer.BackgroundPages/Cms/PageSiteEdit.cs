@@ -25,6 +25,7 @@ namespace SiteServer.BackgroundPages.Cms
         public TextBox Characteristic;
         public TextBox AdministratorAccount;
         public TextBox AdministratorPassWord;
+        public TextBox ImageUrl;
         public DropDownList AdministratorRoles;
         public Button Submit;
 
@@ -45,6 +46,7 @@ namespace SiteServer.BackgroundPages.Cms
                 TelePhone.Text = publishmentSystemInfo.TelePhone;
                 Address.Text = publishmentSystemInfo.Address;
                 BasicFacts.Text = publishmentSystemInfo.BasicFacts;
+                ImageUrl.Text = publishmentSystemInfo.ImageUrl;
                 Characteristic.Text = publishmentSystemInfo.Characteristic;
                 var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
                 AdministratorAccount.Text = administratorInfo.UserName;
@@ -64,7 +66,20 @@ namespace SiteServer.BackgroundPages.Cms
                 PublishmentSystemInfo.BasicFacts = BasicFacts.Text;
                 PublishmentSystemInfo.Characteristic = Characteristic.Text;
                 PublishmentSystemInfo.AdministratorAccount = AdministratorAccount.Text;
-                
+                PublishmentSystemInfo.ImageUrl = ImageUrl.Text;
+                try
+                {
+                    DataProvider.PublishmentSystemDao.UpdateAll(PublishmentSystemInfo);                 
+                    Body.AddAdminLog("修改站点属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
+                    SuccessMessage("站点修改成功！");
+                   // AddWaitAndRedirectScript(Sys.PagePublishmentSystem.GetRedirectUrl());
+                   // AddWaitAndRedirectScript($@"/siteserver/loading.aspx?RedirectType=Loading&RedirectUrl=cms/siteManagement.aspx?PublishmentSystemID={PublishmentSystemId}");
+                    AddWaitAndRedirectScript($@"/siteserver/cms/PagePublishmentSystem.aspx?PublishmentSystemID={PublishmentSystemId}");
+                }
+                catch (Exception ex)
+                {
+                    FailMessage(ex, "站点修改失败！");
+                }
             }
         }
 
