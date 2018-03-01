@@ -136,7 +136,7 @@ namespace SiteServer.BackgroundPages
 
                     if (!publishmentSystemIdHashtable.Contains(PublishmentSystemId))
                     {
-                        showPublishmentSystem = false;
+                        //showPublishmentSystem = false; 没有站点权限
                     }
 
                     if (!showPublishmentSystem)

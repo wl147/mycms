@@ -31,6 +31,8 @@ ORDER BY a.Taxis";
 
         private const string SqlUpdatePublishmentSystem = "UPDATE siteserver_PublishmentSystem SET PublishmentSystemName = @PublishmentSystemName, PublishmentSystemType = @PublishmentSystemType, AuxiliaryTableForContent = @AuxiliaryTableForContent, AuxiliaryTableForGovPublic = @AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract = @AuxiliaryTableForGovInteract, AuxiliaryTableForVote = @AuxiliaryTableForVote, AuxiliaryTableForJob = @AuxiliaryTableForJob, IsCheckContentUseLevel = @IsCheckContentUseLevel, CheckContentLevel = @CheckContentLevel, PublishmentSystemDir = @PublishmentSystemDir, PublishmentSystemUrl = @PublishmentSystemUrl, IsHeadquarters = @IsHeadquarters, ParentPublishmentSystemID = @ParentPublishmentSystemID, Taxis = @Taxis, SettingsXML = @SettingsXML WHERE  PublishmentSystemID = @PublishmentSystemID";
 
+        private const string SqlUpdatePublishmentSystemDetails = "UPDATE siteserver_PublishmentSystemDetails SET AreaId =@AreaId, OrganizationTypeId = @OrganizationTypeId, TelePhone = @TelePhone, ImageUrl = @ImageUrl, Adrress = @Adrress, BasicFacts = @BasicFacts, OrganizationCategory = @OrganizationCategory, Characteristic = @Characteristic, AdministratorAccount = @AdministratorAccount WHERE  PublishmentSystemID = @OldPublishmentSystemID";
+
         private const string SqlUpdateAllIsHeadquarters = "UPDATE siteserver_PublishmentSystem SET IsHeadquarters = @IsHeadquarters";
 
         private const string SqlSelectPublishmentsystemDirByIsHeadquarters = "SELECT PublishmentSystemDir FROM siteserver_PublishmentSystem WHERE IsHeadquarters = @IsHeadquarters";
@@ -58,6 +60,18 @@ ORDER BY a.Taxis";
         private const string ParmTaxis = "@Taxis";
         private const string ParmSettingsXml = "@SettingsXML";
         private const string ParmParentPublishmentSystemId="@ParentPublishmentSystemId";
+
+
+        private const string ParmAreaId = "@AreaId";
+        private const string ParmOrganizationTypeId = "@OrganizationTypeId";
+        private const string ParmTelePhone = "@TelePhone";
+        private const string ParmImageUrl = "@ImageUrl";
+        private const string ParmAdrress = "@Adrress";
+        private const string ParmBasicFacts = "@BasicFacts";
+        private const string ParmOrganizationCategory = "@OrganizationCategory";
+        private const string ParmCharacteristic = "@Characteristic";
+        private const string ParmAdministratorAccount = "@AdministratorAccount";
+        private const string ParmOldPublishmentSystemId = "@OldPublishmentSystemId";
 
         public void InsertWithTrans(PublishmentSystemInfo info, IDbTransaction trans)
         {
@@ -111,23 +125,23 @@ ORDER BY a.Taxis";
         {
             var updateParms = new IDataParameter[]
 			{
-				GetParameter(ParmPublishmentsystemName, EDataType.NVarChar, 50, info.PublishmentSystemName),
+                  GetParameter(ParmPublishmentsystemName, EDataType.NVarChar, 50, info.PublishmentSystemName),
                 GetParameter(ParmPublishmentsystemType, EDataType.VarChar, 50, EPublishmentSystemTypeUtils.GetValue(info.PublishmentSystemType)),
-				GetParameter(ParmAuxiliaryTableForContent, EDataType.VarChar, 50, info.AuxiliaryTableForContent),
+                GetParameter(ParmAuxiliaryTableForContent, EDataType.VarChar, 50, info.AuxiliaryTableForContent),
                 GetParameter(ParmAuxiliaryTableForGovpublic, EDataType.VarChar, 50, info.AuxiliaryTableForGovPublic),
                 GetParameter(ParmAuxiliaryTableForGovinteract, EDataType.VarChar, 50, info.AuxiliaryTableForGovInteract),
                 GetParameter(ParmAuxiliaryTableForVote, EDataType.VarChar, 50, info.AuxiliaryTableForVote),
                 GetParameter(ParmAuxiliaryTableForJob, EDataType.VarChar, 50, info.AuxiliaryTableForJob),
-				GetParameter(ParmIsCheckContentUseLevel, EDataType.VarChar, 18, info.IsCheckContentUseLevel.ToString()),
-				GetParameter(ParmCheckContentLevel, EDataType.Integer, info.CheckContentLevel),
-				GetParameter(ParmPublishmentsystemDir, EDataType.VarChar, 50, info.PublishmentSystemDir),
-				GetParameter(ParmPublishmentsystemUrl, EDataType.VarChar, 200, info.PublishmentSystemUrl),
-				GetParameter(ParmIsHeadquarters, EDataType.VarChar, 18, info.IsHeadquarters.ToString()),
+                GetParameter(ParmIsCheckContentUseLevel, EDataType.VarChar, 18, info.IsCheckContentUseLevel.ToString()),
+                GetParameter(ParmCheckContentLevel, EDataType.Integer, info.CheckContentLevel),
+                GetParameter(ParmPublishmentsystemDir, EDataType.VarChar, 50, info.PublishmentSystemDir),
+                GetParameter(ParmPublishmentsystemUrl, EDataType.VarChar, 200, info.PublishmentSystemUrl),
+                GetParameter(ParmIsHeadquarters, EDataType.VarChar, 18, info.IsHeadquarters.ToString()),
                 GetParameter(ParmParentPublishmentsystemid, EDataType.Integer, info.ParentPublishmentSystemId),
                 GetParameter(ParmTaxis, EDataType.Integer, info.Taxis),
-				GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString()),
-				GetParameter(ParmPublishmentsystemId, EDataType.Integer, info.PublishmentSystemId)
-			};
+                GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString()),
+                GetParameter(ParmPublishmentsystemId, EDataType.Integer, info.PublishmentSystemId)
+            };
 
             if (info.IsHeadquarters)
             {
@@ -135,6 +149,51 @@ ORDER BY a.Taxis";
             }
 
             ExecuteNonQuery(SqlUpdatePublishmentSystem, updateParms);
+
+            PublishmentSystemManager.ClearCache(true);
+        }
+        public void UpdateAll(PublishmentSystemInfo info)
+        {
+            var updateParms = new IDataParameter[]
+            {
+                GetParameter(ParmPublishmentsystemName, EDataType.NVarChar, 50, info.PublishmentSystemName),
+                GetParameter(ParmPublishmentsystemType, EDataType.VarChar, 50, EPublishmentSystemTypeUtils.GetValue(info.PublishmentSystemType)),
+                GetParameter(ParmAuxiliaryTableForContent, EDataType.VarChar, 50, info.AuxiliaryTableForContent),
+                GetParameter(ParmAuxiliaryTableForGovpublic, EDataType.VarChar, 50, info.AuxiliaryTableForGovPublic),
+                GetParameter(ParmAuxiliaryTableForGovinteract, EDataType.VarChar, 50, info.AuxiliaryTableForGovInteract),
+                GetParameter(ParmAuxiliaryTableForVote, EDataType.VarChar, 50, info.AuxiliaryTableForVote),
+                GetParameter(ParmAuxiliaryTableForJob, EDataType.VarChar, 50, info.AuxiliaryTableForJob),
+                GetParameter(ParmIsCheckContentUseLevel, EDataType.VarChar, 18, info.IsCheckContentUseLevel.ToString()),
+                GetParameter(ParmCheckContentLevel, EDataType.Integer, info.CheckContentLevel),
+                GetParameter(ParmPublishmentsystemDir, EDataType.VarChar, 50, info.PublishmentSystemDir),
+                GetParameter(ParmPublishmentsystemUrl, EDataType.VarChar, 200, info.PublishmentSystemUrl),
+                GetParameter(ParmIsHeadquarters, EDataType.VarChar, 18, info.IsHeadquarters.ToString()),
+                GetParameter(ParmParentPublishmentsystemid, EDataType.Integer, info.ParentPublishmentSystemId),
+                GetParameter(ParmTaxis, EDataType.Integer, info.Taxis),
+                GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString()),
+                GetParameter(ParmPublishmentsystemId, EDataType.Integer, info.PublishmentSystemId)
+            };
+            var updateParmsDetails = new IDataParameter[]
+            {
+               GetParameter(ParmAreaId, EDataType.Integer,info.AreaId),
+                GetParameter(ParmOrganizationTypeId, EDataType.Integer, info.OrganizationTypeId),
+                GetParameter(ParmTelePhone, EDataType.VarChar, 20, info.TelePhone),
+                GetParameter(ParmImageUrl, EDataType.VarChar, 200, info.ImageUrl),
+                GetParameter(ParmAdrress, EDataType.VarChar, 500, info.Address),
+                GetParameter(ParmBasicFacts, EDataType.NText, info.BasicFacts),
+                GetParameter(ParmOrganizationCategory, EDataType.Integer, info.OrganizationCategory),
+                GetParameter(ParmCharacteristic, EDataType.NText,info.Characteristic),
+                GetParameter(ParmAdministratorAccount, EDataType.VarChar,50, info.AdministratorAccount),
+                GetParameter(ParmOldPublishmentSystemId, EDataType.Integer, info.PublishmentSystemId),
+            };
+
+            if (info.IsHeadquarters)
+            {
+                UpdateAllIsHeadquarters();
+            }
+
+            ExecuteNonQuery(SqlUpdatePublishmentSystem, updateParms);
+            ExecuteNonQuery(SqlUpdatePublishmentSystemDetails, updateParmsDetails);
             PublishmentSystemManager.ClearCache(true);
         }
 

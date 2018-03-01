@@ -385,7 +385,7 @@ namespace SiteServer.CMS.Core
         }
         public static List<KeyValuePair<int, PublishmentSystemInfo>> GetPublishmentSystemInfoKeyValuePairListAll()
         {
-            if (CacheUtils.Get(CacheKeyAll) != null) return CacheUtils.Get(CacheKeyAll) as List<KeyValuePair<int, PublishmentSystemInfo>>;
+            //if (CacheUtils.Get(CacheKeyAll) != null) return CacheUtils.Get(CacheKeyAll) as List<KeyValuePair<int, PublishmentSystemInfo>>;
 
             var list = DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoKeyValuePairList();
             var sl = new List<KeyValuePair<int, PublishmentSystemInfo>>();

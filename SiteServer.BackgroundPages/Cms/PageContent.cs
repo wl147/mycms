@@ -57,6 +57,7 @@ namespace SiteServer.BackgroundPages.Cms
 
             PageUtils.CheckRequestParameter("PublishmentSystemID", "NodeID");
             var nodeID = Body.GetQueryInt("NodeID");
+            var childNodeId= Body.GetQueryInt("ChildNodeId");
             relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeID);
             nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, nodeID);
             tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
@@ -96,11 +97,11 @@ namespace SiteServer.BackgroundPages.Cms
                     ? Body.AdministratorName
                     : string.Empty;
 
-            if (Body.IsQueryExists("SearchType"))
+            if (Body.IsQueryExists("SearchType")&& Body.IsQueryExists("ChildNodeId"))
             {
-                var owningNodeIdList = new List<int>
+                List<int> owningNodeIdList = new List<int>
                 {
-                    nodeID
+                    nodeID,3,4,6,9
                 };
                 spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
@@ -136,11 +137,13 @@ namespace SiteServer.BackgroundPages.Cms
                         }
                     }
                 }
+                var listitemAll = new ListItem("全部", nodeID.ToString());
+                ChannelCategory.Items.Add(listitemAll);
                 if (category != null)
                 {
                     foreach (var chanelCategory in category)
                     {
-                            var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
+                        var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
                         ChannelCategory.Items.Add(listitem);
                     }
                 }
@@ -220,7 +223,8 @@ $(document).ready(function() {
                         {"DateFrom", DateFrom.Text},
                         {"SearchType", SearchType.SelectedValue},
                         {"Keyword", Keyword.Text},
-                        {"page", Body.GetQueryInt("page", 1).ToString()}
+                        {"page", Body.GetQueryInt("page", 1).ToString()},
+                        {"ChildNodeId",ChannelCategory.SelectedValue }
                     });
                 }
                 return _pageUrl;
