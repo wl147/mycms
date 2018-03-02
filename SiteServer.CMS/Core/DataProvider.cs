@@ -184,5 +184,8 @@ namespace SiteServer.CMS.Core
 
         private static KeywordDao _keywordDao;
         public static KeywordDao KeywordDao => _keywordDao ?? (_keywordDao = new KeywordDao());
+
+        private static MechanismDao _mechanismDao;
+        public static MechanismDao MechanismDao => _mechanismDao ?? (_mechanismDao = new MechanismDao());
     }
 }

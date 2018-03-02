@@ -17,7 +17,6 @@ namespace SiteServer.BackgroundPages.Cms
     {
         public TextBox PublishmentSystemArea;
         public TextBox PublishmentSystemName;
-        public DropDownList PublishmentSystemType;
         public DropDownList PublishmentSystemCategory;
         public TextBox TelePhone;
         public TextBox Address;
@@ -28,6 +27,8 @@ namespace SiteServer.BackgroundPages.Cms
         public TextBox ImageUrl;
         public DropDownList AdministratorRoles;
         public Button Submit;
+        public RadioButtonList CblPublishmentSystemType;
+        public RadioButtonList CblPublishmentSystemCategory;
 
 
         public void Page_Load(object sender, EventArgs e)
@@ -39,10 +40,10 @@ namespace SiteServer.BackgroundPages.Cms
             {
                 var currentPublishmentSystemId = Body.GetQueryInt("PublishmentSystemId");
                 var publishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(currentPublishmentSystemId);
-                PublishmentSystemArea.Text = publishmentSystemInfo.AreaId.ToString();
+                PublishmentSystemArea.Text = publishmentSystemInfo.Area;
                 PublishmentSystemName.Text = publishmentSystemInfo.PublishmentSystemName;
-                PublishmentSystemType.Items.Add(new ListItem(mechanismDao.GetMechanismTypeTextById(PublishmentSystemInfo.OrganizationTypeId), PublishmentSystemInfo.OrganizationTypeId.ToString()));
-                PublishmentSystemCategory.Items.Add(new ListItem((mechanismDao.GetMechanismCategoryTextById(PublishmentSystemInfo.OrganizationCategory)), PublishmentSystemInfo.OrganizationCategory.ToString()));
+                //PublishmentSystemType.Items.Add(new ListItem(mechanismDao.GetMechanismTypeTextById(PublishmentSystemInfo.OrganizationTypeId), PublishmentSystemInfo.OrganizationTypeId.ToString()));
+                //PublishmentSystemCategory.Items.Add(new ListItem((mechanismDao.GetMechanismCategoryTextById(PublishmentSystemInfo.OrganizationCategory)), PublishmentSystemInfo.OrganizationCategory.ToString()));
                 TelePhone.Text = publishmentSystemInfo.TelePhone;
                 Address.Text = publishmentSystemInfo.Address;
                 BasicFacts.Text = publishmentSystemInfo.BasicFacts;
@@ -51,6 +52,26 @@ namespace SiteServer.BackgroundPages.Cms
                 var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
                 AdministratorAccount.Text = administratorInfo.UserName;
                 AdministratorPassWord.Text = administratorInfo.Password;
+                var typeDic = DataProvider.MechanismDao.GetMechanismTypeAll();
+                var categoryDic = DataProvider.MechanismDao.GetMechanismCategoryAll();
+                foreach (var type in typeDic)
+                {
+                    var listItem = new ListItem(type.Value, type.Key.ToString());
+                    if(type.Key== publishmentSystemInfo.OrganizationTypeId)
+                    {
+                        listItem.Selected = true;
+                    }
+                    CblPublishmentSystemType.Items.Add(listItem);
+                }
+                foreach (var category in categoryDic)
+                {
+                    var listItem = new ListItem(category.Value, category.Key.ToString());
+                    if (category.Key == publishmentSystemInfo.OrganizationCategory)
+                    {
+                        listItem.Selected = true;
+                    }
+                    CblPublishmentSystemCategory.Items.Add(listItem);
+                }
             }
         }
         public override void Submit_OnClick(object sender, EventArgs e)
@@ -58,9 +79,10 @@ namespace SiteServer.BackgroundPages.Cms
             if (Page.IsPostBack && Page.IsValid)
             {
                 PublishmentSystemInfo.PublishmentSystemName = PublishmentSystemName.Text;
-                PublishmentSystemInfo.AreaName = PublishmentSystemArea.Text;
-                PublishmentSystemInfo.OrganizationTypeId = TranslateUtils.ToInt(PublishmentSystemType.SelectedValue);
-                PublishmentSystemInfo.OrganizationCategory = TranslateUtils.ToInt(PublishmentSystemCategory.SelectedValue);
+                PublishmentSystemInfo.Area = PublishmentSystemArea.Text;
+                PublishmentSystemInfo.OrganizationTypeId = TranslateUtils.ToInt(CblPublishmentSystemType.SelectedValue);
+                PublishmentSystemInfo.OrganizationCategory = TranslateUtils.ToInt(CblPublishmentSystemCategory.SelectedValue);
+
                 PublishmentSystemInfo.TelePhone = TelePhone.Text;
                 PublishmentSystemInfo.Address = Address.Text;
                 PublishmentSystemInfo.BasicFacts = BasicFacts.Text;

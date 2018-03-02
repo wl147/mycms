@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageSiteEdit" EnableViewState="false" %>
+﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageSiteEdit" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 
 <!DOCTYPE html>
@@ -38,18 +38,18 @@
               errorMessage=" *" foreColor="red"
               Display="Dynamic" />
           </td>
-        </tr>
-        <tr>
+        </tr>       
+           <tr>
           <td>机构类型：</td>
-          <td>
-            <asp:DropDownList ID="PublishmentSystemType" runat="server"></asp:DropDownList>
-          </td>
-        </tr>
-        <tr>
+             <td colspan="3">
+                <asp:RadioButtonList CssClass="checkboxlist" ID="CblPublishmentSystemType" RepeatDirection="Horizontal" class="noborder" RepeatColumns="5" runat="server" />
+             </td>
+        </tr>     
+         <tr>
           <td>机构分类：</td>
-          <td>
-            <asp:DropDownList ID="PublishmentSystemCategory" runat="server"></asp:DropDownList>
-          </td>
+             <td colspan="3">
+                <asp:RadioButtonList CssClass="checkboxlist" ID="CblPublishmentSystemCategory" RepeatDirection="Horizontal" class="noborder" RepeatColumns="5" runat="server" />
+             </td>
         </tr>
         <tr>
           <td width="160">联系电话：</td>

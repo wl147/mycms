@@ -19,7 +19,7 @@ namespace SiteServer.CMS.Provider
         private const string SqlSelectPublishmentSystemAll = "SELECT PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML FROM siteserver_PublishmentSystem ORDER BY Taxis";
 
         private const string SqlSelectPublishmentSystemAllField = @"SELECT a.PublishmentSystemID, a.PublishmentSystemName, a.PublishmentSystemType, a.AuxiliaryTableForContent, a.AuxiliaryTableForGovPublic, a.AuxiliaryTableForGovInteract, a.AuxiliaryTableForVote, a.AuxiliaryTableForJob, a.IsCheckContentUseLevel, a.CheckContentLevel, a.PublishmentSystemDir, a.PublishmentSystemUrl, a.IsHeadquarters, a.ParentPublishmentSystemID, a.Taxis, a.SettingsXML, a.ParentsCount,  a.ChildrenCount,
-b.AreaId,b.OrganizationTypeId,b.OrganizationCategory, b.TelePhone,b.ImageUrl,b.Adrress,b.BasicFacts,b.Characteristic,b.AdministratorAccount
+b.AreaId,b.OrganizationTypeId,b.OrganizationCategory, b.TelePhone,b.ImageUrl,b.Adrress,b.BasicFacts,b.Characteristic,b.AdministratorAccount,b.Area
 FROM siteserver_PublishmentSystem as a,siteserver_PublishmentSystemDetails as b
 WHERE a.PublishmentSystemId=b.PublishmentSystemId
 ORDER BY a.Taxis";
@@ -31,7 +31,7 @@ ORDER BY a.Taxis";
 
         private const string SqlUpdatePublishmentSystem = "UPDATE siteserver_PublishmentSystem SET PublishmentSystemName = @PublishmentSystemName, PublishmentSystemType = @PublishmentSystemType, AuxiliaryTableForContent = @AuxiliaryTableForContent, AuxiliaryTableForGovPublic = @AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract = @AuxiliaryTableForGovInteract, AuxiliaryTableForVote = @AuxiliaryTableForVote, AuxiliaryTableForJob = @AuxiliaryTableForJob, IsCheckContentUseLevel = @IsCheckContentUseLevel, CheckContentLevel = @CheckContentLevel, PublishmentSystemDir = @PublishmentSystemDir, PublishmentSystemUrl = @PublishmentSystemUrl, IsHeadquarters = @IsHeadquarters, ParentPublishmentSystemID = @ParentPublishmentSystemID, Taxis = @Taxis, SettingsXML = @SettingsXML WHERE  PublishmentSystemID = @PublishmentSystemID";
 
-        private const string SqlUpdatePublishmentSystemDetails = "UPDATE siteserver_PublishmentSystemDetails SET AreaId =@AreaId, OrganizationTypeId = @OrganizationTypeId, TelePhone = @TelePhone, ImageUrl = @ImageUrl, Adrress = @Adrress, BasicFacts = @BasicFacts, OrganizationCategory = @OrganizationCategory, Characteristic = @Characteristic, AdministratorAccount = @AdministratorAccount WHERE  PublishmentSystemID = @OldPublishmentSystemID";
+        private const string SqlUpdatePublishmentSystemDetails = "UPDATE siteserver_PublishmentSystemDetails SET AreaId =@AreaId,Area=@Area, OrganizationTypeId = @OrganizationTypeId, TelePhone = @TelePhone, ImageUrl = @ImageUrl, Adrress = @Adrress, BasicFacts = @BasicFacts, OrganizationCategory = @OrganizationCategory, Characteristic = @Characteristic, AdministratorAccount = @AdministratorAccount WHERE  PublishmentSystemID = @OldPublishmentSystemID";
 
         private const string SqlUpdateAllIsHeadquarters = "UPDATE siteserver_PublishmentSystem SET IsHeadquarters = @IsHeadquarters";
 
@@ -62,6 +62,7 @@ ORDER BY a.Taxis";
         private const string ParmParentPublishmentSystemId="@ParentPublishmentSystemId";
 
 
+        private const string ParmArea = "@Area";
         private const string ParmAreaId = "@AreaId";
         private const string ParmOrganizationTypeId = "@OrganizationTypeId";
         private const string ParmTelePhone = "@TelePhone";
@@ -176,6 +177,7 @@ ORDER BY a.Taxis";
             var updateParmsDetails = new IDataParameter[]
             {
                GetParameter(ParmAreaId, EDataType.Integer,info.AreaId),
+                GetParameter(ParmArea, EDataType.VarChar, 255, info.Area),
                 GetParameter(ParmOrganizationTypeId, EDataType.Integer, info.OrganizationTypeId),
                 GetParameter(ParmTelePhone, EDataType.VarChar, 20, info.TelePhone),
                 GetParameter(ParmImageUrl, EDataType.VarChar, 200, info.ImageUrl),
@@ -326,7 +328,7 @@ ORDER BY a.Taxis";
                 while (rdr.Read())
                 {
                     var i = 0;
-                    var publishmentSystemInfo = new PublishmentSystemInfo(GetInt(rdr, i++), GetString(rdr, i++), EPublishmentSystemTypeUtils.GetEnumType(GetString(rdr, i++)), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++),GetString(rdr,i));
+                    var publishmentSystemInfo = new PublishmentSystemInfo(GetInt(rdr, i++), GetString(rdr, i++), EPublishmentSystemTypeUtils.GetEnumType(GetString(rdr, i++)), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetBool(rdr, i++), GetInt(rdr, i++), GetInt(rdr, i++), GetString(rdr, i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++),GetInt(rdr,i++), GetInt(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++), GetString(rdr, i++),GetString(rdr,i++), GetString(rdr, i));
                     list.Add(publishmentSystemInfo);
                 }
                 rdr.Close();

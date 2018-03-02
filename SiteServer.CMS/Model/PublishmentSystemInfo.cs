@@ -63,6 +63,7 @@ namespace SiteServer.CMS.Model
         private string _basicFacts;
         private string _characteristic;
         private string _administratorAccount;
+        private string _area;
 
         public PublishmentSystemInfo()
 		{
@@ -93,7 +94,7 @@ namespace SiteServer.CMS.Model
             bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, 
             bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml,int parentsCount,int childrenCount,
             int areaId,int organizationTypeId,int organizationCategoryId,
-            string telePhone,string imageUrl,string address,string basicFacts,string characteristic,string administratorAccount)
+            string telePhone,string imageUrl,string address,string basicFacts,string characteristic,string administratorAccount,string area)
         {
             _publishmentSystemId = publishmentSystemId;
             _publishmentSystemName = publishmentSystemName;
@@ -125,6 +126,7 @@ namespace SiteServer.CMS.Model
             _basicFacts = basicFacts;
             _characteristic = characteristic;
             _administratorAccount = administratorAccount;
+            _area = area;
         }
 
         [XmlIgnore]
@@ -424,6 +426,19 @@ namespace SiteServer.CMS.Model
             set
             {
                 _administratorAccount = value;
+            }
+        }
+
+        public string Area
+        {
+            get
+            {
+                return _area;
+            }
+
+            set
+            {
+                _area = value;
             }
         }
     }
