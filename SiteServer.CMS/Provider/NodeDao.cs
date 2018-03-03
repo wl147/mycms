@@ -626,6 +626,44 @@ namespace SiteServer.CMS.Provider
             DataProvider.MenuDisplayDao.CreateDefaultMenuDisplayInfo(nodeInfo.NodeId);
             return nodeInfo.NodeId;
         }
+        public int InsertPublishmentSystemInfo(PublishmentSystemInfo psInfo, PublishmentSystemInfo oldPublishmentSystemenInfo, string administratorName)
+        {
+            using (var conn = GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        //InsertNodeInfoWithTrans(null, nodeInfo, trans);
+
+                        psInfo.PublishmentSystemId = DataProvider.PublishmentSystemDao.GetMaxPublishmentSystemId()+1;
+
+                        DataProvider.PublishmentSystemDao.InsertWithTransAll(psInfo, trans);
+                        DataProvider.PublishmentSystemDao.InsertPublishmentSystemDetailsWithTrans(psInfo, trans);
+                        var childrenCount= DataProvider.PublishmentSystemDao.GetPublishmentSystemChildrenCount(oldPublishmentSystemenInfo.PublishmentSystemId);
+                        DataProvider.PublishmentSystemDao.UpdatePublishmentSystemChildrenCount(oldPublishmentSystemenInfo.PublishmentSystemId, childrenCount+1);
+                        trans.Commit();
+                    }
+                    catch(Exception ex)
+                    {
+                        trans.Rollback();
+                        return 0;
+                        throw ex;                       
+                    }
+                }
+            }
+
+            //BaiRongDataProvider.AdministratorDao.UpdatePublishmentSystemId(administratorName, nodeInfo.NodeId);
+
+            //string updateNodeSqlString =
+                //$"UPDATE siteserver_Node SET PublishmentSystemID = {nodeInfo.NodeId} WHERE NodeID = {nodeInfo.NodeId}";
+            //ExecuteNonQuery(updateNodeSqlString);
+
+            //DataProvider.TemplateDao.CreateDefaultTemplateInfo(nodeInfo.NodeId, administratorName);
+            //DataProvider.MenuDisplayDao.CreateDefaultMenuDisplayInfo(nodeInfo.NodeId);
+            return psInfo.PublishmentSystemId;
+        }
 
 
         /// <summary>

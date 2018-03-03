@@ -15,10 +15,11 @@ namespace SiteServer.BackgroundPages.Cms
    public class PageSiteAdd : BasePageCms
     {
         public TextBox PublishmentSystemArea;
+        public RadioButtonList CblPublishmentSystemType;
+        public RadioButtonList CblPublishmentSystemCategory;
         public TextBox PublishmentSystemName;
-        public DropDownList PublishmentSystemType;
-        public DropDownList PublishmentSystemCategory;
         public TextBox TelePhone;
+        public TextBox ImageUrl;
         public TextBox Address;
         public TextBox BasicFacts;
         public TextBox Characteristic;
@@ -27,8 +28,7 @@ namespace SiteServer.BackgroundPages.Cms
         public DropDownList AdministratorRoles;
         public Button Submit;
         public Button UploadImage;
-        public RadioButtonList CblPublishmentSystemType;
-        public RadioButtonList CblPublishmentSystemCategory;
+       
 
         public void Page_Load(object sender, EventArgs e)
         {
@@ -79,6 +79,47 @@ namespace SiteServer.BackgroundPages.Cms
             var showPopWinString = ModalUploadImage.GetOpenWindowString(1, "NavigationPicPath");
             UploadImage.Attributes.Add("onclick", showPopWinString);
 
+        }
+
+
+        public override void Submit_OnClick(object sender, EventArgs e)
+        {
+            SiteServer.CMS.Model.PublishmentSystemInfo newPublishmentSystemInfo = new CMS.Model.PublishmentSystemInfo();
+            if (Page.IsPostBack && Page.IsValid)
+            {
+                newPublishmentSystemInfo.PublishmentSystemName = PublishmentSystemName.Text;
+                newPublishmentSystemInfo.Area = PublishmentSystemArea.Text;
+                newPublishmentSystemInfo.OrganizationTypeId = TranslateUtils.ToInt(CblPublishmentSystemType.SelectedValue);
+                newPublishmentSystemInfo.OrganizationCategory = TranslateUtils.ToInt(CblPublishmentSystemCategory.SelectedValue);
+                newPublishmentSystemInfo.TelePhone = TelePhone.Text;
+                newPublishmentSystemInfo.Address = Address.Text;
+                newPublishmentSystemInfo.BasicFacts = BasicFacts.Text;
+                newPublishmentSystemInfo.Characteristic = Characteristic.Text;
+                newPublishmentSystemInfo.AdministratorAccount = AdministratorAccount.Text;
+                newPublishmentSystemInfo.ImageUrl = ImageUrl.Text;
+                newPublishmentSystemInfo.ParentPublishmentSystemId = PublishmentSystemInfo.PublishmentSystemId;
+                newPublishmentSystemInfo.ParentsCount = PublishmentSystemInfo.ParentsCount + 1; //PublishmentSystemManager.GetPublishmentSystemLevel(PublishmentSystemInfo.PublishmentSystemId)+1;
+                try
+                {
+                    var thePublishmentSystemId = DataProvider.NodeDao.InsertPublishmentSystemInfo(newPublishmentSystemInfo,PublishmentSystemInfo, Body.AdministratorName);
+                    if (thePublishmentSystemId > 0)
+                    {
+                        Body.AddAdminLog("添加站点属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
+                        SuccessMessage("站点添加成功！");
+                        // AddWaitAndRedirectScript(Sys.PagePublishmentSystem.GetRedirectUrl());
+                        // AddWaitAndRedirectScript($@"/siteserver/loading.aspx?RedirectType=Loading&RedirectUrl=cms/siteManagement.aspx?PublishmentSystemID={PublishmentSystemId}");
+                        AddWaitAndRedirectScript($@"/siteserver/cms/PagePublishmentSystem.aspx?PublishmentSystemID={PublishmentSystemId}");
+                    }
+                    else
+                    {
+                        FailMessage("站点添加失败！");
+                    }                   
+                }
+                catch (Exception ex)
+                {
+                    FailMessage(ex, "站点添加失败！");
+                }
+            }
         }
     }
 }

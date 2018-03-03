@@ -29,7 +29,9 @@ namespace SiteServer.BackgroundPages.Controls
             {
                 try
                 {                   
-                    var  publishmentSystemIdList = new List<int>() { 1, 2, 3 };
+                    var  publishmentSystemIdList = new List<int>() ;
+                    publishmentSystemIdList.Add(publishmentSystemId);
+                    publishmentSystemIdList.AddRange(PublishmentSystemManager.GetPublishmentSystemIdListByParentId(publishmentSystemId));
                     foreach (var publishmentSystem in publishmentSystemIdList)
                     {
                         var publishmentSystemInfo= PublishmentSystemManager.GetPublishmentSystemInfo(publishmentSystem);                      

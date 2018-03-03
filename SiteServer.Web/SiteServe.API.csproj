@@ -412,7 +412,9 @@
     <Content Include="SiteServer\Cms\siteTree.aspx" />
     <Content Include="Static\login.html" />
     <Content Include="test.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Stl\StlActionsRelatedFieldController.cs" />

@@ -62,16 +62,16 @@ namespace SiteServer.BackgroundPages.Sys
                         isRetainFiles = TranslateUtils.ToBool(RetainFiles.SelectedValue);
                     }
 
-                    if (isRetainFiles == false)
-                    {
-                        DirectoryUtility.DeletePublishmentSystemFiles(psInfo);
-                        SuccessMessage("成功删除站点以及相关文件！");                       
-                    }
-                    else
-                    {
-                        SuccessMessage("成功删除站点，相关文件未被删除！");
-                    }
-
+                    //if (isRetainFiles == false)
+                    //{
+                    //    DirectoryUtility.DeletePublishmentSystemFiles(psInfo);
+                    //    SuccessMessage("成功删除站点以及相关文件！");                       
+                    //}
+                    //else
+                    //{
+                    //    SuccessMessage("成功删除站点，相关文件未被删除！");
+                    //}
+                    SuccessMessage("成功删除站点！");
                     if (!_isBackgroundDelete)
                     {
                         AddWaitAndRedirectScript(PagePublishmentSystem.GetRedirectUrl());

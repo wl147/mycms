@@ -29,6 +29,10 @@ ORDER BY a.Taxis";
 
         private const string SqlInsertPublishmentSystem = "INSERT INTO siteserver_PublishmentSystem (PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML) VALUES (@PublishmentSystemID, @PublishmentSystemName, @PublishmentSystemType, @AuxiliaryTableForContent, @AuxiliaryTableForGovPublic, @AuxiliaryTableForGovInteract, @AuxiliaryTableForVote, @AuxiliaryTableForJob, @IsCheckContentUseLevel, @CheckContentLevel, @PublishmentSystemDir, @PublishmentSystemUrl, @IsHeadquarters, @ParentPublishmentSystemID, @Taxis, @SettingsXML)";
 
+        private const string SqlInsertPublishmentSystemAll = "INSERT INTO siteserver_PublishmentSystem (PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML, ParentsCount) VALUES (@PublishmentSystemID, @PublishmentSystemName, @PublishmentSystemType, @AuxiliaryTableForContent, @AuxiliaryTableForGovPublic, @AuxiliaryTableForGovInteract, @AuxiliaryTableForVote, @AuxiliaryTableForJob, @IsCheckContentUseLevel, @CheckContentLevel, @PublishmentSystemDir, @PublishmentSystemUrl, @IsHeadquarters, @ParentPublishmentSystemID, @Taxis, @SettingsXML,@ParentsCount)";
+
+        private const string SqlInsertPublishmentSystemDetails = "INSERT INTO siteserver_publishmentsystemdetails (PublishmentSystemId, Area, OrganizationTypeId, OrganizationCategory, TelePhone, Adrress, BasicFacts, Characteristic, ImageUrl) VALUES (@PublishmentSystemID, @Area, @OrganizationTypeId, @OrganizationCategory, @TelePhone, @Adrress, @BasicFacts, @Characteristic, @ImageUrl)";
+
         private const string SqlUpdatePublishmentSystem = "UPDATE siteserver_PublishmentSystem SET PublishmentSystemName = @PublishmentSystemName, PublishmentSystemType = @PublishmentSystemType, AuxiliaryTableForContent = @AuxiliaryTableForContent, AuxiliaryTableForGovPublic = @AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract = @AuxiliaryTableForGovInteract, AuxiliaryTableForVote = @AuxiliaryTableForVote, AuxiliaryTableForJob = @AuxiliaryTableForJob, IsCheckContentUseLevel = @IsCheckContentUseLevel, CheckContentLevel = @CheckContentLevel, PublishmentSystemDir = @PublishmentSystemDir, PublishmentSystemUrl = @PublishmentSystemUrl, IsHeadquarters = @IsHeadquarters, ParentPublishmentSystemID = @ParentPublishmentSystemID, Taxis = @Taxis, SettingsXML = @SettingsXML WHERE  PublishmentSystemID = @PublishmentSystemID";
 
         private const string SqlUpdatePublishmentSystemDetails = "UPDATE siteserver_PublishmentSystemDetails SET AreaId =@AreaId,Area=@Area, OrganizationTypeId = @OrganizationTypeId, TelePhone = @TelePhone, ImageUrl = @ImageUrl, Adrress = @Adrress, BasicFacts = @BasicFacts, OrganizationCategory = @OrganizationCategory, Characteristic = @Characteristic, AdministratorAccount = @AdministratorAccount WHERE  PublishmentSystemID = @OldPublishmentSystemID";
@@ -60,6 +64,8 @@ ORDER BY a.Taxis";
         private const string ParmTaxis = "@Taxis";
         private const string ParmSettingsXml = "@SettingsXML";
         private const string ParmParentPublishmentSystemId="@ParentPublishmentSystemId";
+        private const string ParmParentsCount = "@ParentsCount";
+        private const string ParmChildrenCount = "@ChildrenCount";
 
 
         private const string ParmArea = "@Area";
@@ -95,10 +101,61 @@ ORDER BY a.Taxis";
 				GetParameter(ParmIsHeadquarters, EDataType.VarChar, 18, info.IsHeadquarters.ToString()),
                 GetParameter(ParmParentPublishmentsystemid, EDataType.Integer, info.ParentPublishmentSystemId),
                 GetParameter(ParmTaxis, EDataType.Integer, taxis),
-				GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString())
-			};
+				GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString()),
+                GetParameter(ParmParentsCount, EDataType.Integer, info.ParentsCount)
+            };
 
             ExecuteNonQuery(trans, SqlInsertPublishmentSystem, insertParms);
+            PublishmentSystemManager.ClearCache(true);
+        }
+
+        public void InsertWithTransAll(PublishmentSystemInfo info, IDbTransaction trans)
+        {
+            //获取排序值
+            var taxis = GetMaxTaxis() + 1;
+            var insertParms = new IDataParameter[]
+            {
+                GetParameter(ParmPublishmentsystemId, EDataType.Integer, info.PublishmentSystemId),
+                GetParameter(ParmPublishmentsystemName, EDataType.NVarChar, 50, info.PublishmentSystemName),
+                GetParameter(ParmPublishmentsystemType, EDataType.VarChar, 50, EPublishmentSystemTypeUtils.GetValue(info.PublishmentSystemType)),
+                GetParameter(ParmAuxiliaryTableForContent, EDataType.VarChar, 50, info.AuxiliaryTableForContent),
+                GetParameter(ParmAuxiliaryTableForGovpublic, EDataType.VarChar, 50, info.AuxiliaryTableForGovPublic),
+                GetParameter(ParmAuxiliaryTableForGovinteract, EDataType.VarChar, 50, info.AuxiliaryTableForGovInteract),
+                GetParameter(ParmAuxiliaryTableForVote, EDataType.VarChar, 50, info.AuxiliaryTableForVote),
+                GetParameter(ParmAuxiliaryTableForJob, EDataType.VarChar, 50, info.AuxiliaryTableForJob),
+                GetParameter(ParmIsCheckContentUseLevel, EDataType.VarChar, 18, info.IsCheckContentUseLevel.ToString()),
+                GetParameter(ParmCheckContentLevel, EDataType.Integer, info.CheckContentLevel),
+                GetParameter(ParmPublishmentsystemDir, EDataType.VarChar, 50, info.PublishmentSystemDir),
+                GetParameter(ParmPublishmentsystemUrl, EDataType.VarChar, 200, info.PublishmentSystemUrl),
+                GetParameter(ParmIsHeadquarters, EDataType.VarChar, 18, info.IsHeadquarters.ToString()),
+                GetParameter(ParmParentPublishmentsystemid, EDataType.Integer, info.ParentPublishmentSystemId),
+                GetParameter(ParmTaxis, EDataType.Integer, taxis),
+                GetParameter(ParmSettingsXml, EDataType.NText, info.Additional.ToString()),
+                GetParameter(ParmParentsCount, EDataType.Integer, info.ParentsCount)
+            };
+
+            ExecuteNonQuery(trans, SqlInsertPublishmentSystemAll, insertParms);
+            PublishmentSystemManager.ClearCache(true);
+        }
+
+        public void InsertPublishmentSystemDetailsWithTrans(PublishmentSystemInfo info, IDbTransaction trans)
+        {
+            //获取排序值
+            var taxis = GetMaxTaxis() + 1;
+            var insertParms = new IDataParameter[]
+            {
+                GetParameter(ParmPublishmentsystemId, EDataType.Integer, info.PublishmentSystemId),
+                GetParameter(ParmArea, EDataType.VarChar, 255, info.Area),
+                GetParameter(ParmOrganizationTypeId, EDataType.Integer, info.OrganizationTypeId),
+                GetParameter(ParmOrganizationCategory, EDataType.Integer, info.OrganizationCategory),
+                GetParameter(ParmTelePhone, EDataType.VarChar, 20, info.TelePhone),
+                GetParameter(ParmAdrress, EDataType.VarChar, 500, info.Address),
+                GetParameter(ParmBasicFacts, EDataType.NText, 1000, info.BasicFacts),
+                GetParameter(ParmCharacteristic, EDataType.Text, 1000, info.Characteristic),
+                GetParameter(ParmImageUrl, EDataType.VarChar, 200, info.ImageUrl),               
+            };
+
+            ExecuteNonQuery(trans, SqlInsertPublishmentSystemDetails, insertParms);
             PublishmentSystemManager.ClearCache(true);
         }
 
@@ -581,11 +638,58 @@ ORDER BY a.Taxis";
             const string sqlString = "SELECT MAX(Taxis) FROM siteserver_PublishmentSystem";
             return BaiRongDataProvider.DatabaseDao.GetIntResult(sqlString);
         }
+        public  int GetMaxPublishmentSystemId()
+        {
+            const string sqlString = "SELECT MAX(PublishmentSystemId) FROM siteserver_PublishmentSystem";
+            return BaiRongDataProvider.DatabaseDao.GetIntResult(sqlString);
+        }
 
         private void SetTaxisNotZero()
         {
             const string sqlString = @"UPDATE siteserver_PublishmentSystem SET Taxis = PublishmentSystemID where Taxis = 0";
             ExecuteNonQuery(sqlString);
+        }
+        public int GetPublishmentSystemChildrenCount(int publishmentSystemId)
+        {
+            var count = 0;
+
+            var sqlString = $@"SELECT ChildrenCount FROM siteserver_PublishmentSystem WHERE PublishmentSystemId=@PublishmentSystemID";
+            var Parms = new IDataParameter[]
+            {
+                  GetParameter(ParmPublishmentsystemId, EDataType.Integer,publishmentSystemId)
+            };
+
+
+            using (var rdr = ExecuteReader(sqlString, Parms))
+            {
+                if (rdr.Read())
+                {
+                    count = GetInt(rdr, 0);
+                }
+                rdr.Close();
+            }
+            return count;
+        }
+        public bool UpdatePublishmentSystemChildrenCount(int publishmentSystemId,int childrenCount)
+        {
+            bool retval = false;
+            var count = 0;
+            var sqlString = $@"Update siteserver_PublishmentSystem set ChildrenCount=@ChildrenCount WHERE PublishmentSystemId=@PublishmentSystemID";
+            var Parms = new IDataParameter[]
+            {
+                  GetParameter(ParmPublishmentsystemId, EDataType.Integer,publishmentSystemId),
+                  GetParameter(ParmChildrenCount, EDataType.Integer,childrenCount)
+            };
+            using (var rdr = ExecuteReader(sqlString, Parms))
+            {
+                if (rdr.Read())
+                {
+                    count = GetInt(rdr, 0);
+                }
+                rdr.Close();
+                retval = true;
+            }
+            return retval;
         }
     }
 }

@@ -406,17 +406,17 @@ namespace SiteServer.CMS.Core
             //if (CacheUtils.Get(CacheKey) != null) return CacheUtils.Get(CacheKey) as List<KeyValuePair<int, PublishmentSystemInfo>>;
             //int ParentCount = 0;
             var list = DataProvider.PublishmentSystemDao.GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
-            if (list != null && list.Count > 0)
-            {
-                foreach (var pair in list)
-                {
-                    var publishmentSystemInfo = pair.Value;
-                    if (publishmentSystemInfo != null)
-                    {
-                        var childList = GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
-                    }
-                }
-            }
+            //if (list != null && list.Count > 0)
+            //{
+            //    foreach (var pair in list)
+            //    {
+            //        var publishmentSystemInfo = pair.Value;
+            //        if (publishmentSystemInfo != null)
+            //        {
+            //            var childList = GetPublishmentSystemInfoKeyValuePairListByParentId(parentId);
+            //        }
+            //    }
+            //}
             var sl = new List<KeyValuePair<int, PublishmentSystemInfo>>();
             foreach (var pair in list)
             {
