@@ -18,9 +18,9 @@ namespace SiteServer.BackgroundPages.Cms
     public class PagesiteContentEdit:BasePageCms
     {
         public TextBox PublishmentSystemArea;
-        public TextBox PublishmentSystemName;
-        public DropDownList PublishmentSystemType;
-        public DropDownList PublishmentSystemCategory;
+        public Label PublishmentSystemName;
+        public Label PublishmentSystemType;
+        public TextBox ImageUrl;
         public TextBox TelePhone;
         public TextBox Address;
         public TextBox BasicFacts;
@@ -39,10 +39,12 @@ namespace SiteServer.BackgroundPages.Cms
                 var currentPublishmentSystemId = Body.AdministratorInfo.PublishmentSystemId;
                 var publishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(currentPublishmentSystemId);
                 PublishmentSystemName.Text = publishmentSystemInfo.PublishmentSystemName;
-                PublishmentSystemType.Items.Add(new ListItem(publishmentSystemInfo.OrganizationTypeId.ToString(), "0"));
-                PublishmentSystemCategory.Items.Add(new ListItem(PublishmentSystemInfo.OrganizationCategory.ToString(), "0"));
+                ImageUrl.Text = publishmentSystemInfo.ImageUrl;
+                PublishmentSystemType.Text=DataProvider.MechanismDao.GetMechanismTypeTextById(PublishmentSystemInfo.OrganizationTypeId)+"|"+ DataProvider.MechanismDao.GetMechanismCategoryTextById(PublishmentSystemInfo.OrganizationCategory);
                 TelePhone.Text = publishmentSystemInfo.TelePhone;
                 Address.Text = publishmentSystemInfo.Address;
+                BasicFacts.Text = publishmentSystemInfo.BasicFacts;
+                Characteristic.Text = publishmentSystemInfo.Characteristic;
                 //    var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
                 //try
                 //{
@@ -57,10 +59,35 @@ namespace SiteServer.BackgroundPages.Cms
                 //catch(Exception ex)
                 //{
                 //}
-               
+
 
             }
             }
+        public override void Submit_OnClick(object sender, EventArgs e)
+        {
+            if (Page.IsPostBack && Page.IsValid)
+            {
+
+                PublishmentSystemInfo.TelePhone = TelePhone.Text;
+                PublishmentSystemInfo.Address = Address.Text;
+                PublishmentSystemInfo.BasicFacts = BasicFacts.Text;
+                PublishmentSystemInfo.Characteristic = Characteristic.Text;
+                PublishmentSystemInfo.ImageUrl = ImageUrl.Text;
+                try
+                {
+                    DataProvider.PublishmentSystemDao.UpdateAll(PublishmentSystemInfo);
+                    Body.AddAdminLog("保存基本信息属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
+                    SuccessMessage("站点基本信息保存成功！");
+                    // AddWaitAndRedirectScript(Sys.PagePublishmentSystem.GetRedirectUrl());
+                    // AddWaitAndRedirectScript($@"/siteserver/loading.aspx?RedirectType=Loading&RedirectUrl=cms/siteManagement.aspx?PublishmentSystemID={PublishmentSystemId}");
+                    //AddWaitAndRedirectScript($@"/siteserver/cms/PagePublishmentSystem.aspx?PublishmentSystemID={PublishmentSystemId}");
+                }
+                catch (Exception ex)
+                {
+                    FailMessage(ex, "基本信息保存失败！");
+                }
+            }
+        }
 
 
     }
