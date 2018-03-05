@@ -28,7 +28,8 @@ namespace SiteServer.BackgroundPages.Cms
         public DropDownList AdministratorRoles;
         public Button Submit;
         public Button UploadImage;
-       
+        public Repeater rptContents;
+
 
         public void Page_Load(object sender, EventArgs e)
         {
@@ -79,6 +80,8 @@ namespace SiteServer.BackgroundPages.Cms
             var showPopWinString = ModalUploadImage.GetOpenWindowString(1, "NavigationPicPath");
             UploadImage.Attributes.Add("onclick", showPopWinString);
 
+            rptContents.ItemDataBound += rptContents_ItemDataBound;
+
         }
 
 
@@ -119,6 +122,36 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     FailMessage(ex, "站点添加失败！");
                 }
+            }
+        }
+
+        void rptContents_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                var ltlChannelName = e.Item.FindControl("ChannelName") as Literal;
+                var cblChannelPermissions = e.Item.FindControl("ChannelPermissions") as CheckBoxList;
+
+
+                //var contentInfo = new ContentInfo(e.Item.DataItem);
+
+                //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
+
+                //var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+
+                //ltlItemStatus.Text =
+                //    $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
+                //        PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
+
+                //if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
+                //{
+                //    ltlItemEditUrl.Text =
+                //        $"<a href=\"{WebUtils.GetContentAddEditUrl(PublishmentSystemId, nodeInfo, contentInfo.Id, PageUrl)}\">编辑</a>";
+                //}
+
+                //ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
+
+                //ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
             }
         }
     }

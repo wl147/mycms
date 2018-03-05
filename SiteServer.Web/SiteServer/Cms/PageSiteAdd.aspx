@@ -199,9 +199,16 @@
         </tr>
         <tr>
           <td>超级管理角色：</td>
+      <asp:Repeater ID="rptContents" runat="server">
+      <itemtemplate>
+        <tr>
           <td>
-            <asp:DropDownList ID="AdministratorRoles" runat="server"></asp:DropDownList>
+            <asp:Literal ID="ChannelName" runat="server"></asp:Literal>
           </td>
+          <asp:CheckBoxList ID="ChannelPermissions" RepeatColumns="7" RepeatDirection="Horizontal" class="checkboxlist" runat="server"></asp:CheckBoxList>        
+        </tr>
+      </itemtemplate>
+    </asp:Repeater>
         </tr>
     </table>
 
