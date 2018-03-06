@@ -199,13 +199,21 @@
         </tr>
         <tr>
           <td>超级管理角色：</td>
-      <asp:Repeater ID="rptContents" runat="server">
+       <div class="col col-3">
+         <input name="checkAll" type="checkbox" />
+      </div>
+      <asp:Repeater ID="rptContents" runat="server" onitemdatabound="rptContents_ItemDataBound">
       <itemtemplate>
         <tr>
           <td>
-            <asp:Literal ID="ChannelName" runat="server"></asp:Literal>
+            <asp:HiddenField ID="hidName" Value='<%#Eval("NodeName") %>' runat="server" />
+            <asp:HiddenField ID="hidActionType" Value='<%#Eval("ChannelPermissions") %>' runat="server" />
+            <%#Eval("NodeName")%>
           </td>
-          <asp:CheckBoxList ID="ChannelPermissions" RepeatColumns="7" RepeatDirection="Horizontal" class="checkboxlist" runat="server"></asp:CheckBoxList>        
+          <td>
+            <%--<asp:CheckBoxList ID="ChannelPermissions" RepeatColumns="7" RepeatDirection="Horizontal" class="checkboxlist" runat="server"></asp:CheckBoxList>       --%>
+            <asp:CheckBoxList ID="cblActionType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>  
+          </td>          
         </tr>
       </itemtemplate>
     </asp:Repeater>

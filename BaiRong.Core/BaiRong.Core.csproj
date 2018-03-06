@@ -141,6 +141,7 @@
     <Compile Include="AuxiliaryTable\TableStyleManager.cs" />
     <Compile Include="Collection\Pair.cs" />
     <Compile Include="Model\Enumerations\ECmsType.cs" />
+    <Compile Include="Model\Enumerations\EPermission.cs" />
     <Compile Include="SiteFilesAssets.cs" />
     <Compile Include="SiteServerAssets.cs" />
     <Compile Include="ThirdParty\Atom\Atom.AdditionalElements\DublinCore\DcElement.cs" />

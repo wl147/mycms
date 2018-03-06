@@ -383,5 +383,23 @@ namespace SiteServer.CMS.Provider
 
             return permissionList;
         }
+
+        public DataTable GetList(string roleName)
+        {
+            string sql = $@"SELECT a.ChannelPermissions,a.NodeId,a.ChannelPermissions,a.WebsitePermissions,b.NodeName from siteserver_systempermissions as a,siteserver_node as b where b.NodeId =a.NodeId and a.RoleName='{roleName}' GROUP BY a.NodeId";
+            DataSet ds = ExecuteDataset(sql);
+            //重组列表
+            DataTable oldData = ds.Tables[0] as DataTable;
+            if (oldData == null)
+            {
+                return null;
+            }
+            //创建一个新的DataTable增加一个深度字段
+            DataTable newData = oldData.Clone();
+            newData.Columns.Add("class_layer", typeof(int));
+            //调用迭代组合成DAGATABLE
+            //GetChilds(oldData, newData, parent_id, 0);
+            return oldData;
+        }
     }
 }

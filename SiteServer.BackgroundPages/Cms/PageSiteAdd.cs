@@ -9,6 +9,10 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using BaiRong.Core;
 using SiteServer.CMS.Core;
+using SiteServer.CMS.Core.Security;
+using BaiRong.Core.Configuration;
+using System.Data;
+using BaiRong.Core.Model.Enumerations;
 
 namespace SiteServer.BackgroundPages.Cms
 {
@@ -29,6 +33,8 @@ namespace SiteServer.BackgroundPages.Cms
         public Button Submit;
         public Button UploadImage;
         public Repeater rptContents;
+        public CheckBoxList ChannelPermissions;
+        public Literal ChannelName;
 
 
         public void Page_Load(object sender, EventArgs e)
@@ -80,7 +86,14 @@ namespace SiteServer.BackgroundPages.Cms
             var showPopWinString = ModalUploadImage.GetOpenWindowString(1, "NavigationPicPath");
             UploadImage.Attributes.Add("onclick", showPopWinString);
 
-            rptContents.ItemDataBound += rptContents_ItemDataBound;
+            //rptContents.ItemDataBound += rptContents_ItemDataBound;
+
+            var channerPermissions = ProductPermissionsManager.Current.ChannelPermissionDict;
+            DataTable dt = DataProvider.SystemPermissionsDao.GetList(ProductPermissionsManager.Current.Roles[1]);
+            rptContents.DataSource = dt;
+            //rptContents.ItemDataBound += rptContents_ItemDataBound;
+
+            rptContents.DataBind();           
 
         }
 
@@ -125,14 +138,75 @@ namespace SiteServer.BackgroundPages.Cms
             }
         }
 
-        void rptContents_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        public void rptContents_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var ltlChannelName = e.Item.FindControl("ChannelName") as Literal;
-                var cblChannelPermissions = e.Item.FindControl("ChannelPermissions") as CheckBoxList;
 
 
+                string[] actionTypeArr = ((HiddenField)e.Item.FindControl("hidActionType")).Value.Split(',');
+                CheckBoxList cblActionType = (CheckBoxList)e.Item.FindControl("cblActionType");
+                cblActionType.Items.Clear();
+                for (int i = 0; i < actionTypeArr.Length; i++)
+                {
+                    if (EPermissionUtils.ChannelPermissionType().ContainsKey(actionTypeArr[i]))
+                    {
+                        cblActionType.Items.Add(new ListItem(EPermissionUtils.GetChnanelPermissionText(actionTypeArr[i]) + " ", actionTypeArr[i]));
+                    }                                     
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //Repeater rptSub = e.Item.FindControl("rptSubList") as Repeater;
+                //var ltlChannelName = e.Item.FindControl("ChannelName") as Literal;
+                //var cblChannelPermissions = e.Item.FindControl("ChannelPermissions") as CheckBoxList;             
+                //var channelPermission=(KeyValuePair<int,List<string>>)e.Item.DataItem;
+                //var nodeInfo = DataProvider.NodeDao.GetNodeInfo(channelPermission.Key);
+                //ltlChannelName.Text = nodeInfo.NodeName;
+                //foreach (PermissionConfig permission in PermissionConfigManager.Instance.ChannelPermissions)
+                //{
+                //    // ChannelPermissionsPlaceHolder.Visible = true;
+                //    if (!string.IsNullOrEmpty(permission.Name))
+                //    {
+                //        if (permission.Name == "cms_contentTranslate") break;
+                //        var listItem = new ListItem(permission.Text, permission.Name);
+                //        cblChannelPermissions.Items.Add(listItem);
+                //    }                    
+                //}
+                //var nodeInfo = DataProvider.NodeDao.GetNodeInfo(nodeId);
+                //ChannelName.Text = nodeInfo.NodeName;
+                //foreach (var nodeId in channerPermissions.Keys)
+                //{
+                //    var nodeInfo = DataProvider.NodeDao.GetNodeInfo(nodeId);
+                //    ChannelName.Text = nodeInfo.NodeName;
+                //    foreach (PermissionConfig permission in PermissionConfigManager.Instance.ChannelPermissions)
+                //    {
+                //        // ChannelPermissionsPlaceHolder.Visible = true;
+                //        if (permission.Name == "cms_contentTranslate") break;
+                //        var listItem = new ListItem(permission.Text, permission.Name);
+                //        ChannelPermissions.Items.Add(listItem);
+                //    }
+                //}
                 //var contentInfo = new ContentInfo(e.Item.DataItem);
 
                 //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
