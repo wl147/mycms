@@ -66,15 +66,12 @@
                 <asp:Repeater ID="RptTopMenu" runat="server">
                     <ItemTemplate>
                         <asp:Literal ID="ltlMenuLi" runat="server" />
-
                         <a href='javascript:;' data-toggle='dropdown' class='dropdown-toggle' data-hover='dropdown' style='<%#Container.ItemIndex ==2 ?"padding-top: 0;": ""%>'>
                             <asp:Literal ID='ltlMenuName' runat='server' />
                             <%#Container.ItemIndex <=1 ? "<span class='caret'></span>" :string.Empty %>
                         </a>
-
                         <asp:Literal ID="ltlMenues" runat="server" />
                         </li>
-
                     </ItemTemplate>
                 </asp:Repeater>
             </ul>
