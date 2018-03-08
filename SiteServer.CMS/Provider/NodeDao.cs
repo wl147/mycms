@@ -2041,5 +2041,19 @@ ORDER BY Taxis";
             }
             return nodeIdList;
         }
+        public int GetSpecialParentId()
+        {
+            int retval = 0;
+            string sql = "select NodeId from siteserver_node where NodeName='党建专题' or NodeIndexName='党建专题' ";
+            using (var rdr = ExecuteReader(sql))
+            {
+                while (rdr.Read())
+                {
+                    retval=GetInt(rdr, 0);
+                }
+                rdr.Close();
+            }
+            return retval;
+        }
     }
 }

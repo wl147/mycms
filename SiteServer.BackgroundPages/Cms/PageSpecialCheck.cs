@@ -18,7 +18,7 @@ using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContentCheck : BasePageCms
+    public class PageSpecialCheck : BasePageCms
     {
         public RadioButtonList State;
         public PlaceHolder PhContentModel;
@@ -75,11 +75,11 @@ namespace SiteServer.BackgroundPages.Cms
 
             if (!IsPostBack)
             {
-                BreadCrumb(AppManager.Cms.LeftMenu.IdContent, "内容审核", string.Empty);
+                BreadCrumb(AppManager.Cms.LeftMenu.IdContent, "专题审核", string.Empty);
 
                 var checkedLevel = 5;
                 var isChecked = true;
-                foreach (var owningNodeId in ProductPermissionsManager.Current.OwningNodeIdList)
+                foreach (var owningNodeId in ProductPermissionsManager.Current.OwningNodeId)
                 {
                     int checkedLevelByNodeId;
                     var isCheckedByNodeId = CheckManager.GetUserCheckLevel(Body.AdministratorName, PublishmentSystemInfo, owningNodeId, out checkedLevelByNodeId);
@@ -92,7 +92,7 @@ namespace SiteServer.BackgroundPages.Cms
                         isChecked = false;
                     }
                 }
-
+                string nodeAllId = string.Empty;
                 LevelManager.LoadContentLevelToList(State, PublishmentSystemInfo, PublishmentSystemId, isChecked, checkedLevel);
 
                 if (_isGovPublic)
@@ -103,11 +103,30 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     PhContentModel.Visible = true;
                     var contentModelInfoList = ContentModelManager.GetContentModelInfoList(PublishmentSystemInfo);
-                    foreach (var modelInfo in contentModelInfoList)
+                    var secialParentId = DataProvider.NodeDao.GetSpecialParentId();
+                    var specialNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1,secialParentId);
+                    foreach(var nodeInfo in specialNodeIdList)
                     {
-                        DdlContentModelId.Items.Add(new ListItem(modelInfo.ModelName, modelInfo.ModelId));
+                        var specialChildNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeInfo.NodeId);
+                        var childNodeAllId = string.Empty;
+                        foreach (var childNodeInfo in specialChildNodeIdList)
+                        {
+                            nodeAllId = nodeAllId + childNodeInfo.NodeId + ",";
+                            childNodeAllId = childNodeAllId + childNodeInfo.NodeId + ",";
+                        }
+                        childNodeAllId = childNodeAllId.TrimEnd(',');
+                        DdlContentModelId.Items.Add(new ListItem(nodeInfo.NodeName, childNodeAllId));
                     }
-                    ControlUtils.SelectListItems(DdlContentModelId, _nodeInfo.ContentModelId);
+                    nodeAllId = nodeAllId.TrimEnd(',');
+                    DdlContentModelId.Items.Add(new ListItem("全部", nodeAllId));
+                    
+
+
+                    //foreach (var modelInfo in contentModelInfoList)
+                    //{
+                    //    DdlContentModelId.Items.Add(new ListItem(modelInfo.ModelName, modelInfo.ModelId));
+                    //}
+                    ControlUtils.SelectListItems(DdlContentModelId, nodeAllId);
                     //EContentModelTypeUtils.AddListItemsForContentCheck(this.ContentModelID);
                 }
 
@@ -118,6 +137,7 @@ namespace SiteServer.BackgroundPages.Cms
                 if (!string.IsNullOrEmpty(Body.GetQueryString("ModelID")))
                 {
                     ControlUtils.SelectListItems(DdlContentModelId, Body.GetQueryString("ModelID"));
+                    nodeAllId = Body.GetQueryString("ModelID");
                 }
 
                 SpContents.ControlToPaginate = RptContents;
@@ -150,27 +170,8 @@ namespace SiteServer.BackgroundPages.Cms
                         }
                     }
                 }
-                //排除专题栏目
-                string nodeAllId = string.Empty;
-                var secialParentId = DataProvider.NodeDao.GetSpecialParentId();
-                nodeAllId = nodeAllId + secialParentId + ",";
-                var specialNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, secialParentId);
-                foreach (var nodeInfo in specialNodeIdList)
-                {
-                    nodeAllId = nodeAllId + nodeInfo.NodeId + ",";
-                    var specialChildNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeInfo.NodeId);
-                    var childNodeAllId = string.Empty;
-                    foreach (var childNodeInfo in specialChildNodeIdList)
-                    {
-                        nodeAllId = nodeAllId + childNodeInfo.NodeId + ",";
-                        childNodeAllId = childNodeAllId + childNodeInfo.NodeId + ",";
-                    }
-                    childNodeAllId = childNodeAllId.TrimEnd(',');
-                    DdlContentModelId.Items.Add(new ListItem(nodeInfo.NodeName, childNodeAllId));
-                }
-                nodeAllId = nodeAllId.TrimEnd(',');
 
-                SpContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectedCommendByCheck(tableName, PublishmentSystemId, permissions.IsSystemAdministrator, owningNodeIdList, checkLevelArrayList,nodeAllId);
+                SpContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectedCommendSpecialByCheck(tableName, PublishmentSystemId, nodeAllId, owningNodeIdList, checkLevelArrayList);
 
                 SpContents.SortField = ContentAttribute.LastEditDate;
                 SpContents.SortMode = SortMode.DESC;
@@ -256,7 +257,7 @@ namespace SiteServer.BackgroundPages.Cms
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContentCheck), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageSpecialCheck), new NameValueCollection
                     {
                         {"PublishmentSystemID", PublishmentSystemId.ToString()},
                         {"State", State.SelectedValue},

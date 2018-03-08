@@ -115,7 +115,7 @@ namespace SiteServer.BackgroundPages.Controls
         public bool CmsHasChildrenPerminssion(Tab tab)
         {
             bool retval = false;
-            var nodeList = ProductPermissionsManager.Current.OwningNodeIdListByPublishmentId;
+            var nodeList = ProductPermissionsManager.Current.OwningNodeId;
             if (tab.HasChildren)
             {
                 if (nodeList != null && nodeList.Count > 0)

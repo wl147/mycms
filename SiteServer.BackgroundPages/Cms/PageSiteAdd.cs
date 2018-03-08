@@ -13,6 +13,7 @@ using SiteServer.CMS.Core.Security;
 using BaiRong.Core.Configuration;
 using System.Data;
 using BaiRong.Core.Model.Enumerations;
+using BaiRong.Core.Permissions;
 
 namespace SiteServer.BackgroundPages.Cms
 {
@@ -89,7 +90,16 @@ namespace SiteServer.BackgroundPages.Cms
             //rptContents.ItemDataBound += rptContents_ItemDataBound;
 
             var channerPermissions = ProductPermissionsManager.Current.ChannelPermissionDict;
-            DataTable dt = DataProvider.SystemPermissionsDao.GetList(ProductPermissionsManager.Current.Roles[1]);
+            DataTable dt = new DataTable();
+            if (PermissionsManager.GetPermissions(Body.AdministratorName).IsSystemAdministrator)
+            {
+                dt = DataProvider.SystemPermissionsDao.GetAllList();
+            }
+            else
+            {
+                dt = DataProvider.SystemPermissionsDao.GetList(PermissionsManager.GetPermissions(Body.AdministratorInfo.UserName).Roles[1]);
+            }
+                
             rptContents.DataSource = dt;
             //rptContents.ItemDataBound += rptContents_ItemDataBound;
 

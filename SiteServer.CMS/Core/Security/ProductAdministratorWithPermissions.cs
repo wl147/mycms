@@ -4,6 +4,7 @@ using BaiRong.Core.Configuration;
 using System.Collections.Generic;
 using BaiRong.Core.Model.Enumerations;
 using BaiRong.Core.Permissions;
+using System.Data;
 
 namespace SiteServer.CMS.Core.Security
 {
@@ -448,7 +449,45 @@ namespace SiteServer.CMS.Core.Security
                 return _owningNodeIdListAll ?? (_owningNodeIdList = new List<int>());
             }
         }
+        public List<int> OwningNodeId
+        {
+            get
+            {
+                if (_owningNodeIdListAll == null)
+                {
+                    if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
+                    {
+                        if (CacheUtils.Get(_owningNodeIdListKey) != null)
+                        {
+                            _owningNodeIdListAll = CacheUtils.Get(_owningNodeIdListAllKey) as List<int>;
+                        }
+                        else
+                        {
+                            _owningNodeIdListAll = new List<int>();
 
+                            var permissions = PermissionsManager.GetPermissions(UserName);
+
+                            if (!permissions.IsSystemAdministrator)
+                            {
+                                foreach (var nodeId in ProductPermissionsManager.Current.ChannelPermissionDict.Keys)
+                                {
+                                    _owningNodeIdListAll.Add(nodeId);
+                                    _owningNodeIdListAll.AddRange(DataProvider.NodeDao.GetNodeIdListForDescendant(nodeId));
+                                }
+                            }
+                            else
+                            {
+                                var nodeIds= DataProvider.NodeDao.GetHomeSiteNodeIdList();
+                                _owningNodeIdListAll.AddRange(nodeIds);
+                            }
+
+                            CacheUtils.Insert(_owningNodeIdListAllKey, _owningNodeIdListAll, 30 * CacheUtils.MinuteFactor, CacheItemPriority.Normal);
+                        }
+                    }
+                }
+                return _owningNodeIdListAll ?? (_owningNodeIdList = new List<int>());
+            }
+        }
         public void ClearCache()
         {
             _websitePermissionDict = null;
@@ -470,6 +509,19 @@ namespace SiteServer.CMS.Core.Security
         {
             var userWithPermissions = new ProductAdministratorWithPermissions(AdminManager.AnonymousUserName);
             return userWithPermissions;
+        }
+        public  DataTable GetChannelList()
+        {
+            DataTable dt = new DataTable();
+            if (EPredefinedRoleUtils.IsSystemAdministrator(Roles))
+            {
+                dt = DataProvider.SystemPermissionsDao.GetAllList();
+            }
+            else
+            {
+                dt= DataProvider.SystemPermissionsDao.GetList(ProductPermissionsManager.Current.Roles[1]);
+            }
+            return dt;
         }
 	}
 }

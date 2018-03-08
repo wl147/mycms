@@ -207,6 +207,9 @@
     <Compile Include="Cms\PageSiteEdit.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageSpecialCheck.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Controls\SiteTree.cs" />
     <Compile Include="Controls\UEditor.cs" />
     <Compile Include="Core\AreaTreeItem.cs" />

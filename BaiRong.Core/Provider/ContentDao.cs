@@ -1214,6 +1214,56 @@ group by tmp.userName";
 
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString);
         }
+        public string GetSelectedCommendByCheck(string tableName, int publishmentSystemId, bool isSystemAdministrator, List<int> owningNodeIdList, ArrayList checkLevelArrayList,string nodeIdAll)
+        {
+            string whereString;
+
+            if (isSystemAdministrator)
+            {
+                whereString =
+                    $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID > 0 AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)})  AND NodeId  NOT IN ({nodeIdAll}) ";
+            }
+            else
+            {
+                if (owningNodeIdList.Count == 1)
+                {
+                    whereString =
+                        $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID = {owningNodeIdList[0]} AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)})  AND NodeId  NOT IN ({nodeIdAll}) ";
+                }
+                else
+                {
+                    whereString =
+                        $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID IN ({TranslateUtils.ToSqlInStringWithoutQuote(owningNodeIdList)}) AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)})  AND NodeId  NOT IN ({nodeIdAll})";
+                }
+            }
+
+            return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString);
+        }
+        public string GetSelectedCommendSpecialByCheck(string tableName, int publishmentSystemId, string nodeIdCollection, List<int> owningNodeIdList, ArrayList checkLevelArrayList)
+        {
+            string whereString;
+
+            if (true)
+            {
+                whereString =
+                    $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID > 0 AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)}) AND NodeId IN ({nodeIdCollection}) ";
+            }
+            else
+            {
+                if (owningNodeIdList.Count == 1)
+                {
+                    whereString =
+                        $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID = {owningNodeIdList[0]} AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)}) ";
+                }
+                else
+                {
+                    whereString =
+                        $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID IN ({TranslateUtils.ToSqlInStringWithoutQuote(owningNodeIdList)}) AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)}) ";
+                }
+            }
+
+            return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString);
+        }
 
         public IEnumerable GetStlDataSourceChecked(string tableName, List<int> nodeIdList, int startNum, int totalNum, string orderByString, string whereString, bool isNoDup, LowerNameValueCollection others)
         {

@@ -128,6 +128,11 @@ namespace SiteServer.CMS.Model
             _nodeModelType = 0;
 
         }
+        public NodeInfo(int nodeId,string nodeName)
+        {
+            NodeId = nodeId;
+            NodeName = nodeName;          
+        }
 
         public NodeInfo(int nodeId, string nodeName, ENodeType nodeType, int publishmentSystemId, string contentModelId, int parentId, string parentsPath, int parentsCount, int childrenCount, bool isLastNode, string nodeIndexName, string nodeGroupNameCollection, int taxis, DateTime addDate, string imageUrl, string content, int contentNum, string filePath, string channelFilePathRule, string contentFilePathRule, string linkUrl, ELinkType linkType, int channelTemplateId, int contentTemplateId, string keywords, string description, string extendValues,int nodeModelType) 
 		{
