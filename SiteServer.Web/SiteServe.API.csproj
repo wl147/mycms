@@ -317,6 +317,8 @@
     <Content Include="SiteServer\Cms\pageContentMain.aspx" />
     <Content Include="SiteServer\Cms\pageContentModel.aspx" />
     <Content Include="SiteServer\Cms\pageContentPhotoUpload.aspx" />
+    <Content Include="SiteServer\Cms\pageContentPushIn.aspx" />
+    <Content Include="SiteServer\Cms\pageContentPushOut.aspx" />
     <Content Include="SiteServer\Cms\pageContentSearch.aspx" />
     <Content Include="SiteServer\Cms\pageContentsGroup.aspx" />
     <Content Include="SiteServer\Cms\pageContentTags.aspx" />
@@ -349,6 +351,8 @@
     <Content Include="SiteServer\Cms\pageNodeGroup.aspx" />
     <Content Include="SiteServer\Cms\pageProgressBar.aspx" />
     <Content Include="SiteServer\Cms\PagePublishmentSystem.aspx" />
+    <Content Include="SiteServer\Cms\pagePushInCheck.aspx" />
+    <Content Include="SiteServer\Cms\pagePushOutCheck.aspx" />
     <Content Include="SiteServer\Cms\pageRedirect.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedField.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedFieldItem.aspx" />
@@ -486,12 +490,40 @@
     <Compile Include="SiteServer\Admin\PageUser.aspx.designer.cs">
       <DependentUpon>PageUser.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\pageContentPushIn.aspx.cs">
+      <DependentUpon>pageContentPushIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentPushIn.aspx.designer.cs">
+      <DependentUpon>pageContentPushIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentPushOut.aspx.cs">
+      <DependentUpon>pageContentPushOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentPushOut.aspx.designer.cs">
+      <DependentUpon>pageContentPushOut.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.designer.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePushInCheck.aspx.cs">
+      <DependentUpon>pagePushInCheck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePushInCheck.aspx.designer.cs">
+      <DependentUpon>pagePushInCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePushOutCheck.aspx.cs">
+      <DependentUpon>pagePushOutCheck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePushOutCheck.aspx.designer.cs">
+      <DependentUpon>pagePushOutCheck.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\PageSiteAdd.aspx.cs">
       <DependentUpon>PageSiteAdd.aspx</DependentUpon>

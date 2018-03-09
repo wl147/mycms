@@ -199,10 +199,8 @@
         </tr>
         <tr>
           <td>超级管理角色：</td>
-       <div class="col col-3">
-         <input name="checkAll" type="checkbox" />
-      </div>
-      <asp:Repeater ID="rptContents" runat="server" onitemdatabound="rptContents_ItemDataBound">
+          <td>
+    <asp:Repeater ID="rptContents" runat="server" onitemdatabound="rptContents_ItemDataBound">
       <itemtemplate>
         <tr>
           <td>
@@ -217,6 +215,8 @@
         </tr>
       </itemtemplate>
     </asp:Repeater>
+          </td>
+         
         </tr>
     </table>
 

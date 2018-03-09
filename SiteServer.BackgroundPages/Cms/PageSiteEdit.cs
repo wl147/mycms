@@ -10,6 +10,9 @@ using System.Web.UI.WebControls;
 using BaiRong.Core;
 using SiteServer.CMS.Core;
 using SiteServer.CMS.Provider;
+using System.Data;
+using BaiRong.Core.Permissions;
+using BaiRong.Core.Model.Enumerations;
 
 namespace SiteServer.BackgroundPages.Cms
 {
@@ -29,7 +32,7 @@ namespace SiteServer.BackgroundPages.Cms
         public Button Submit;
         public RadioButtonList CblPublishmentSystemType;
         public RadioButtonList CblPublishmentSystemCategory;
-
+        public Repeater rptContents;
 
         public void Page_Load(object sender, EventArgs e)
         {
@@ -72,6 +75,21 @@ namespace SiteServer.BackgroundPages.Cms
                     }
                     CblPublishmentSystemCategory.Items.Add(listItem);
                 }
+
+                DataTable dt = new DataTable();
+                if (PermissionsManager.GetPermissions(Body.AdministratorName).IsSystemAdministrator)
+                {
+                    dt = DataProvider.SystemPermissionsDao.GetAllList();
+                }
+                else
+                {
+                    dt = DataProvider.SystemPermissionsDao.GetList(PermissionsManager.GetPermissions(Body.AdministratorInfo.UserName).Roles[1]);
+                }
+
+                rptContents.DataSource = dt;
+                //rptContents.ItemDataBound += rptContents_ItemDataBound;
+
+                rptContents.DataBind();
             }
         }
         public override void Submit_OnClick(object sender, EventArgs e)
@@ -105,6 +123,23 @@ namespace SiteServer.BackgroundPages.Cms
             }
         }
 
+        public void rptContents_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
 
+
+                string[] actionTypeArr = ((HiddenField)e.Item.FindControl("hidActionType")).Value.Split(',');
+                CheckBoxList cblActionType = (CheckBoxList)e.Item.FindControl("cblActionType");
+                cblActionType.Items.Clear();
+                for (int i = 0; i < actionTypeArr.Length; i++)
+                {
+                    if (EPermissionUtils.ChannelPermissionType().ContainsKey(actionTypeArr[i]))
+                    {
+                        cblActionType.Items.Add(new ListItem(EPermissionUtils.GetChnanelPermissionText(actionTypeArr[i]) + " ", actionTypeArr[i]));
+                    }
+                }
+            }
+        }
     }
 }

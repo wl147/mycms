@@ -82,8 +82,22 @@
         <tr>
           <td>超级管理角色：</td>
           <td>
-            <asp:DropDownList ID="AdministratorRoles" runat="server"></asp:DropDownList>
-          </td>
+            <asp:Repeater ID="rptContents" runat="server" onitemdatabound="rptContents_ItemDataBound">
+              <itemtemplate>
+                <tr>
+                  <td>
+                    <asp:HiddenField ID="hidName" Value='<%#Eval("NodeName") %>' runat="server" />
+                    <asp:HiddenField ID="hidActionType" Value='<%#Eval("ChannelPermissions") %>' runat="server" />
+                    <%#Eval("NodeName")%>
+                  </td>
+                  <td>
+                    <%--<asp:CheckBoxList ID="ChannelPermissions" RepeatColumns="7" RepeatDirection="Horizontal" class="checkboxlist" runat="server"></asp:CheckBoxList>       --%>
+                    <asp:CheckBoxList ID="cblActionType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>  
+                  </td>          
+               </tr>
+              </itemtemplate>
+           </asp:Repeater>
+          </td>         
         </tr>
     </table>
 
