@@ -41,6 +41,24 @@ namespace SiteServer.CMS.Provider
 
             ExecuteNonQuery(trans, SqlInsert, insertParms);
         }
+        public void InsertWithTransNew(SystemPermissionsInfo info, IDbTransaction trans)
+        {
+            //if (IsExists(info.RoleName, info.PublishmentSystemId, trans))
+            //{
+            //    DeleteWithTrans(info.RoleName, info.PublishmentSystemId, trans);
+            //}
+
+            var insertParms = new IDataParameter[]
+            {
+                GetParameter(ParmRoleRoleName, EDataType.NVarChar, 255, info.RoleName),
+                GetParameter(ParmPublishmentSystemId, EDataType.Integer, info.PublishmentSystemId),
+                GetParameter(ParmNodeIdCollection, EDataType.Text, info.NodeIdCollection),
+                GetParameter(ParmChannelPermissions, EDataType.Text, info.ChannelPermissions),
+                GetParameter(ParmWebsitePermissions, EDataType.Text, info.WebsitePermissions)
+            };
+
+            ExecuteNonQuery(trans, SqlInsert, insertParms);
+        }
 
 
         public void DeleteWithTrans(string roleName, IDbTransaction trans)
@@ -403,7 +421,7 @@ namespace SiteServer.CMS.Provider
         }
         public DataTable GetAllList()
         {
-            string sql = $@"select NodeId,NodeName,('cms_contentView,cms_contentAdd,cms_contentEdit,cms_contentDelete') as ChannelPermissions from siteserver_node where NodeModelType in(1,2,3,4)";
+            string sql = $@"select NodeId,NodeName,PublishmentSystemId,('cms_contentView,cms_contentAdd,cms_contentEdit,cms_contentDelete') as ChannelPermissions from siteserver_node where NodeModelType in(1,2,3,4) and NodeId <> PublishmentSystemId and ParentsCount=1 and PublishmentSystemId=1";
             DataSet ds = ExecuteDataset(sql);
             //重组列表
             DataTable oldData = ds.Tables[0] as DataTable;

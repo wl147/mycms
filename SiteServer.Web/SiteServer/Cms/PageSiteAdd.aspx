@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageSiteAdd" %>
+﻿<%@ Page Language="C#"  AutoEventWireup="true" Inherits="SiteServer.BackgroundPages.Cms.PageSiteAdd" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 
 <!DOCTYPE html>
@@ -111,7 +111,7 @@
         $('#alertMessage').html(tips);
         $('#alert').show();
     }
-</script>
+</script> 
     <form class="form-inline" runat="server">
   <asp:Literal id="ltlBreadCrumb" runat="server" />
   <bairong:alerts runat="server" />
@@ -204,7 +204,8 @@
       <itemtemplate>
         <tr>
           <td>
-            <asp:HiddenField ID="hidName" Value='<%#Eval("NodeName") %>' runat="server" />
+            <asp:HiddenField ID="hidName" Value='<%#Eval("NodeId") %>' runat="server" />
+              <asp:HiddenField ID="hidPublishmentSystemId" Value='<%#Eval("PublishmentSystemId") %>' runat="server" />
             <asp:HiddenField ID="hidActionType" Value='<%#Eval("ChannelPermissions") %>' runat="server" />
             <%#Eval("NodeName")%>
           </td>

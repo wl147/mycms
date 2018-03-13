@@ -42,6 +42,33 @@ namespace SiteServer.CMS.Provider
 			}
             BaiRongDataProvider.RoleDao.InsertRole(roleName, creatorUserName, description);
 		}
+        public void InsertRoleAndPermissionsParty( List<SystemPermissionsInfo> systemPermissionsInfoList)
+        {
+            using (var conn = GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+
+
+                        foreach (var systemPermissionsInfo in systemPermissionsInfoList)
+                        {
+                            DataProvider.SystemPermissionsDao.InsertWithTransNew(systemPermissionsInfo, trans);
+                        }
+
+                        trans.Commit();
+                    }
+                    catch(System.Exception e)
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+            //BaiRongDataProvider.RoleDao.InsertRole(roleName, creatorUserName, description);
+        }
 
         public void UpdatePublishmentPermissions(string roleName, List<SystemPermissionsInfo> systemPermissionsInfoList)
         {

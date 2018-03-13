@@ -14,10 +14,11 @@ using BaiRong.Core.Configuration;
 using System.Data;
 using BaiRong.Core.Model.Enumerations;
 using BaiRong.Core.Permissions;
+using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-   public class PageSiteAdd : BasePageCms
+    public class PageSiteAdd : BasePageCms
     {
         public TextBox PublishmentSystemArea;
         public RadioButtonList CblPublishmentSystemType;
@@ -75,12 +76,12 @@ namespace SiteServer.BackgroundPages.Cms
             var categoryDic = DataProvider.MechanismDao.GetMechanismCategoryAll();
             foreach (var type in typeDic)
             {
-                var listItem = new ListItem( type.Value,type.Key.ToString());
+                var listItem = new ListItem(type.Value, type.Key.ToString());
                 CblPublishmentSystemType.Items.Add(listItem);
             }
             foreach (var category in categoryDic)
             {
-                var listItem = new ListItem(category.Value,category.Key.ToString());
+                var listItem = new ListItem(category.Value, category.Key.ToString());
                 CblPublishmentSystemCategory.Items.Add(listItem);
             }
 
@@ -99,11 +100,11 @@ namespace SiteServer.BackgroundPages.Cms
             {
                 dt = DataProvider.SystemPermissionsDao.GetList(PermissionsManager.GetPermissions(Body.AdministratorInfo.UserName).Roles[1]);
             }
-                
+
             rptContents.DataSource = dt;
             //rptContents.ItemDataBound += rptContents_ItemDataBound;
 
-            rptContents.DataBind();           
+            rptContents.DataBind();
 
         }
 
@@ -125,9 +126,13 @@ namespace SiteServer.BackgroundPages.Cms
                 newPublishmentSystemInfo.ImageUrl = ImageUrl.Text;
                 newPublishmentSystemInfo.ParentPublishmentSystemId = PublishmentSystemInfo.PublishmentSystemId;
                 newPublishmentSystemInfo.ParentsCount = PublishmentSystemInfo.ParentsCount + 1; //PublishmentSystemManager.GetPublishmentSystemLevel(PublishmentSystemInfo.PublishmentSystemId)+1;
+
+
+                int thePublishmentSystemId = 0;
+
                 try
                 {
-                    var thePublishmentSystemId = DataProvider.NodeDao.InsertPublishmentSystemInfo(newPublishmentSystemInfo,PublishmentSystemInfo, Body.AdministratorName);
+                   thePublishmentSystemId = DataProvider.NodeDao.InsertPublishmentSystemInfo(newPublishmentSystemInfo, PublishmentSystemInfo, Body.AdministratorName);
                     if (thePublishmentSystemId > 0)
                     {
                         Body.AddAdminLog("添加站点属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
@@ -139,12 +144,45 @@ namespace SiteServer.BackgroundPages.Cms
                     else
                     {
                         FailMessage("站点添加失败！");
-                    }                   
+                    }
                 }
                 catch (Exception ex)
                 {
                     FailMessage(ex, "站点添加失败！");
                 }
+                if (thePublishmentSystemId > 0)
+                {
+                    var systemPermissionlist = new List<SystemPermissionsInfo>();
+                    int publishmentSystemId = thePublishmentSystemId;
+                    for (int i = 0; i < rptContents.Items.Count; i++)
+                    {
+                        string nodeId = ((HiddenField)rptContents.Items[i].FindControl("hidName")).Value;
+                        //int publishmentSystemId = int.Parse(((HiddenField)rptContents.Items[i].FindControl("hidPublishmentSystemId")).Value);                   
+                        string roleName = "superManager_" + publishmentSystemId.ToString();
+                        string channelPermissions = string.Empty;
+                        CheckBoxList cblActionType = (CheckBoxList)rptContents.Items[i].FindControl("cblActionType");
+                        for (int n = 0; n < cblActionType.Items.Count; n++)
+                        {
+                            if (cblActionType.Items[n].Selected == true)
+                            {
+                                channelPermissions = channelPermissions + cblActionType.Items[n].Value + ",";
+                            }
+                        }
+                        channelPermissions = channelPermissions.TrimEnd(',');
+                        systemPermissionlist.Add(new SystemPermissionsInfo(roleName, publishmentSystemId, nodeId, channelPermissions, string.Empty));
+                    }
+                    try
+                    {
+                        DataProvider.PermissionsDao.InsertRoleAndPermissionsParty(systemPermissionlist);
+                        PermissionsManager.ClearAllCache();
+                        SuccessMessage("角色添加成功！");
+                    }
+                    catch (Exception ex)
+                    {
+                        FailMessage(ex, $"角色添加失败，{ex.Message}");
+                    }
+                }
+                
             }
         }
 
@@ -161,8 +199,10 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     if (EPermissionUtils.ChannelPermissionType().ContainsKey(actionTypeArr[i]))
                     {
-                        cblActionType.Items.Add(new ListItem(EPermissionUtils.GetChnanelPermissionText(actionTypeArr[i]) + " ", actionTypeArr[i]));
-                    }                                     
+                        ListItem item =new ListItem(EPermissionUtils.GetChnanelPermissionText(actionTypeArr[i]) + " ", actionTypeArr[i]);
+                        item.Selected = true;
+                        cblActionType.Items.Add(item);
+                    }
                 }
 
 
@@ -238,5 +278,6 @@ namespace SiteServer.BackgroundPages.Cms
                 //ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
             }
         }
+        
     }
 }
