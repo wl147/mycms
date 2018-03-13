@@ -61,6 +61,8 @@ namespace SiteServer.BackgroundPages
         public void Page_Load(object sender, EventArgs e)
 
         {
+
+
             if (IsForbidden) return;
 
             LtlSiteName .Text= PublishmentSystemManager.GetPublishmentSystemInfo(Body.AdministratorInfo.PublishmentSystemId).PublishmentSystemName;
@@ -138,7 +140,7 @@ namespace SiteServer.BackgroundPages
                     {
                         //showPublishmentSystem = false; 没有站点权限
                     }
-
+                    if (Body.AdministratorInfo.PublishmentSystemId != PublishmentSystemId) showPublishmentSystem = false;
                     if (!showPublishmentSystem)
                     {
                         PageUtils.RedirectToErrorPage("您没有此发布系统的操作权限！");

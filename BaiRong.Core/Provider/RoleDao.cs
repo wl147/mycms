@@ -239,16 +239,32 @@ namespace BaiRong.Core.Provider
             ExecuteNonQuery(sqlString, parms);
         }
 
-        public void InsertRole(string roleName, string creatorUserName, string description)
+        public void InsertRole(string roleName, string creatorUserName, string description,int publishmentSystemId)
         {
-            var sqlString = "INSERT INTO bairong_Roles (RoleName, CreatorUserName, Description) VALUES (@RoleName, @CreatorUserName, @Description)";
+            var sqlString = "INSERT INTO bairong_Roles (RoleName, CreatorUserName, Description, PublishmentSystemId) VALUES (@RoleName, @CreatorUserName, @Description,@PublishmentSystemId)";
 
             var parms = new IDataParameter[]
 			{
 				GetParameter(ParmRoleName, EDataType.NVarChar, 255, roleName),
                 GetParameter(ParmCreatorUsername, EDataType.NVarChar, 255, creatorUserName),
+                GetParameter(ParmDescription, EDataType.NVarChar, 255, description),
+                GetParameter(ParmPublishmentSystemId,EDataType.Integer, publishmentSystemId),
+
+            };
+
+            ExecuteNonQuery(sqlString, parms);
+        }
+
+        public void InsertRole(string roleName, string creatorUserName, string description)
+        {
+            var sqlString = "INSERT INTO bairong_Roles (RoleName, CreatorUserName, Description) VALUES (@RoleName, @CreatorUserName, @Description)";
+
+            var parms = new IDataParameter[]
+            {
+                GetParameter(ParmRoleName, EDataType.NVarChar, 255, roleName),
+                GetParameter(ParmCreatorUsername, EDataType.NVarChar, 255, creatorUserName),
                 GetParameter(ParmDescription, EDataType.NVarChar, 255, description)
-			};
+            };
 
             ExecuteNonQuery(sqlString, parms);
         }

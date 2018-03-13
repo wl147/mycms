@@ -15,6 +15,7 @@ using System.Data;
 using BaiRong.Core.Model.Enumerations;
 using BaiRong.Core.Permissions;
 using SiteServer.CMS.Model;
+using BaiRong.Core.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
@@ -118,11 +119,11 @@ namespace SiteServer.BackgroundPages.Cms
                 newPublishmentSystemInfo.Area = PublishmentSystemArea.Text;
                 newPublishmentSystemInfo.OrganizationTypeId = TranslateUtils.ToInt(CblPublishmentSystemType.SelectedValue);
                 newPublishmentSystemInfo.OrganizationCategory = TranslateUtils.ToInt(CblPublishmentSystemCategory.SelectedValue);
-                newPublishmentSystemInfo.TelePhone = TelePhone.Text;
+                newPublishmentSystemInfo.TelePhone = TelePhone.Text.Trim();
                 newPublishmentSystemInfo.Address = Address.Text;
                 newPublishmentSystemInfo.BasicFacts = BasicFacts.Text;
                 newPublishmentSystemInfo.Characteristic = Characteristic.Text;
-                newPublishmentSystemInfo.AdministratorAccount = AdministratorAccount.Text;
+                newPublishmentSystemInfo.AdministratorAccount = AdministratorAccount.Text.Trim();
                 newPublishmentSystemInfo.ImageUrl = ImageUrl.Text;
                 newPublishmentSystemInfo.ParentPublishmentSystemId = PublishmentSystemInfo.PublishmentSystemId;
                 newPublishmentSystemInfo.ParentsCount = PublishmentSystemInfo.ParentsCount + 1; //PublishmentSystemManager.GetPublishmentSystemLevel(PublishmentSystemInfo.PublishmentSystemId)+1;
@@ -132,33 +133,22 @@ namespace SiteServer.BackgroundPages.Cms
 
                 try
                 {
-                   thePublishmentSystemId = DataProvider.NodeDao.InsertPublishmentSystemInfo(newPublishmentSystemInfo, PublishmentSystemInfo, Body.AdministratorName);
-                    if (thePublishmentSystemId > 0)
-                    {
-                        Body.AddAdminLog("添加站点属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
-                        SuccessMessage("站点添加成功！");
-                        // AddWaitAndRedirectScript(Sys.PagePublishmentSystem.GetRedirectUrl());
-                        // AddWaitAndRedirectScript($@"/siteserver/loading.aspx?RedirectType=Loading&RedirectUrl=cms/siteManagement.aspx?PublishmentSystemID={PublishmentSystemId}");
-                        AddWaitAndRedirectScript($@"/siteserver/cms/PagePublishmentSystem.aspx?PublishmentSystemID={PublishmentSystemId}");
-                    }
-                    else
-                    {
-                        FailMessage("站点添加失败！");
-                    }
+                    thePublishmentSystemId = DataProvider.NodeDao.InsertPublishmentSystemInfo(newPublishmentSystemInfo, PublishmentSystemInfo, Body.AdministratorName);
+                    
                 }
                 catch (Exception ex)
                 {
                     FailMessage(ex, "站点添加失败！");
                 }
-                if (thePublishmentSystemId > 0)
+                if (thePublishmentSystemId > 0)//添加站点成功
                 {
                     var systemPermissionlist = new List<SystemPermissionsInfo>();
                     int publishmentSystemId = thePublishmentSystemId;
+                    string roleName = "superManager_" + publishmentSystemId.ToString();
                     for (int i = 0; i < rptContents.Items.Count; i++)
                     {
                         string nodeId = ((HiddenField)rptContents.Items[i].FindControl("hidName")).Value;
-                        //int publishmentSystemId = int.Parse(((HiddenField)rptContents.Items[i].FindControl("hidPublishmentSystemId")).Value);                   
-                        string roleName = "superManager_" + publishmentSystemId.ToString();
+                        //int publishmentSystemId = int.Parse(((HiddenField)rptContents.Items[i].FindControl("hidPublishmentSystemId")).Value);                                           
                         string channelPermissions = string.Empty;
                         CheckBoxList cblActionType = (CheckBoxList)rptContents.Items[i].FindControl("cblActionType");
                         for (int n = 0; n < cblActionType.Items.Count; n++)
@@ -173,16 +163,57 @@ namespace SiteServer.BackgroundPages.Cms
                     }
                     try
                     {
-                        DataProvider.PermissionsDao.InsertRoleAndPermissionsParty(systemPermissionlist);
+                        DataProvider.PermissionsDao.InsertRoleAndPermissionsParty(systemPermissionlist);//更新权限角色表
                         PermissionsManager.ClearAllCache();
                         SuccessMessage("角色添加成功！");
                     }
                     catch (Exception ex)
                     {
-                        FailMessage(ex, $"角色添加失败，{ex.Message}");
+                        FailMessage(ex, $"角色添加失败，{ex.Message}");                       
                     }
+                    if (!string.IsNullOrEmpty(newPublishmentSystemInfo.AdministratorAccount))//创建管理员
+                    {
+                        var adminInfo = new AdministratorInfo
+                        {
+                            UserName = newPublishmentSystemInfo.AdministratorAccount,
+                            Password = AdministratorPassWord.Text.Trim(),
+                            CreatorUserName = Body.AdministratorName,
+                            DisplayName = newPublishmentSystemInfo.AdministratorAccount,
+                            Mobile = newPublishmentSystemInfo.TelePhone,
+                            PublishmentSystemId = thePublishmentSystemId
+                        };
+
+                        if (!string.IsNullOrEmpty(BaiRongDataProvider.AdministratorDao.GetUserNameByMobile(newPublishmentSystemInfo.TelePhone)))
+                        {
+                            FailMessage("管理员添加失败，手机号码已存在");
+                            return;
+                        }
+
+                        string errorMessage;
+                        if (!AdminManager.CreateAdministrator(adminInfo, out errorMessage))
+                        {
+                            FailMessage($"管理员添加失败：{errorMessage}");
+                            return;
+                        }
+
+                        Body.AddAdminLog("添加管理员", $"管理员:{newPublishmentSystemInfo.AdministratorAccount}");
+                        SuccessMessage("管理员添加成功！");
+                    }
+                    BaiRongDataProvider.RoleDao.InsertRole(roleName, Body.AdministratorName, "supermanager_"+ newPublishmentSystemInfo.PublishmentSystemName,thePublishmentSystemId);
+                    BaiRongDataProvider.RoleDao.AddUserToRole(newPublishmentSystemInfo.AdministratorAccount, roleName);
                 }
-                
+                if (thePublishmentSystemId > 0)
+                {
+                    Body.AddAdminLog("添加站点属性", $"站点:{PublishmentSystemInfo.PublishmentSystemName}");
+                    SuccessMessage("站点添加成功！");
+                    // AddWaitAndRedirectScript(Sys.PagePublishmentSystem.GetRedirectUrl());
+                    // AddWaitAndRedirectScript($@"/siteserver/loading.aspx?RedirectType=Loading&RedirectUrl=cms/siteManagement.aspx?PublishmentSystemID={PublishmentSystemId}");
+                    AddWaitAndRedirectScript($@"/siteserver/cms/PagePublishmentSystem.aspx?PublishmentSystemID={PublishmentSystemId}");
+                }
+                else
+                {
+                    FailMessage("站点添加失败！");
+                }
             }
         }
 

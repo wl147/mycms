@@ -49,6 +49,7 @@ namespace SiteServer.BackgroundPages.Cms
         private string _tableName;
 
         protected override bool IsSinglePage => true;
+        //protected new int PublishmentSystemId=1;
 
         public static string GetRedirectUrlOfAdd(int publishmentSystemId, int nodeId, string returnUrl)
         {
@@ -83,9 +84,10 @@ namespace SiteServer.BackgroundPages.Cms
             _isAjaxSubmit = Body.GetQueryBool("isAjaxSubmit");
             _isPreview = Body.GetQueryBool("isPreview");
 
-            _nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, nodeId);
+            _nodeInfo = NodeManager.GetNodeInfo(1, nodeId);
             _tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, _nodeInfo);
             _tableName = NodeManager.GetTableName(PublishmentSystemInfo, _nodeInfo);
+            //_tableName = "model_content";
             _relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeId);
             ContentInfo contentInfo = null;
 

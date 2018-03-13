@@ -59,7 +59,7 @@ namespace SiteServer.BackgroundPages.Cms
             var nodeID = Body.GetQueryInt("NodeID");
             var childNodeId= Body.GetQueryInt("ChildNodeId");
             relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeID);
-            nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, nodeID);
+            nodeInfo = NodeManager.GetNodeInfo(1, nodeID);
             tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
             tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
             styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
@@ -107,8 +107,9 @@ namespace SiteServer.BackgroundPages.Cms
             }
             else
             {
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend(tableName, nodeID, ETriState.All, administratorName);
-            }
+                var test = tableName;
+                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend("model_content", nodeID, ETriState.All, administratorName,PublishmentSystemId);
+             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
             spContents.SortMode = SortMode.DESC;
