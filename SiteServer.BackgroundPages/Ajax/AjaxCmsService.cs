@@ -78,7 +78,8 @@ namespace SiteServer.BackgroundPages.Ajax
 
             if (type == TypeGetTitles)
             {
-                var publishmentSystemId = TranslateUtils.ToInt(Request["publishmentSystemID"]);
+                //var publishmentSystemId = TranslateUtils.ToInt(Request["publishmentSystemID"]);
+                var publishmentSystemId = 1;
                 var channelId = TranslateUtils.ToInt(Request["channelID"]);
                 var nodeId = TranslateUtils.ToInt(Request["nodeID"]);
                 if (channelId > 0)

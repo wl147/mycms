@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>接口文档</title>
+	<script type="text/javascript">
+	function isInnerIPFn(){
+   // 获取当前页面url
+    var curPageUrl = window.location.href;
+    console.log('curPageUrl-0  '+curPageUrl);
+
+    var reg1 = /(http|ftp|https|www):\/\//g;//去掉前缀
+    curPageUrl =curPageUrl.replace(reg1,'');
+    // console.log('curPageUrl-1  '+curPageUrl);
+
+    var reg2 = /\:+/g;//替换冒号为一点
+    curPageUrl =curPageUrl.replace(reg2,'.');
+    // console.log('curPageUrl-2  '+curPageUrl);
+
+    curPageUrl = curPageUrl.split('.');//通过一点来划分数组
+    console.log(curPageUrl);
+
+
+    var ipAddress = curPageUrl[0]+'.'+curPageUrl[1]+'.'+curPageUrl[2]+'.'+curPageUrl[3];
+    alert(ipAddress);
+    var isInnerIp = false;//默认给定IP不是内网IP      
+    var ipNum = getIpNum(ipAddress);      
+    /** 
+     * 私有IP：A类  10.0.0.0    -10.255.255.255 
+     *       B类  172.16.0.0  -172.31.255.255    
+     *       C类  192.168.0.0 -192.168.255.255   
+     *       D类   127.0.0.0   -127.255.255.255(环回地址)  
+     **/     
+    var aBegin = getIpNum("10.0.0.0");      
+    var aEnd = getIpNum("10.255.255.255");      
+    var bBegin = getIpNum("172.16.0.0");      
+    var bEnd = getIpNum("172.31.255.255");      
+    var cBegin = getIpNum("192.168.0.0");      
+    var cEnd = getIpNum("192.168.255.255");   
+    var dBegin = getIpNum("127.0.0.0");      
+    var dEnd = getIpNum("127.255.255.255");  
+    isInnerIp = isInner(ipNum,aBegin,aEnd) || isInner(ipNum,bBegin,bEnd) || isInner(ipNum,cBegin,cEnd) || isInner(ipNum,dBegin,dEnd);  
+    console.log('是否是内网:'+isInnerIp);    
+    return isInnerIp;  
+}  
+function getIpNum(ipAddress) {/*获取IP数*/      
+    var ip = ipAddress.split(".");      
+    var a = parseInt(ip[0]);      
+    var b = parseInt(ip[1]);      
+    var c = parseInt(ip[2]);      
+    var d = parseInt(ip[3]);  
+    var ipNum = a * 256 * 256 * 256 + b * 256 * 256 + c * 256 + d;      
+    return ipNum;      
+}     
+
+function isInner(userIp,begin,end){      
+    return (userIp>=begin) && (userIp<=end);      
+}  
+alert(isInnerIPFn());
+
+	</script>
+    <style type="text/css">
+      .container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding-top: 50px;
+        position: relative; }
+
+      .content {
+        width: 1200px;
+        margin: 0 auto;
+        min-height: 1200px;
+        border: 2px solid #f4f4f4;
+        border-radius: 5px;
+        box-shadow: 5px 5px 5px #999;
+        padding: 30px 66px;
+        box-sizing: border-box;;
+       }
+
+       h1{
+         padding-bottom: 20px;
+         border-bottom: 1px solid #171b1c;
+
+       }
+
+       .link{
+         color: #0366d6;
+         text-decoration: none;
+         font-size: 20px;
+       }
+
+       .link:hover{
+         text-decoration: underline;
+       }
+
+       .ol{
+         margin-bottom: 80px;
+       }
+
+       .item{
+         width: 100%;
+         margin: 30px 0px 60px 0px;
+       }
+
+       pre{
+         background-color: #f6f8fa;
+         border-radius: 3px;
+         padding: 16px;
+         font-size: 16px;
+         line-height: 1.5;
+         color: #333;
+       }
+
+       .table{width: 80%;}
+
+       h3{
+         margin-top: 50px;
+       }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+      <div class="content">
+         <h1>目录：</h1>
+         <ol class="ol">
+           <li><a href="#getUserIdentity" class="link">获取用户类型</a></li>
+           <li><a href="#getVerificationCode" class="link">获取手机验证码</a></li>
+           <li><a href="#userRegister" class="link">手机注册</a></li>
+           <li><a href="#getHomeInfo" class="link">获取首页信息</a></li>
+           <li><a href="#article" class="link">获取党建新闻信息</a></li>
+           <li><a href="#look" class="link">获取我要学习信息</a></li>
+           <li><a href="#sign" class="link">获取我要参与信息</a></li>
+           <li><a href="#link" class="link">获取内容详情</a></li>
+         </ol>
+         <h1>接口列表：</h1>
+
+         <div class="item">
+           <h2 id="getUserIdentity">1.获取用户类型</h2>
+           <h3>请求url:</h3>
+           <pre>/channel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>无</td>
+               <td>无</td>
+               <td>无</td>
+               <td>无</td>
+               <td>无</td>
+             </tr>
+           </table>
+           <h3>返回示例(bairong_userscategory)：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+     item : [
+       {
+         CategoryId : 1,
+         CategoryName : '党员、预备党员或积极分子',
+       },
+       {
+         CategoryId : 2,
+         CategoryName : '群众',
+       }
+       ...
+     ]
+   }
+}
+           </pre>
+         </div>
+
+         <div class="item">
+           <h2 id="getVerificationCode">2.获取手机验证码</h2>
+           <h3>请求url:</h3>
+           <pre>/search</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>telNumber</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>手机号码</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+     verificationCode : '256585'
+   }
+}
+           </pre>
+         </div>
+
+
+         <div class="item">
+           <h2 id="userRegister">3.注册</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>telNumber</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>电话号码</td>
+             </tr>
+             <tr>
+               <td>communityID</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>社区编码</td>
+             </tr>
+             <tr>
+               <td>userPassword</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户密码</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '注册成功',
+   data : {
+     userId: 231,
+     PublishmentSystemId : '0000011',
+     Mobile: "18780599664"
+   }
+}
+           </pre>
+         </div>
+
+
+         <div class="item">
+            <h2 id="getHomeInfo">4.获取首页信息</h2>
+            <h3>请求url:</h3>
+            <pre>/getHomeInfo</pre>
+            <h3>请求方式:</h3>
+            <pre>GET</pre>
+            <h3>参数类型:</h3>
+            <table class="table table-bordered">
+              <tr>
+                <th>参数</th>
+                <th>是否必选</th>
+                <th>类型</th>
+                <th>默认值</th>
+                <th>说明</th>
+              </tr>
+              <tr>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+              </tr>
+            </table>
+            <h3>返回示例：</h3>
+            <pre>
+{
+  status : 200,
+  info : '获取数据成功',
+  data : {
+    specialBlock ：[
+      {
+         NodeId : 1,
+         ImageUrl : '../../pic'
+      },
+      {
+         NodeId : 2,
+         ImageUrl : '../../pic'
+      }
+	  ...
+    ],
+	noticeBlock ：[
+      {
+         NodeId : 1,
+		 ArticleId:1,
+         Title : '中共中央。。。',
+		 AddDate:'2012-12-12'
+      },
+      {
+         NodeId : 2,
+		 ArticleId:1,
+         Title : '中共中央。。。',
+		 AddDate:'2012-12-12'
+      }
+	  ...
+    ],
+	focusNewsBlock ：[
+      {
+	     NodeId : 1,
+         ArticleId : 1,
+         Title : '中共中央。。。',
+		 AddDate : '2018-03-04',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      },
+      {
+          NodeId : 2,
+         ArticleId : 1,
+         Title : '中共中央。。。',
+		 AddDate : '2018-03-04',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      }
+	  ...
+    ],
+	adBlock ：{
+         NodeId : 1,
+		 ImageUrl : '../../pic'
+    },
+	publicSpiritedBlock ：[
+      {
+         ArticleId : 1,
+         publicTitle : '811全国',
+		 Digs:122,
+		 EnrollCount :20,
+		 TitleImageUrl : '../../pic'
+      },
+      {
+         ArticleId : 2,
+         publicTitle : '811全国',
+		 Digs:122,
+		 EnrollCount :20,
+		 TitleImageUrl : '../../pic'
+      },
+	  ...
+    ],
+	myPositiveValue:100
+	
+  }
+}
+            </pre>
+         </div>
+
+         <div class="item">
+           <h2 id="article">5.获取党建新闻推荐信息</h2>
+           <h3>请求url:</h3>
+           <pre>/article</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>typeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>推荐</td>
+             </tr>
+			 <tr>
+               <td>count</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>分页数量</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+  status : 200,
+  info : '获取数据成功',
+  data : {
+    specialBlock ：[
+      {
+         Article : 1,
+		 Title:'标题'
+         ImageUrl : '../../pic'
+      },
+      {
+         Article : 2,
+		 Title:'标题'
+         ImageUrl : '../../pic'
+      }
+	  ...
+    ],
+	importandBlock ：[
+      {
+         ArticleId : 1,
+         Title : '811全国',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      },
+      {
+         ArticleId : 2,
+         Title : '811全国',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      }
+	  ...
+    ]
+	
+  }
+}
+           </pre>
+         </div>
+ <div class="item">
+           <h2 id="article">6.获取党建新闻二级栏目信息</h2>
+           <h3>请求url:</h3>
+           <pre>/article</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+			  <tr>
+               <td>NodeId</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>栏目Id</td>
+             </tr>
+             <tr>
+               <td>typeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>推荐</td>
+             </tr>
+			 <tr>
+               <td>count</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>分页数量</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+  status : 200,
+  info : '获取数据成功',
+  data : {
+  
+	channelNewsBlock ：[
+      {
+         ArticleId : 1,
+         Title : '811全国',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      },
+      {
+         ArticleId : 2,
+         Title : '811全国',
+		 Digs:122,
+		 Comments:20,
+		 ImageUrl : '../../pic'
+      }
+	  ...
+    ]
+	
+  }
+}
+           </pre>
+         </div>
+
+         <div class="item">
+            <h2 id="look">7.获取我要学习信息</h2>
+            <h3>请求url:</h3>
+            <pre>/look</pre>
+            <h3>请求方式:</h3>
+            <pre>GET</pre>
+            <h3>参数类型:</h3>
+            <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>UserId</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>用户Id</td>
+             </tr>
+			 <tr>
+               <td>count</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>分页数量</td>
+             </tr>
+            </table>
+            <h3>返回示例：</h3>
+            <pre>
+{
+  status : 200,
+  info : '获取数据成功',
+  data : {
+    UserInfoBlock ：[
+      {
+         UserName : '张三',
+		 PhotoUrl:'../../pic',
+         StudyLog : '学习记录。。。',
+		 Integral:'累计积分'
+      }
+    ],
+	CoursewareBlock ：[
+      {
+	     NodeId:'1',
+		 ArticleId:'1',
+         Title : 811全国,
+         
+      },
+      {
+          NodeId:'1',
+		 ArticleId:'1',
+         Title : 811全国,
+      }
+	  ...
+    ]
+	
+  }
+}
+            </pre>
+         </div>
+
+         <div class="item">
+           <h2 id="sign">7.获取我要参与信息</h2>
+           <h3>请求url:</h3>
+           <pre>/sign</pre>
+           <h3>请求方式:</h3>
+           <pre>POST</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>userId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>用户Id</td>
+             </tr>
+			 <tr>
+               <td>count</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>/</td>
+               <td>分页数量</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+  status : 200,
+  info : '获取数据成功',
+  data : {
+    volunteerBlock ：[
+      {
+          contentId : 1,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+		 picture : '../../pic'
+		 EnrollEndDate:'2012-12-12'
+      }
+      {
+         contentId : 2,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+		 picture : '../../pic'
+		 EnrollEndDate:'2012-12-12'
+      }
+	  ...
+    ],
+	communityBlock ：[
+      {
+         contentId : 1,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+		 picture : '../../pic'
+		 AddDate:'2012-12-12'
+      }
+      {
+         contentId : 2,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+		 picture : '../../pic'
+		 AddDate:'2012-12-12'
+      }
+	  ...
+    ]
+	
+  }
+}
+           </pre>
+         </div>
+
+         <div class="item">
+           <h2 id="link">8.获取内容详情</h2>
+           <h3>请求url:</h3>
+           <pre>/link</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>contentId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>内容Id</td>
+             </tr>
+			 <tr>
+               <td>modelType</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>/</td>
+               <td>数据模型</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+  status : 200,
+  info : '获取链接成功',
+  data : {
+         contentId : 2,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+  }
+}
+
+           </pre>
+         </div>
+  <div class="item">
+           <h2 id="userRegister">9.专题二级栏目</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>NodeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>专题栏目Id</td>
+             </tr>
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+	
+     imageUrl: '',
+     content : '',
+     subObjs: [
+      {
+         nodeId : 1,
+         title : '811全国',
+      }
+      {
+         nodeId : 2,
+         title : '811全国',
+      }
+	  ...
+    ]
+   }
+}
+           </pre>
+         </div>
+		 
+		  <div class="item">
+           <h2 id="userRegister">10.志愿服务详情</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>id</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>文章Id</td>
+             </tr>
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+	
+     title: '招募家庭结对',
+     enrollEndDate  : '2012-12-12',
+	 startDate   : '2012-12-12',
+	 endDate   : '2012-12-12',
+	 address：'四川省。。。',
+	 enrollCount '20',
+	 signedup :'5',
+	 score:'100',
+	 id:'111110',
+	 commentObjs:[
+	 {
+	   username:'张三',
+	   adddate:'2012-12-12 08:09:12',
+	   content:'活动非常。。。'
+	 }
+	 {
+	 username:'李四',
+	   adddate:'2012-12-12 08:09:12',
+	   content:'活动非常。。。'
+	 }
+	 ...
+	 ]
+	 
+     subObjs: [
+      {
+         nodeId : 1,
+         title : '811全国',
+      }
+      {
+         nodeId : 2,
+         title : '811全国',
+      }
+	  ...
+    ]
+   }
+}
+           </pre>
+         </div>
+		 
+		   <div class="item">
+           <h2 id="userRegister">11.学习记录</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>userId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户Id</td>
+             </tr>
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+	
+     title: '招募家庭结对',
+     score  : '5',
+	 lastStudyTime   : '2012-12-12 17:17:05',
+	 endDate   : '2012-12-12',
+   }
+}
+           </pre>
+         </div>
+		  <div class="item">
+           <h2 id="userRegister">12.党建知识分类列表</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>nodeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户Id</td>
+             </tr>
+			  <tr>
+               <td>count</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>数量</td>
+             </tr>
+			<tr>
+               <td>index</td>
+               <td>yes</td>
+               <td>int</td>
+               <td>无</td>
+               <td>加载索引</td>
+             </tr>
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+	
+     {
+	     contentId : 1,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+	 }，{
+	     contentId : 2,
+         title : '811全国',
+		 digs:122,
+		 comments:20,
+	 }
+   }
+}
+           </pre>
+         </div>
+		 
+		   <div class="item">
+           <h2 id="userRegister">13学习课件获取列表</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>typeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>课程类型标识</td>
+             </tr>			 
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+	
+     {
+	     contentId : 1,
+         title : '811全国',
+		 courseType :122,
+		 lastStudyTime:20,
+		 courseTypeName:'必修课',
+	 }，{
+	     contentId : 2,
+         title : '811全国',
+		 courseType :122,
+		 lastStudyTime:20,
+		 courseTypeName:'必修课',
+		
+	 }
+   }
+}
+           </pre>
+         </div>
+ <div class="item">
+           <h2 id="userRegister">14.学习课件详情</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>id</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>课件Id</td>
+             </tr>
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   status : 200,
+   info : '获取数据成功',
+   data : {
+      StudyTime:'5'
+   }
+}
+           </pre>
+         </div>
+		 
+		 
+		 <div class="item">
+           <h2 id="userRegister">15.效果评测</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>userId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户Id</td>
+             </tr>
+			 <tr>
+               <td>typeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>评测类型</td>
+             </tr>
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '获取数据成功',
+   data : {
+   [{
+      id:'1'
+      title:'试题名称',
+	  score:'20',
+	  testAlready:'3',
+	  examinationCount:'5',
+	  startTime:'2012-12-12 15:20:10',
+	  endTime:'2012-12-12 15:20:10',
+	  lastStudyTime:'2012-12-12 15:20:10'
+	  
+	  },
+	  {
+      id:'2'
+      title:'试题名称',
+	  score:'20',
+	  testAlready:'3',
+	  examinationCount:'5',
+	  startTime:'2012-12-12 15:20:10',
+	  endTime:'2012-12-12 15:20:10',
+	  lastStudyTime:'2012-12-12 15:20:10'
+	  },
+	  ]
+	  
+   }
+}
+           </pre>
+         </div>
+		 
+		  <div class="item">
+           <h2 id="userRegister">16.我要投票</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>typeId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>投票状态·</td>
+             </tr>
+			
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '获取数据成功',
+   data : {
+   [{
+      id:'1'
+      title:'投票名称',
+	  startTime:'2012-12-12 15:20:10',
+	  endTime:'2012-12-12 15:20:10'	  
+	  },
+	  {
+       id:'2'
+      title:'投票名称2',
+	  startTime:'2012-12-12 15:20:10',
+	  endTime:'2012-12-12 15:20:10'	  
+	  ]
+	  
+   }
+}
+           </pre>
+         </div>
+		 
+		<div class="item">
+           <h2 id="userRegister">17.我要投票详情</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>Id</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>投票Id</td>
+             </tr>
+			
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '获取数据成功',
+   data : {
+   [{
+      id:'1'
+      title:'投票名称',
+	  rank:'10'
+	  author:'张三',
+	  voteCount:'10',
+      imagurl:'...'	  
+	  },
+	 {
+      id:'2'
+      title:'投票名称',
+	  rank:'10'
+	  author:'张三',
+	  voteCount:'10',
+      imagurl:'...'	  
+	  },
+	  ]
+	  
+   }
+}
+           </pre>
+         </div>
+
+		 		<div class="item">
+           <h2 id="userRegister">18.获取本站党员信息</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>PublishmentSystemId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>站点Id</td>
+             </tr>
+			
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '获取数据成功',
+   data : {
+   [{
+      id:'1'
+      userName:'张三',
+	  photourl:'../pic'
+	  mobile:'张三',
+	   
+	  },
+	 {
+      id:'2'
+      userName:'张三',
+	  photourl:'../pic'
+	  mobile:'张三',
+	   
+	  }
+	  ...
+	  ]
+	  
+   }
+}
+           </pre>
+         </div>
+	<div class="item">
+           <h2 id="userRegister">19.获取用户详情</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>userId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户Id</td>
+             </tr>
+			
+             
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '获取数据成功',
+   data : {
+   [{
+      id:'1'
+      userName:'张三',
+	  PublishmentsystemName:'../pic'
+	  mobile:'1588888888',
+	  phone:'0817-11112222',
+	  enmergencyMobile:'158666222',
+	  otherContact:'....',
+	  address:'四川省....',
+	  qq:'69662222',
+	  mailbox:'.....'
+	   
+	  },
+	 {
+      id:'2'
+      userName:'张三',
+	  PublishmentsystemName:'../pic'
+	  mobile:'1588888888',
+	  phone:'0817-11112222',
+	  enmergencyMobile:'158666222',
+	  otherContact:'....',
+	  address:'四川省....',
+	  qq:'69662222',
+	  mailbox:'.....'
+	   
+	  }
+	  ...
+	  ]
+	  
+   }
+}
+           </pre>
+         </div>
+
+		 <div class="item">
+           <h2 id="userRegister">20.组织关系变更</h2>
+           <h3>请求url:</h3>
+           <pre>/listChannel</pre>
+           <h3>请求方式:</h3>
+           <pre>GET</pre>
+           <h3>参数类型:</h3>
+           <table class="table table-bordered">
+             <tr>
+               <th>参数</th>
+               <th>是否必选</th>
+               <th>类型</th>
+               <th>默认值</th>
+               <th>说明</th>
+             </tr>
+             <tr>
+               <td>publishmentsysten</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>转入站点</td>
+             </tr>
+			 <tr>
+               <td>reason</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>转入原因</td>
+             </tr>
+			 <tr>
+               <td>userId</td>
+               <td>yes</td>
+               <td>string</td>
+               <td>无</td>
+               <td>用户Id</td>
+             </tr>
+
+           </table>
+           <h3>返回示例：</h3>
+           <pre>
+{
+   state : 200,
+   info : '操作成功',
+   data : {
+
+   }
+}
+           </pre>
+         </div>
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+</body>
+
+</html>

@@ -49,8 +49,8 @@ namespace SiteServer.BackgroundPages.Cms
         private string _tableName;
 
         protected override bool IsSinglePage => true;
-        //protected new int PublishmentSystemId=1;
-
+        protected new int PublishmentSystemId=1;
+        protected new PublishmentSystemInfo PublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
         public static string GetRedirectUrlOfAdd(int publishmentSystemId, int nodeId, string returnUrl)
         {
             return PageUtils.GetCmsUrl(nameof(PageContentAdd), new NameValueCollection

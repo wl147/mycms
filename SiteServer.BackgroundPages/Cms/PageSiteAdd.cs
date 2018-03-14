@@ -36,7 +36,9 @@ namespace SiteServer.BackgroundPages.Cms
         public Button Submit;
         public Button UploadImage;
         public Repeater rptContents;
+        public Repeater rptWebSite;
         public CheckBoxList ChannelPermissions;
+        public CheckBoxList cblWebSiteType;
         public Literal ChannelName;
 
 
@@ -106,7 +108,22 @@ namespace SiteServer.BackgroundPages.Cms
             //rptContents.ItemDataBound += rptContents_ItemDataBound;
 
             rptContents.DataBind();
-
+            List<PermissionConfig> webSitePermissions = new List<PermissionConfig>();
+            foreach (PermissionConfig permission in PermissionConfigManager.Instance.WebsitePermissions)
+            {
+                //if (permission.Name == websitePermission)
+                //{
+                //    WebsitePermissionsPlaceHolder.Visible = true;
+                //    var listItem = new ListItem(permission.Text, permission.Name);
+                //    WebsitePermissions.Items.Add(listItem);
+                //}
+                if (StringUtils.EqualsIgnoreCase(permission.Type, "party"))
+                {
+                    webSitePermissions.Add(permission);
+                }
+            }
+            rptWebSite.DataSource = webSitePermissions;
+            rptWebSite.DataBind();
         }
 
 
@@ -235,78 +252,22 @@ namespace SiteServer.BackgroundPages.Cms
                         cblActionType.Items.Add(item);
                     }
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //Repeater rptSub = e.Item.FindControl("rptSubList") as Repeater;
-                //var ltlChannelName = e.Item.FindControl("ChannelName") as Literal;
-                //var cblChannelPermissions = e.Item.FindControl("ChannelPermissions") as CheckBoxList;             
-                //var channelPermission=(KeyValuePair<int,List<string>>)e.Item.DataItem;
-                //var nodeInfo = DataProvider.NodeDao.GetNodeInfo(channelPermission.Key);
-                //ltlChannelName.Text = nodeInfo.NodeName;
-                //foreach (PermissionConfig permission in PermissionConfigManager.Instance.ChannelPermissions)
-                //{
-                //    // ChannelPermissionsPlaceHolder.Visible = true;
-                //    if (!string.IsNullOrEmpty(permission.Name))
-                //    {
-                //        if (permission.Name == "cms_contentTranslate") break;
-                //        var listItem = new ListItem(permission.Text, permission.Name);
-                //        cblChannelPermissions.Items.Add(listItem);
-                //    }                    
-                //}
-                //var nodeInfo = DataProvider.NodeDao.GetNodeInfo(nodeId);
-                //ChannelName.Text = nodeInfo.NodeName;
-                //foreach (var nodeId in channerPermissions.Keys)
-                //{
-                //    var nodeInfo = DataProvider.NodeDao.GetNodeInfo(nodeId);
-                //    ChannelName.Text = nodeInfo.NodeName;
-                //    foreach (PermissionConfig permission in PermissionConfigManager.Instance.ChannelPermissions)
-                //    {
-                //        // ChannelPermissionsPlaceHolder.Visible = true;
-                //        if (permission.Name == "cms_contentTranslate") break;
-                //        var listItem = new ListItem(permission.Text, permission.Name);
-                //        ChannelPermissions.Items.Add(listItem);
-                //    }
-                //}
-                //var contentInfo = new ContentInfo(e.Item.DataItem);
-
-                //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
-
-                //var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
-
-                //ltlItemStatus.Text =
-                //    $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
-                //        PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
-
-                //if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
-                //{
-                //    ltlItemEditUrl.Text =
-                //        $"<a href=\"{WebUtils.GetContentAddEditUrl(PublishmentSystemId, nodeInfo, contentInfo.Id, PageUrl)}\">编辑</a>";
-                //}
-
-                //ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
-
-                //ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
+            }
+        }
+        public void rptWebSite_ItemDataBound(object sender,RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                string permissionName = ((HiddenField)e.Item.FindControl("hidPermission")).Value;
+                CheckBoxList cblWebSiteType = (CheckBoxList)e.Item.FindControl("cblWebSiteType");
+                ListItem itemView = new ListItem("浏览", permissionName+"_view");
+                ListItem itemAdd = new ListItem("添加", permissionName + "_add");
+                ListItem itemEdit = new ListItem("修改", permissionName + "_edit");
+                ListItem itemDelete = new ListItem("删除", permissionName + "_delete");
+                cblWebSiteType.Items.Add(itemView);
+                cblWebSiteType.Items.Add(itemAdd);
+                cblWebSiteType.Items.Add(itemEdit);
+                cblWebSiteType.Items.Add(itemDelete);
             }
         }
         

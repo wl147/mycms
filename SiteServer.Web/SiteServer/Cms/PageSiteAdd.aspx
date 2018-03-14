@@ -111,7 +111,9 @@
         $('#alertMessage').html(tips);
         $('#alert').show();
     }
-</script> 
+</script>
+ 
+
     <form class="form-inline" runat="server">
   <asp:Literal id="ltlBreadCrumb" runat="server" />
   <bairong:alerts runat="server" />
@@ -212,6 +214,19 @@
           <td>
             <%--<asp:CheckBoxList ID="ChannelPermissions" RepeatColumns="7" RepeatDirection="Horizontal" class="checkboxlist" runat="server"></asp:CheckBoxList>       --%>
             <asp:CheckBoxList ID="cblActionType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>  
+          </td>          
+        </tr>
+      </itemtemplate>
+    </asp:Repeater>
+     <asp:Repeater ID="rptWebSite" runat="server" onitemdatabound="rptWebSite_ItemDataBound">
+      <itemtemplate>
+        <tr>
+          <td>
+            <asp:HiddenField ID="hidPermission" Value='<%#((BaiRong.Core.Configuration.PermissionConfig)(Container.DataItem)).Name %>' runat="server" />           
+            <%#((BaiRong.Core.Configuration.PermissionConfig)(Container.DataItem)).Text%>
+          </td>
+          <td>
+            <asp:CheckBoxList ID="cblWebSiteType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>  
           </td>          
         </tr>
       </itemtemplate>

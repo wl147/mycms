@@ -57,7 +57,13 @@ namespace SiteServer.BackgroundPages
 	            return _publishmentSystemInfo;
 	        }
 	    }
-
+        public PublishmentSystemInfo MainSiteInfo
+        {
+            get
+            {
+               return PublishmentSystemManager.GetPublishmentSystemInfo(1);
+            }
+        }
 	    public void BreadCrumbWithItemTitle(string leftMenuId, string pageTitle, string itemTitle, string permission)
         {
             BreadCrumbWithItemTitle(leftMenuId, string.Empty, pageTitle, itemTitle, permission);

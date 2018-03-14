@@ -39,7 +39,7 @@ namespace SiteServer.BackgroundPages.Cms
         private List<int> relatedIdentities;
         private List<TableStyleInfo> styleInfoList;
         private readonly Hashtable valueHashtable = new Hashtable();
-
+        private new int PublishmentSystemId = 1;
         public static string GetRedirectUrl(int publishmentSystemId, int nodeId)
         {
             return PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
@@ -108,7 +108,7 @@ namespace SiteServer.BackgroundPages.Cms
             else
             {
                 var test = tableName;
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend("model_content", nodeID, ETriState.All, administratorName,PublishmentSystemId);
+                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend("model_content", nodeID, ETriState.All, administratorName,base.PublishmentSystemId);
              }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -124,7 +124,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -219,7 +219,7 @@ $(document).ready(function() {
                 {
                     _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
                     {
-                        {"PublishmentSystemID", PublishmentSystemId.ToString()},
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
                         {"DateFrom", DateFrom.Text},
                         {"SearchType", SearchType.SelectedValue},
