@@ -38,7 +38,7 @@
 
   <table id="contents" class="table table-bordered table-hover">
     <tr class="info thead">
-      <td>内容标题(点击查看) </td>
+      <td width="250">内容标题</td>
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
       <td width="50"> 状态 </td>
       <td width="30">&nbsp;</td>

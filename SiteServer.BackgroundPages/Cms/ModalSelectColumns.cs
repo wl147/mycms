@@ -55,7 +55,7 @@ namespace SiteServer.BackgroundPages.Cms
         }
 
         public void Page_Load(object sender, EventArgs e)
-        {
+         {
             if (IsForbidden) return;
 
             PageUtils.CheckRequestParameter("PublishmentSystemID");
@@ -64,8 +64,10 @@ namespace SiteServer.BackgroundPages.Cms
             _isList = Body.GetQueryBool("IsList");
             if (Body.GetQueryBool("IsContent"))
             {
-                var nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, _relatedIdentity);
-                _tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
+                //var nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, _relatedIdentity);
+                //_tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
+                var nodeInfo = NodeManager.GetNodeInfo(1, _relatedIdentity);
+                _tableStyle = NodeManager.GetTableStyle(PublishmentSystemManager.GetPublishmentSystemInfo(1), nodeInfo);
             }
             else
             {
@@ -203,8 +205,10 @@ namespace SiteServer.BackgroundPages.Cms
             }
             else if (ETableStyleUtils.IsContent(_tableStyle))
             {
-                var nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, _relatedIdentity);
-                var tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
+                //var nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, _relatedIdentity);
+                //var tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
+                var nodeInfo = NodeManager.GetNodeInfo(1, _relatedIdentity);
+                var tableName = NodeManager.GetTableName(PublishmentSystemManager.GetPublishmentSystemInfo(1), nodeInfo);
                 _relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, _relatedIdentity);
                 var attributesOfDisplay = TranslateUtils.StringCollectionToStringCollection(nodeInfo.Additional.ContentAttributesOfDisplay);
 

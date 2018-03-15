@@ -108,7 +108,14 @@ namespace SiteServer.BackgroundPages.Cms
             else
             {
                 var test = tableName;
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend("model_content", nodeID, ETriState.All, administratorName,base.PublishmentSystemId);
+                List<int> nodeList = new List<int>();
+                nodeList.Add(nodeID);
+                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1,nodeID);
+                if (firstChildList != null && firstChildList.Count > 0)
+                {
+
+                }
+                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend(tableName, nodeID, ETriState.All, administratorName,base.PublishmentSystemId);
              }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();

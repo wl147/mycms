@@ -710,6 +710,32 @@ namespace BaiRong.Core.Provider
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString.ToString(), orderByString);
         }
 
+        public string GetSelectCommendForLowerLevel(string tableName, int nodeId, ETriState checkedState, string userNameOnly, int publishmentSystemId)
+        {
+            var orderByString = ETaxisTypeUtils.GetContentOrderByString(ETaxisType.OrderByTaxisDesc);
+
+            var whereString = new StringBuilder();
+            whereString.Append($"WHERE (NodeID = {nodeId}) ");
+
+            if (checkedState == ETriState.True)
+            {
+                whereString.Append("AND IsChecked='True' ");
+            }
+            else if (checkedState == ETriState.False)
+            {
+                whereString.Append("AND IsChecked='False'");
+            }
+
+            if (!string.IsNullOrEmpty(userNameOnly))
+            {
+                whereString.Append($" AND AddUserName = '{userNameOnly}' ");
+            }
+            whereString.Append($" AND PublishmentSystemID = {publishmentSystemId}");
+            //whereString.Append(orderByString);
+
+            return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString.ToString(), orderByString);
+        }
+
         public string GetSelectCommend(string tableName, List<int> nodeIdList, ETriState checkedState)
         {
             var orderByString = ETaxisTypeUtils.GetContentOrderByString(ETaxisType.OrderByTaxisDesc);

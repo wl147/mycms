@@ -489,6 +489,9 @@ namespace BaiRong.Core.AuxiliaryTable
                 styleInfo.DisplayName = "添加日期";
                 styleInfo.InputType = EInputTypeUtils.GetValue(EInputType.DateTime);
                 styleInfo.DefaultValue = Current;
+            }else if (lowerAttributeName==BackgroundContentAttribute.AddUserName.ToLower())
+            {
+                styleInfo.DisplayName = "发布人";
             }
             else if (!string.IsNullOrEmpty(attributeName))
             {
