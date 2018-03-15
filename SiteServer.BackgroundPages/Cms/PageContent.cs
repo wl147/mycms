@@ -111,11 +111,23 @@ namespace SiteServer.BackgroundPages.Cms
                 List<int> nodeList = new List<int>();
                 nodeList.Add(nodeID);
                 var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1,nodeID);
+               
                 if (firstChildList != null && firstChildList.Count > 0)
                 {
-
+                    nodeList.AddRange(firstChildList);
+                    foreach (var firstchild in firstChildList)
+                    {
+                        var secondList= DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
+                        if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
+                    }
                 }
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend(tableName, nodeID, ETriState.All, administratorName,base.PublishmentSystemId);
+                var nodeCollectionIdStr = string.Empty;
+                foreach(int nodeId in nodeList)
+                {
+                    nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
+                }
+                nodeCollectionIdStr=nodeCollectionIdStr.TrimEnd(',');
+                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName,base.PublishmentSystemId);
              }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -189,12 +201,14 @@ $(document).ready(function() {
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
+                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
 
                 ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
 
                 var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
 
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
