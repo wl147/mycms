@@ -53,7 +53,7 @@
         <tr>
           <td>
             <asp:Literal ID="ltlItemTitle" runat="server"></asp:Literal>
-          </td
+          </td>
              <td>
             <asp:Literal ID="ltlCategory" runat="server"></asp:Literal>
           </td>

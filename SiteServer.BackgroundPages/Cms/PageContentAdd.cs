@@ -19,6 +19,7 @@ using SiteServer.CMS.Core.Security;
 using SiteServer.CMS.Core.User;
 using SiteServer.CMS.Model;
 using SiteServer.CMS.Model.Enumerations;
+using System.Linq;
 
 namespace SiteServer.BackgroundPages.Cms
 {
@@ -40,6 +41,10 @@ namespace SiteServer.BackgroundPages.Cms
         public DropDownList DdlTranslateType;
         public PlaceHolder PhStatus;
         public Button BtnSubmit;
+        public PlaceHolder PhSpecial;
+        public PlaceHolder PhCategory;
+        public DropDownList TbSpecial;
+        public DropDownList TbCategory;
 
         private NodeInfo _nodeInfo;
         private List<int> _relatedIdentities;
@@ -152,7 +157,57 @@ var previewUrl = '{PagePreview.GetRedirectUrl(PublishmentSystemId, _nodeInfo.Nod
 <script language=""javascript"" type=""text/javascript"">setInterval(""autoSave()"",{PublishmentSystemInfo.Additional.AutoSaveContentInterval*1000});</script>
 ";
                     }
-
+                    //专题
+                    var specialParentId = DataProvider.NodeDao.GetSpecialParentId();
+                     NodeIdDic = new Dictionary<NodeInfo, List<NodeInfo>>();                    
+                    if (nodeId!=0&&nodeId == specialParentId)
+                    {
+                        PhSpecial.Visible = true;
+                        PhCategory.Visible = true;
+                        var specialNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, specialParentId);
+                        List<NodeInfo> secondLevel = new List<NodeInfo>();
+                        foreach(var nodeInfo in specialNodeIdList)
+                        {
+                            var secondChild= DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeInfo.NodeId);
+                            if (secondChild != null && secondChild.Count > 0)
+                            {
+                                NodeIdDic.Add(nodeInfo, secondChild);
+                            }
+                        }
+                        if(NodeIdDic != null&& NodeIdDic.Count > 0)
+                        {
+                            KeyValuePair<NodeInfo, List <NodeInfo>> kv= NodeIdDic.First();
+                            var defaultItem = new ListItem(kv.Key.NodeName, kv.Key.NodeId.ToString());
+                            defaultItem.Selected = true;
+                            TbSpecial.Items.Add(defaultItem);
+                            foreach(var info in kv.Value)
+                            {
+                                TbCategory.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
+                            }
+                            foreach(var info in specialNodeIdList)
+                            {
+                                if (info.NodeId!=kv.Key.NodeId)
+                                {
+                                    TbSpecial.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //信息类型
+                        var childSpecial = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeId);
+                        if (childSpecial != null && childSpecial.Count > 0)
+                        {
+                            PhCategory.Visible = true;
+                            foreach (var nodeInfo in childSpecial)
+                            {
+                                var item = new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString());
+                                TbCategory.Items.Add(item);
+                            }
+                        }
+                    }
+                  
                     //转移
                     if (AdminUtility.HasChannelPermissions(Body.AdministratorName, PublishmentSystemId, _nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentTranslate))
                     {
@@ -628,6 +683,20 @@ $('#TbTags').keyup(function (e) {
                 }
             }
         }
+        public void TbSpecial_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var currentSelect = TbSpecial.SelectedValue;
+            TbCategory.Items.Clear();
+            var childNodeId= DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(currentSelect));
+            if (childNodeId != null && childNodeId.Count > 0)
+            {
+                foreach(var nodeInfo in childNodeId)
+                {
+                    TbCategory.Items.Add(new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString()));
+                }
+            }
+          
+        }
         private void CopyReferenceFiles(PublishmentSystemInfo targetPublishmentSystemInfo, string sourceUrl)
         {
             var targetUrl = StringUtils.ReplaceFirst(PublishmentSystemInfo.PublishmentSystemDir, sourceUrl, targetPublishmentSystemInfo.PublishmentSystemDir);
@@ -638,5 +707,7 @@ $('#TbTags').keyup(function (e) {
         }
 
         public string ReturnUrl { get; private set; }
+
+        private Dictionary<NodeInfo, List<NodeInfo>> NodeIdDic { get; set; }
     }
 }
