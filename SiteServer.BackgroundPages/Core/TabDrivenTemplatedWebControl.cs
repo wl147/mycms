@@ -186,7 +186,14 @@ namespace SiteServer.BackgroundPages.Core
             Tab tab = new Tab();
             tab.Text = nodeInfo.NodeName;
             tab.Permissions = "cms_contentView,cms_contentAdd";
-            tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";
+            if (nodeInfo.NodeName.Equals("广告管理"))//菜单链接配置
+            {
+                tab.Href = $@"cms/pageAdArea.aspx?PublishmentSystemID={publishmentSystemId}";
+            }
+            else
+            {
+                tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";
+            } 
             tab.IconUrl = "menu/itemContainer.png";
             tab.KeepQueryString = true;
             tab.Target = "right";

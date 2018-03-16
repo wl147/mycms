@@ -158,56 +158,72 @@ var previewUrl = '{PagePreview.GetRedirectUrl(PublishmentSystemId, _nodeInfo.Nod
 ";
                     }
                     //专题
-                    var specialParentId = DataProvider.NodeDao.GetSpecialParentId();
-                     NodeIdDic = new Dictionary<NodeInfo, List<NodeInfo>>();                    
-                    if (nodeId!=0&&nodeId == specialParentId)
+                    if (contentId == 0)
                     {
-                        PhSpecial.Visible = true;
-                        PhCategory.Visible = true;
-                        var specialNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, specialParentId);
-                        List<NodeInfo> secondLevel = new List<NodeInfo>();
-                        foreach(var nodeInfo in specialNodeIdList)
+                        var specialParentId = DataProvider.NodeDao.GetSpecialParentId();
+                        NodeIdDic = new Dictionary<NodeInfo, List<NodeInfo>>();
+                        if (nodeId != 0 && nodeId == specialParentId)
                         {
-                            var secondChild= DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeInfo.NodeId);
-                            if (secondChild != null && secondChild.Count > 0)
+                            PhSpecial.Visible = true;
+                            PhCategory.Visible = true;
+                            var specialNodeIdList = DataProvider.NodeDao.GetNodeInfoListByParentId(1, specialParentId);
+                            List<NodeInfo> secondLevel = new List<NodeInfo>();
+                            foreach (var nodeInfo in specialNodeIdList)
                             {
-                                NodeIdDic.Add(nodeInfo, secondChild);
+                                var secondChild = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeInfo.NodeId);
+                                if (secondChild != null && secondChild.Count > 0)
+                                {
+                                    NodeIdDic.Add(nodeInfo, secondChild);
+                                }
+                            }
+                            if (NodeIdDic != null && NodeIdDic.Count > 0)
+                            {
+                                KeyValuePair<NodeInfo, List<NodeInfo>> kv = NodeIdDic.First();
+                                var defaultItem = new ListItem(kv.Key.NodeName, kv.Key.NodeId.ToString());
+                                defaultItem.Selected = true;
+                                TbSpecial.Items.Add(defaultItem);
+                                foreach (var info in kv.Value)
+                                {
+                                    TbCategory.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
+                                }
+                                foreach (var info in specialNodeIdList)
+                                {
+                                    if (info.NodeId != kv.Key.NodeId)
+                                    {
+                                        TbSpecial.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
+                                    }
+                                }
                             }
                         }
-                        if(NodeIdDic != null&& NodeIdDic.Count > 0)
+                        else
                         {
-                            KeyValuePair<NodeInfo, List <NodeInfo>> kv= NodeIdDic.First();
-                            var defaultItem = new ListItem(kv.Key.NodeName, kv.Key.NodeId.ToString());
-                            defaultItem.Selected = true;
-                            TbSpecial.Items.Add(defaultItem);
-                            foreach(var info in kv.Value)
+                            //信息类型
+                            var childSpecial = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeId);
+                            if (childSpecial != null && childSpecial.Count > 0)
                             {
-                                TbCategory.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
-                            }
-                            foreach(var info in specialNodeIdList)
-                            {
-                                if (info.NodeId!=kv.Key.NodeId)
+                                PhCategory.Visible = true;
+                                foreach (var nodeInfo in childSpecial)
                                 {
-                                    TbSpecial.Items.Add(new ListItem(info.NodeName, info.NodeId.ToString()));
+                                    var item = new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString());
+                                    TbCategory.Items.Add(item);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        //信息类型
-                        var childSpecial = DataProvider.NodeDao.GetNodeInfoListByParentId(1, nodeId);
-                        if (childSpecial != null && childSpecial.Count > 0)
-                        {
-                            PhCategory.Visible = true;
-                            foreach (var nodeInfo in childSpecial)
-                            {
-                                var item = new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString());
-                                TbCategory.Items.Add(item);
-                            }
-                        }
+                        PhSpecial.Visible = false;
+                        PhCategory.Visible = true;
+                        TbCategory.Items.Add(new ListItem(_nodeInfo.NodeName, _nodeInfo.NodeId.ToString()));
+                        //if (_nodeInfo.ParentsCount == 1)
+                        //{
+                        //    PhSpecial.Visible = false;
+                        //    PhCategory.Visible = true;
+                        //    TbSpecial.Items.Add(new ListItem(_nodeInfo.NodeName, _nodeInfo.NodeId.ToString()));
+                        //}else if(_nodeInfo.ParentsCount == 1)
                     }
-                  
+
+
                     //转移
                     if (AdminUtility.HasChannelPermissions(Body.AdministratorName, PublishmentSystemId, _nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentTranslate))
                     {
@@ -423,7 +439,17 @@ $('#TbTags').keyup(function (e) {
                 var contentInfo = ContentUtility.GetContentInfo(_tableStyle);
                 try
                 {
-                    contentInfo.NodeId = _nodeInfo.NodeId;
+                    int nodeId = 0;
+                    //contentInfo.NodeId = _nodeInfo.NodeId;
+                    if (PhCategory.Visible == true)
+                    {
+                        nodeId = Convert.ToInt32(TbCategory.SelectedValue);
+                    }
+                    else
+                    {
+                        nodeId = _nodeInfo.NodeId;
+                    }
+                    contentInfo.NodeId = nodeId;
                     contentInfo.PublishmentSystemId = PublishmentSystemId;
                     contentInfo.AddUserName = Body.AdministratorName;
                     if (contentInfo.AddDate.Year == DateUtils.SqlMinValue.Year)
