@@ -65,7 +65,8 @@ namespace SiteServer.BackgroundPages.Cms
             styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
             var styleInfoList2 = TableStyleManager.GetTableStyleInfoList(tableStyle, "siteserver_Node", relatedIdentities);
             Dictionary<string ,string> category = DataProvider.NodeDao.GetNodeIdListLevel(2, nodeID);
-            
+            int contentNum = 0;
+
             if (nodeInfo.Additional.IsPreviewContents)
             {
                 new Action(() =>
@@ -110,12 +111,25 @@ namespace SiteServer.BackgroundPages.Cms
                 var test = tableName;
                 List<int> nodeList = new List<int>();
                 nodeList.Add(nodeID);
-                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1,nodeID);
+                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1,nodeID);           
                 if (firstChildList != null && firstChildList.Count > 0)
                 {
-
+                    nodeList.AddRange(firstChildList);
+                    foreach (var firstchild in firstChildList)
+                    {
+                        
+                        var secondList= DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
+                        if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
+                    }
                 }
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommend(tableName, nodeID, ETriState.All, administratorName,base.PublishmentSystemId);
+                var nodeCollectionIdStr = string.Empty;
+                foreach(int nodeId in nodeList)
+                {
+                    nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
+                    contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                }
+                nodeCollectionIdStr=nodeCollectionIdStr.TrimEnd(',');
+                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName,base.PublishmentSystemId);
              }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -124,7 +138,7 @@ namespace SiteServer.BackgroundPages.Cms
 
             //分页的时候，不去查询总条数，直接使用栏目的属性：ContentNum
             spContents.IsQueryTotalCount = false;
-            spContents.TotalCount = nodeInfo.ContentNum;
+            spContents.TotalCount = contentNum;//nodeInfo.ContentNum;
 
             if (!IsPostBack)
             {
@@ -189,23 +203,29 @@ $(document).ready(function() {
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
+                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
 
                 ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
 
                 var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
 
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
                         PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
 
+                //if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
+                //{
+                //    ltlItemEditUrl.Text =
+                //        $"<a href=\"{WebUtils.GetContentAddEditUrl(PublishmentSystemId, nodeInfo, contentInfo.Id, PageUrl)}\">编辑</a>";
+                //}
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(PublishmentSystemId, nodeInfo, contentInfo.Id, PageUrl)}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
                 }
-
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
                 ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
@@ -238,5 +258,21 @@ $(document).ready(function() {
                 return _pageUrl;
             }
         }
+        private string GetPageUrlForContent(ContentInfo contentInfo)
+        {
+
+                  return  _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    {
+                        {"PublishmentSystemID", contentInfo.PublishmentSystemId.ToString()},
+                        {"NodeID",contentInfo.NodeId.ToString()},
+                        {"DateFrom", DateFrom.Text},
+                        {"SearchType", SearchType.SelectedValue},
+                        {"Keyword", Keyword.Text},
+                        {"page", Body.GetQueryInt("page", 1).ToString()},
+                        {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+
+        }
+        
     }
 }

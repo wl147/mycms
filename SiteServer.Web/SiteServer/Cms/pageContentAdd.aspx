@@ -29,7 +29,21 @@
                         <td width="100"></td>
                         <td></td>
                     </tr>
-
+                     <asp:PlaceHolder ID="PhSpecial" Visible="false" runat="server">
+                        <tr>
+                            <td>专题栏目：</td>
+                            <td colspan="3">
+                                <asp:DropDownList ID="TbSpecial" MaxLength="50" Width="380" AutoPostBack="true" OnSelectedIndexChanged="TbSpecial_SelectedIndexChanged" runat="server" />                              
+                        </tr>
+                    </asp:PlaceHolder>
+                     <asp:PlaceHolder ID="PhCategory" Visible="false" runat="server">
+                        <tr>
+                            <td>信息分类：</td>
+                            <td colspan="3">
+                                <asp:DropDownList ID="TbCategory" MaxLength="50" Width="380" runat="server" />                              
+                        </tr>
+                    </asp:PlaceHolder>
+                     
                     <bairong:AuxiliaryControl ID="AcAttributes" runat="server" />
 
                     <asp:PlaceHolder ID="PhContentAttributes" runat="server">

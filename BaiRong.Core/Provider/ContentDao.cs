@@ -710,12 +710,12 @@ namespace BaiRong.Core.Provider
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString.ToString(), orderByString);
         }
 
-        public string GetSelectCommendForLowerLevel(string tableName, int nodeId, ETriState checkedState, string userNameOnly, int publishmentSystemId)
+        public string GetSelectCommendForLowerLevel(string tableName, string nodeIdCollection, ETriState checkedState, string userNameOnly, int publishmentSystemId)
         {
             var orderByString = ETaxisTypeUtils.GetContentOrderByString(ETaxisType.OrderByTaxisDesc);
 
             var whereString = new StringBuilder();
-            whereString.Append($"WHERE (NodeID = {nodeId}) ");
+            whereString.Append($"WHERE NodeID IN ({nodeIdCollection}) ");
 
             if (checkedState == ETriState.True)
             {
