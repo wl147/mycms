@@ -821,6 +821,11 @@ namespace BaiRong.Core
             return AddQueryString(GetAdminDirectoryUrl(Combine("user", className.ToLower() + ".aspx")), queryString);
         }
 
+        public static string GetPartyTransUrl(string className, NameValueCollection queryString)
+        {
+            return AddQueryString(GetAdminDirectoryUrl(Combine("cms", className.ToLower() + ".aspx")), queryString);
+        }
+
         public static string GetServiceUrl(string className, NameValueCollection queryString)
         {
             return AddQueryString(GetAdminDirectoryUrl(Combine("service", className.ToLower() + ".aspx")), queryString);

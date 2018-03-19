@@ -15,154 +15,51 @@
         <asp:Literal ID="ltlBreadCrumb" runat="server" />
         <bairong:Alerts runat="server" />
 
-        <div class="well well-small">
-            <table class="table table-noborder">
-                <tr>
-                    <td>用户组：
-                        <asp:DropDownList ID="DdlGroup" AutoPostBack="true" OnSelectedIndexChanged="Search_OnClick" runat="server"></asp:DropDownList>
-                        每页显示条数：
-                        <asp:DropDownList ID="DdlPageNum" class="input-small" AutoPostBack="true" OnSelectedIndexChanged="Search_OnClick" runat="server">
-                            <asp:ListItem Text="默认" Value="0" Selected="true"></asp:ListItem>
-                            <asp:ListItem Text="30" Value="30"></asp:ListItem>
-                            <asp:ListItem Text="50" Value="50"></asp:ListItem>
-                            <asp:ListItem Text="100" Value="100"></asp:ListItem>
-                            <asp:ListItem Text="200" Value="200"></asp:ListItem>
-                            <asp:ListItem Text="300" Value="300"></asp:ListItem>
-                        </asp:DropDownList>
-                        登录次数：
-                        <asp:DropDownList ID="DdlLoginCount" class="input-small" AutoPostBack="true" OnSelectedIndexChanged="Search_OnClick" runat="server">
-                            <asp:ListItem Text="全部" Value="0" Selected="true"></asp:ListItem>
-                            <asp:ListItem Text=">30" Value="30"></asp:ListItem>
-                            <asp:ListItem Text=">50" Value="50"></asp:ListItem>
-                            <asp:ListItem Text=">100" Value="100"></asp:ListItem>
-                            <asp:ListItem Text=">200" Value="200"></asp:ListItem>
-                            <asp:ListItem Text=">300" Value="300"></asp:ListItem>
-                        </asp:DropDownList>
-                    </td>
-                </tr>
-                <tr>
-                    <td>目标：
-                        <asp:DropDownList ID="DdlSearchType" class="input-medium" runat="server"></asp:DropDownList>
-                        关键字：
-                        <asp:TextBox ID="TbKeyword" MaxLength="500" Size="45" runat="server" /> 注册时间：
-                        <asp:DropDownList ID="DdlCreationDate" class="input-medium" AutoPostBack="true" OnSelectedIndexChanged="Search_OnClick" runat="server">
-                            <asp:ListItem Text="全部时间" Value="0" Selected="true"></asp:ListItem>
-                            <asp:ListItem Text="1天内" Value="1"></asp:ListItem>
-                            <asp:ListItem Text="2天内" Value="2"></asp:ListItem>
-                            <asp:ListItem Text="3天内" Value="3"></asp:ListItem>
-                            <asp:ListItem Text="1周内" Value="7"></asp:ListItem>
-                            <asp:ListItem Text="1个月内" Value="30"></asp:ListItem>
-                            <asp:ListItem Text="3个月内" Value="90"></asp:ListItem>
-                            <asp:ListItem Text="半年内" Value="180"></asp:ListItem>
-                            <asp:ListItem Text="1年内" Value="365"></asp:ListItem>
-                        </asp:DropDownList>
-                        最后活动时间：
-                        <asp:DropDownList ID="DdlLastActivityDate" class="input-medium" AutoPostBack="true" OnSelectedIndexChanged="Search_OnClick" runat="server">
-                            <asp:ListItem Text="全部时间" Value="0" Selected="true"></asp:ListItem>
-                            <asp:ListItem Text="1天内" Value="1"></asp:ListItem>
-                            <asp:ListItem Text="2天内" Value="2"></asp:ListItem>
-                            <asp:ListItem Text="3天内" Value="3"></asp:ListItem>
-                            <asp:ListItem Text="1周内" Value="7"></asp:ListItem>
-                            <asp:ListItem Text="1个月内" Value="30"></asp:ListItem>
-                            <asp:ListItem Text="3个月内" Value="90"></asp:ListItem>
-                            <asp:ListItem Text="半年内" Value="180"></asp:ListItem>
-                            <asp:ListItem Text="1年内" Value="365"></asp:ListItem>
-                        </asp:DropDownList>
-                        <asp:Button class="btn" OnClick="Search_OnClick" ID="Search" Text="搜 索" runat="server" />
-                    </td>
-                </tr>
-            </table>
-        </div>
-
         <table class="table table-bordered table-hover">
             <tr class="info thead">
-                 <td width="60">ID</td>
+                <td width="20"><input onclick="_checkFormAll(this.checked)" type="checkbox" /></td>
+                 <td style="display:none" width="60">ID</td>
                  <td width="100">申请人手机号码</td>
                  <td width="100">姓名</td>
                  <td width="80">转入机构</td>
                  <td width="80">申请时间</td>
                  <td width="100">转出审核状态</td>
-                 <td width="100">转出审核状态</td>
-                 <td width="100">操作</td>
-                <%--<td>登录名</td>--%>
-               <%-- <td>显示名</td>
-                <td>邮箱</td>
-                <td>手机</td>
-                <td>注册时间</td>
-                <td>最后活动时间</td>
-                <td>登录次数</td>
-                <td>用户组</td>
-                <td class="center" width="60">投稿数量</td>
-                <td class="center" width="60">&nbsp;</td>
-                <td class="center" width="60">&nbsp;</td>--%>
-                <td width="20"><input onclick="_checkFormAll(this.checked)" type="checkbox" /></td>
+                 <td width="100">转入审核状态</td>
+                 <td style="display:none" width="100">操作</td>
+                
             </tr>
             <asp:Repeater ID="RptContents" runat="server">
                 <ItemTemplate>
                     <tr>
-                        <td>
-                            <asp:Literal ID="ltlID" runat="server"></asp:Literal>
+                         <td class="center">
+                            <asp:Literal ID="ltlSelect" runat="server"></asp:Literal>
                         </td>
-                        <td>
+                        <td class="center" style="display:none">
+                            <asp:Literal ID="ltlID"  runat="server"></asp:Literal>
+                        </td>
+                        <td class="center">
                             <asp:Literal ID="ltlMobilePhone" runat="server"></asp:Literal>
                         </td>
-                        <td>
+                        <td class="center">
                             <asp:Literal ID="ltlUserName" runat="server"></asp:Literal>
                         </td>
-                        <td>
-                            <asp:Literal ID="ltlUserSex" runat="server"></asp:Literal>
+                        <td class="center">
+                            <asp:Literal ID="ltlTransformIn" runat="server"></asp:Literal>
                         </td>
                         <td class="center">
-                            <asp:Literal ID="ltlUserAge" runat="server"></asp:Literal>
+                            <asp:Literal ID="ltlApplyDate" runat="server"></asp:Literal>
                         </td>
                         <td class="center">
-                            <asp:Literal ID="ltlUserPosition" runat="server"></asp:Literal>
+                            <asp:Literal ID="ltlOutCheckState" runat="server"></asp:Literal>
                         </td>
                         <td class="center">
-                            <asp:HyperLink ID="HyperLink2" Text="编辑" runat="server"></asp:HyperLink>
+                            <asp:Literal ID="ltlInCheckState" runat="server"></asp:Literal>
                         </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlSelect" runat="server"></asp:Literal>
-                        </td>
-                    </tr>
-                   <%-- <tr>
-                        <td>
-                            <asp:Literal ID="ltlUserName" runat="server"></asp:Literal>
-                        </td>
-                        <td>
-                            <asp:Literal ID="ltlDisplayName" runat="server"></asp:Literal>
-                        </td>
-                        <td>
-                            <asp:Literal ID="ltlEmail" runat="server"></asp:Literal>
-                        </td>
-                        <td>
-                            <asp:Literal ID="ltlMobile" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlCreationDate" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlLastActivityDate" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlLoginCount" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlGroupName" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlWritingCount" runat="server"></asp:Literal>
-                        </td>
-                        <td class="center">
-                            <asp:HyperLink NavigateUrl="javascript:;" ID="hlChangePassword" Text="重设密码" runat="server"></asp:HyperLink>
-                        </td>
-                        <td class="center">
+                        <td style="display:none" class="center">
                             <asp:HyperLink ID="hlEditLink" Text="编辑" runat="server"></asp:HyperLink>
                         </td>
-                        <td class="center">
-                            <asp:Literal ID="ltlSelect" runat="server"></asp:Literal>
-                        </td>
-                    </tr>--%>
+
+                    </tr>
                 </ItemTemplate>
             </asp:Repeater>
         </table>
@@ -170,13 +67,8 @@
         <bairong:SqlCountPager ID="SpContents" runat="server" class="table table-pager" />
 
         <ul class="breadcrumb breadcrumb-button">
-            <asp:Button class="btn btn-success" ID="BtnAdd" Text="批量审核" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnAddToGroup" Text="批量驳回" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnLock" Text="锁定用户" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnUnLock" Text="解除锁定" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnDelete" Text="删 除" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnExport" Text="导出Excel" runat="server" />
-            <asp:Button class="btn btn-success" ID="BtnImport" Text="导入Excel" runat="server" />
+            <asp:Button class="btn btn-success" ID="BtnCheckYes" Text="审核" runat="server" />
+            <asp:Button class="btn btn-success" ID="BtnCheckNo" Text="驳回" runat="server" />
         </ul>
 
     </form>

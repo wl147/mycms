@@ -26,6 +26,8 @@ namespace BaiRong.Core
         private static TagDao _tagDao;
         private static ContentCheckDao _contentCheckDao;
         private static DepartmentDao _departmentDao;
+        private static PartyDao _partyDao;
+        
         
         private static RoleDao _roleDao;
         private static PermissionsInRolesDao _permissionsInRolesDao;
@@ -88,5 +90,7 @@ namespace BaiRong.Core
         public static UserGroupDao UserGroupDao => _userGroupDao ?? (_userGroupDao = new UserGroupDao());
 
         public static UserLogDao UserLogDao => _userLogDao ?? (_userLogDao = new UserLogDao());
+
+        public static PartyDao PartyDao => _partyDao ?? (_partyDao=new PartyDao());
     }
 }

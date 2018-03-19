@@ -142,6 +142,8 @@
     <Compile Include="Collection\Pair.cs" />
     <Compile Include="Model\Enumerations\ECmsType.cs" />
     <Compile Include="Model\Enumerations\EPermission.cs" />
+    <Compile Include="Model\PartyTransCheckInfo.cs" />
+    <Compile Include="Provider\PartyDao.cs" />
     <Compile Include="SiteFilesAssets.cs" />
     <Compile Include="SiteServerAssets.cs" />
     <Compile Include="ThirdParty\Atom\Atom.AdditionalElements\DublinCore\DcElement.cs" />
