@@ -11,6 +11,9 @@ namespace BaiRong.Core.Model.Enumerations
         GovInteractContent,     //互动交流
         VoteContent,            //投票
         JobContent,	            //招聘
+        Study,
+        TeacherLib,
+        Service,
         UserDefined             //自定义
 	}
 

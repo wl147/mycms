@@ -189,6 +189,17 @@ namespace SiteServer.BackgroundPages.Core
             if (nodeInfo.NodeName.Equals("广告管理"))//菜单链接配置
             {
                 tab.Href = $@"cms/pageAdArea.aspx?PublishmentSystemID={publishmentSystemId}";
+            }else if (nodeInfo.NodeName.Equals("学习课件"))
+            {
+                tab.Href = $@"cms/pageContentStudy.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("师资库"))
+            {
+                tab.Href = $@"cms/pageContentTeachers.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("志愿服务"))
+            {
+                tab.Href = $@"cms/pageContentService.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
             }
             else
             {

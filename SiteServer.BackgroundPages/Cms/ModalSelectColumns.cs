@@ -20,7 +20,7 @@ namespace SiteServer.BackgroundPages.Cms
         private List<int> _relatedIdentities;
         private ETableStyle _tableStyle;
         private bool _isList;
-
+        
         public static string GetOpenWindowStringToChannel(int publishmentSystemId, bool isList)
         {
             return PageUtils.GetOpenWindowString("选择需要显示的项", PageUtils.GetCmsUrl(nameof(ModalSelectColumns), new NameValueCollection

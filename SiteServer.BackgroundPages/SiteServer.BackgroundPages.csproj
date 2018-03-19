@@ -195,6 +195,15 @@
     <Compile Include="Cms\PageConfigurationComment.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageContentService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PageContentStudy.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PageContentTeachers.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Cms\PagePushOutCheck.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
