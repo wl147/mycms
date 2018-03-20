@@ -11,6 +11,7 @@ namespace BaiRong.Core.Model.Enumerations
         GovInteract,
         Vote,
         Job,
+        TeacherLib,
         UserDefined
 	}
 
@@ -47,7 +48,11 @@ namespace BaiRong.Core.Model.Enumerations
             {
                 return "UserDefined";
             }
-			else
+            else if (type == EContentModelType.TeacherLib)
+            {
+                return "TeacherLib";
+            }
+            else
 			{
 				throw new Exception();
 			}

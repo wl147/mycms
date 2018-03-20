@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContent" %>
+﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContentStudy" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 <!DOCTYPE html>
 <html>
@@ -42,6 +42,8 @@
       <td width="200">所属分类</td>
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
       <td width="50"> 状态 </td>
+      <td width="50"> 学习记录</td>
+      <td width="50"> 考题 </td>
       <td width="30">&nbsp;</td>
       <asp:Literal ID="ltlCommandHeadRows" runat="server"></asp:Literal>
       <td width="20">
@@ -60,6 +62,12 @@
           <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
           <td class="center" nowrap>
             <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>
+          </td>
+             <td class="center" nowrap>
+            <asp:Literal ID="ltlStudyRecord" runat="server"></asp:Literal>
+          </td>
+             <td class="center" nowrap>
+            <asp:Literal ID="ltlExamination" runat="server"></asp:Literal>
           </td>
           <td class="center">
             <asp:Literal ID="ltlItemEditUrl" runat="server"></asp:Literal>

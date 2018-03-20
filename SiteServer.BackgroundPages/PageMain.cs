@@ -60,8 +60,7 @@ namespace SiteServer.BackgroundPages
 
         public void Page_Load(object sender, EventArgs e)
 
-        {
-
+        {           
 
             if (IsForbidden) return;
 
@@ -69,6 +68,7 @@ namespace SiteServer.BackgroundPages
             LtlUserName.Text = AdminManager.GetDisplayName(Body.AdministratorName, true);
 
             _menuId = Body.GetQueryString("menuID");
+            
             _permissions = PermissionsManager.GetPermissions(Body.AdministratorName);
 
             if (string.IsNullOrEmpty(_menuId))

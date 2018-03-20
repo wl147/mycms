@@ -56,6 +56,10 @@ namespace SiteServer.CMS.Core
 
             list.AddRange(ContentModelUtils.GetContentModelInfoList(publishmentSystemInfo.PublishmentSystemId));
 
+            list.Add(new ContentModelInfo("Study",1,"学习课件",false,"model_Study",EAuxiliaryTableType.Study,"",""));
+            list.Add(new ContentModelInfo("TeacherLib", 1, "师资库", false, "siteserver_teacherlibrary", EAuxiliaryTableType.TeacherLib, "", ""));
+            list.Add(new ContentModelInfo("Service", 1, "志愿服务", false, "model_voluntaryservice", EAuxiliaryTableType.Service, "", ""));
+
             return list;
         }
     }

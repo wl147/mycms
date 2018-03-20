@@ -30,6 +30,7 @@ namespace BaiRong.Core.Model.Attributes
         public const string NavigationUrl = "NavigationUrl";
         public const string CountOfPhotos = "CountOfPhotos";
         public const string AddUserName = "AddUserName";
+        public const string StudyMemberCount = "StudyMemberCount";
 
         public static List<string> AllAttributes
         {

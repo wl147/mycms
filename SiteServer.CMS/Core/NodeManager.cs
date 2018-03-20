@@ -156,6 +156,10 @@ namespace SiteServer.CMS.Core
             {
                 tableName = publishmentSystemInfo.AuxiliaryTableForJob;
             }
+            else if (EContentModelTypeUtils.Equals(EContentModelType.TeacherLib, contentModelId))
+            {
+                tableName = "siteserver_teacherlibrary";
+            }
             return tableName;
         }
 

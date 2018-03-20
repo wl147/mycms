@@ -18,7 +18,7 @@ using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContent : BasePageCms
+    public class PageContentTeachers : BasePageCms
     {
         public Repeater rptContents;
         public SqlPager spContents;
@@ -54,17 +54,17 @@ namespace SiteServer.BackgroundPages.Cms
             if (IsForbidden) return;
 
             var permissions = PermissionsManager.GetPermissions(Body.AdministratorName);
-
+            var mainPublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
             PageUtils.CheckRequestParameter("PublishmentSystemID", "NodeID");
             var nodeID = Body.GetQueryInt("NodeID");
-            var childNodeId= Body.GetQueryInt("ChildNodeId");
+            var childNodeId = Body.GetQueryInt("ChildNodeId");
             relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeID);
             nodeInfo = NodeManager.GetNodeInfo(1, nodeID);
-            tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
-            tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
+            tableName = NodeManager.GetTableName(mainPublishmentSystemInfo, nodeInfo);
+            tableStyle = NodeManager.GetTableStyle(mainPublishmentSystemInfo, nodeInfo);
             styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
             var styleInfoList2 = TableStyleManager.GetTableStyleInfoList(tableStyle, "siteserver_Node", relatedIdentities);
-            Dictionary<string ,string> category = DataProvider.NodeDao.GetNodeIdListLevel(2, nodeID);
+            Dictionary<string, string> category = DataProvider.NodeDao.GetNodeIdListLevel(2, nodeID);
             int contentNum = 0;
 
             if (nodeInfo.Additional.IsPreviewContents)
@@ -74,7 +74,7 @@ namespace SiteServer.BackgroundPages.Cms
                     DataProvider.ContentDao.DeletePreviewContents(PublishmentSystemId, tableName, nodeInfo);
                 }).BeginInvoke(null, null);
             }
-           
+
             if (!HasChannelPermissions(nodeID, AppManager.Cms.Permission.Channel.ContentView, AppManager.Cms.Permission.Channel.ContentAdd, AppManager.Cms.Permission.Channel.ContentEdit, AppManager.Cms.Permission.Channel.ContentDelete, AppManager.Cms.Permission.Channel.ContentTranslate))
             {
                 if (!Body.IsAdministratorLoggin)
@@ -98,7 +98,7 @@ namespace SiteServer.BackgroundPages.Cms
                     ? Body.AdministratorName
                     : string.Empty;
 
-            if (Body.IsQueryExists("SearchType")&& Body.IsQueryExists("ChildNodeId"))
+            if (Body.IsQueryExists("SearchType") && Body.IsQueryExists("ChildNodeId"))
             {
                 List<int> owningNodeIdList = new List<int>
                 {
@@ -111,30 +111,30 @@ namespace SiteServer.BackgroundPages.Cms
                 var test = tableName;
                 List<int> nodeList = new List<int>();
                 nodeList.Add(nodeID);
-                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1,nodeID);           
+                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1, nodeID);
                 if (firstChildList != null && firstChildList.Count > 0)
                 {
                     nodeList.AddRange(firstChildList);
                     foreach (var firstchild in firstChildList)
                     {
-                        
-                        var secondList= DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
+
+                        var secondList = DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
                         if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
                     }
                 }
                 var nodeCollectionIdStr = string.Empty;
-                foreach(int nodeId in nodeList)
+                foreach (int nodeId in nodeList)
                 {
                     nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
-                nodeCollectionIdStr=nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName,base.PublishmentSystemId);
-             }
+                nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
+                spContents.SelectCommand = "select * from siteserver_teacherlibrary";
+            }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
             spContents.SortMode = SortMode.DESC;
-            spContents.OrderByString = ETaxisTypeUtils.GetOrderByString(tableStyle, ETaxisType.OrderByTaxisDesc);
+            spContents.OrderByString = "ORDER BY Taxis Desc";
 
             //分页的时候，不去查询总条数，直接使用栏目的属性：ContentNum
             spContents.IsQueryTotalCount = false;
@@ -188,7 +188,7 @@ $(document).ready(function() {
 </script>
 ";
                 }
-
+                //attributesOfDisplay = new StringCollection() { "TeacherName" };
                 ltlColumnHeadRows.Text = ContentUtility.GetColumnHeadRowsHtml(styleInfoList, attributesOfDisplay, tableStyle, PublishmentSystemInfo);
                 ltlCommandHeadRows.Text = ContentUtility.GetCommandHeadRowsHtml(Body.AdministratorName, tableStyle, PublishmentSystemInfo, nodeInfo);
             }
@@ -198,19 +198,19 @@ $(document).ready(function() {
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
+                //var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
                 var ltlColumnItemRows = e.Item.FindControl("ltlColumnItemRows") as Literal;
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
-                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
+                //var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
 
-                ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
+                //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
 
                 var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
-                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
+                //ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
 
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
@@ -261,7 +261,7 @@ $(document).ready(function() {
         private string GetPageUrlForContent(ContentInfo contentInfo)
         {
 
-                  return  _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+            return _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
                     {
                         {"PublishmentSystemID", contentInfo.PublishmentSystemId.ToString()},
                         {"NodeID",contentInfo.NodeId.ToString()},
@@ -273,6 +273,6 @@ $(document).ready(function() {
                     });
 
         }
-        
+
     }
 }

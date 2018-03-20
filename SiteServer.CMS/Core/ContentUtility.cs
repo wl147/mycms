@@ -365,6 +365,8 @@ namespace SiteServer.CMS.Core
 
                 styleInfo = new TableStyleInfo(0, 0, string.Empty, BackgroundContentAttribute.Digg, 0, "点赞", string.Empty, true, true, false, EInputTypeUtils.GetValue(EInputType.Text), string.Empty, false, string.Empty);
                 arraylist.Add(styleInfo);
+
+               
             }
 
             return arraylist;

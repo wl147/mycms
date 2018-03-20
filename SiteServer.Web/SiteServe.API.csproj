@@ -321,7 +321,9 @@
     <Content Include="SiteServer\Cms\pageContentPushOut.aspx" />
     <Content Include="SiteServer\Cms\pageContentSearch.aspx" />
     <Content Include="SiteServer\Cms\pageContentsGroup.aspx" />
+    <Content Include="SiteServer\Cms\pageContentStudy.aspx" />
     <Content Include="SiteServer\Cms\pageContentTags.aspx" />
+    <Content Include="SiteServer\Cms\pageContentTeachers.aspx" />
     <Content Include="SiteServer\Cms\pageContentTranslate.aspx" />
     <Content Include="SiteServer\Cms\pageContentTrash.aspx" />
     <Content Include="SiteServer\Cms\pageContentTree.aspx" />
@@ -415,6 +417,7 @@
     <Content Include="SiteServer\Cms\pageVoteView.aspx" />
     <Content Include="SiteServer\Cms\siteManagement.aspx" />
     <Content Include="SiteServer\Cms\siteTree.aspx" />
+    <Content Include="SiteServer\Cms\pageContentService.aspx" />
     <Content Include="Static\login.html" />
     <Content Include="test.html" />
     <Content Include="Web.config">
@@ -504,6 +507,20 @@
     <Compile Include="SiteServer\Cms\pageContentPushOut.aspx.designer.cs">
       <DependentUpon>pageContentPushOut.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\pageContentStudy.aspx.cs">
+      <DependentUpon>pageContentStudy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentStudy.aspx.designer.cs">
+      <DependentUpon>pageContentStudy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentTeachers.aspx.cs">
+      <DependentUpon>pageContentTeachers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentTeachers.aspx.designer.cs">
+      <DependentUpon>pageContentTeachers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -552,6 +569,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageSpecialCheck.aspx.designer.cs">
       <DependentUpon>pageSpecialCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentService.aspx.cs">
+      <DependentUpon>pageContentService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentService.aspx.designer.cs">
+      <DependentUpon>pageContentService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>

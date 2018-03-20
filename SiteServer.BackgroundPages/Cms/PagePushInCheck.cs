@@ -10,7 +10,7 @@ using SiteServer.BackgroundPages.User;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PagePushOutCheck : BasePage
+    public class PagePushInCheck : BasePage
     {
         public DropDownList DdlGroup;
         public DropDownList DdlPageNum;
@@ -31,7 +31,7 @@ namespace SiteServer.BackgroundPages.Cms
 
         public static string GetRedirectUrl()
         {
-            return PageUtils.GetPartyTransUrl(nameof(PagePushOutCheck), null);
+            return PageUtils.GetPartyTransUrl(nameof(PagePushInCheck), null);
         }
 
         public string GetDateTime(DateTime datetime)
@@ -55,10 +55,10 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     foreach (var transId in transIDList)
                     {
-                        BaiRongDataProvider.PartyDao.CheckOutOK(transId);
+                        BaiRongDataProvider.PartyDao.CheckInOK(transId);
                     }
 
-                    Body.AddAdminLog("党员转出审核", string.Empty);
+                    Body.AddAdminLog("党员转入审核", string.Empty);
 
                     SuccessUpdateMessage();
                 }
@@ -70,7 +70,7 @@ namespace SiteServer.BackgroundPages.Cms
 
             SpContents.ControlToPaginate = RptContents;
             SpContents.ItemsPerPage = 25;
-            SpContents.SelectCommand = BaiRongDataProvider.PartyDao.GetPartyTransform(userId);
+            SpContents.SelectCommand = BaiRongDataProvider.PartyDao.GetPartyTransformIn(userId);
 
             RptContents.ItemDataBound += rptContents_ItemDataBound;
             SpContents.SortField = BaiRongDataProvider.PartyDao.GetSortFieldDate();
@@ -96,9 +96,8 @@ namespace SiteServer.BackgroundPages.Cms
             var ltlID = (Literal)e.Item.FindControl("ltlID");
             var ltlMobilePhone = (Literal)e.Item.FindControl("ltlMobilePhone");
             var ltlUserName = (Literal)e.Item.FindControl("ltlUserName");
-            var ltlTransformIn = (Literal)e.Item.FindControl("ltlTransformIn");
-            var ltlApplyDate = (Literal)e.Item.FindControl("ltlApplyDate");
-            var ltlOutCheckState = (Literal)e.Item.FindControl("ltlOutCheckState");
+            var ltlTransformOut = (Literal)e.Item.FindControl("ltlTransformOut");
+            var ltlApplyDate = (Literal)e.Item.FindControl("ltlOutCheckDate");
             var ltlInCheckState = (Literal)e.Item.FindControl("ltlInCheckState");
             var hlEditLink = (HyperLink)e.Item.FindControl("hlEditLink");
             var ltlSelect = (Literal)e.Item.FindControl("ltlSelect");
@@ -106,9 +105,8 @@ namespace SiteServer.BackgroundPages.Cms
             ltlID.Text = partyInfo.ID.ToString();
             ltlMobilePhone.Text = partyInfo.MobilePhone;
             ltlUserName.Text = partyInfo.UserName;
-            ltlTransformIn.Text = partyInfo.TransformInName;
-            ltlApplyDate.Text= DateUtils.GetDateAndTimeString(partyInfo.ApplyDate);
-            ltlOutCheckState.Text = partyInfo.OutCheckStateString;
+            ltlTransformOut.Text = partyInfo.TransformOutName;
+            ltlApplyDate.Text= DateUtils.GetDateAndTimeString(partyInfo.OutCheckDate);
             ltlInCheckState.Text = partyInfo.InCheckStateString;
             ltlSelect.Text = $@"<input type=""checkbox"" name=""TransIDCollection"" value=""{partyInfo.ID}"" />";
         }
