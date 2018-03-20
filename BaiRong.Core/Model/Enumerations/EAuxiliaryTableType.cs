@@ -14,6 +14,9 @@ namespace BaiRong.Core.Model.Enumerations
         Study,
         TeacherLib,
         Service,
+        Box,
+        Wish,
+        Organization,
         UserDefined             //自定义
 	}
 

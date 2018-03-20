@@ -201,6 +201,30 @@ namespace SiteServer.BackgroundPages.Core
             {
                 tab.Href = $@"cms/pageContentService.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
             }
+            else if (nodeInfo.NodeName.Equals("爱心小屋"))
+            {
+                tab.Href = $@"cms/pageContentCare.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("领导信箱"))
+            {
+                tab.Href = $@"cms/pageContentLeaderBox.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("心愿墙"))
+            {
+                tab.Href = $@"cms/pageContentWishWall.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("党委介绍"))
+            {
+                tab.Href = $@"cms/pagePartyIntroduce.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("支部介绍"))
+            {
+                tab.Href = $@"cms/pageBranchIntroduce.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
+            else if (nodeInfo.NodeName.Equals("组织活动"))
+            {
+                tab.Href = $@"cms/pageContentOrganization.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
             else
             {
                 tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";

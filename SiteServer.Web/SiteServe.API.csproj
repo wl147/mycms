@@ -285,6 +285,7 @@
     <Content Include="SiteServer\Cms\pageAdvertisementAdd.aspx" />
     <Content Include="SiteServer\Cms\pageBackup.aspx" />
     <Content Include="SiteServer\Cms\pageBackupRecovery.aspx" />
+    <Content Include="SiteServer\Cms\pageBranchIntroduce.aspx" />
     <Content Include="SiteServer\Cms\pageChannel.aspx" />
     <Content Include="SiteServer\Cms\pageChannelAdd.aspx" />
     <Content Include="SiteServer\Cms\pageChannelDelete.aspx" />
@@ -310,12 +311,15 @@
     <Content Include="SiteServer\Cms\pageContentAddAfter.aspx" />
     <Content Include="SiteServer\Cms\pageContentArchive.aspx" />
     <Content Include="SiteServer\Cms\pageContentByAdmin.aspx" />
+    <Content Include="SiteServer\Cms\pageContentCare.aspx" />
     <Content Include="SiteServer\Cms\pageContentChannel.aspx" />
     <Content Include="SiteServer\Cms\pageContentCheck.aspx" />
     <Content Include="SiteServer\Cms\pageContentDelete.aspx" />
     <Content Include="SiteServer\Cms\pageContentGroup.aspx" />
+    <Content Include="SiteServer\Cms\pageContentLeaderBox.aspx" />
     <Content Include="SiteServer\Cms\pageContentMain.aspx" />
     <Content Include="SiteServer\Cms\pageContentModel.aspx" />
+    <Content Include="SiteServer\Cms\pageContentOrganization.aspx" />
     <Content Include="SiteServer\Cms\pageContentPhotoUpload.aspx" />
     <Content Include="SiteServer\Cms\pageContentPushIn.aspx" />
     <Content Include="SiteServer\Cms\pageContentPushOut.aspx" />
@@ -328,6 +332,7 @@
     <Content Include="SiteServer\Cms\pageContentTrash.aspx" />
     <Content Include="SiteServer\Cms\pageContentTree.aspx" />
     <Content Include="SiteServer\Cms\pageContentView.aspx" />
+    <Content Include="SiteServer\Cms\pageContentWishWall.aspx" />
     <Content Include="SiteServer\Cms\pageCreateAll.aspx" />
     <Content Include="SiteServer\Cms\pageCreateChannel.aspx" />
     <Content Include="SiteServer\Cms\pageCreateContent.aspx" />
@@ -351,6 +356,7 @@
     <Content Include="SiteServer\Cms\pageLeft.aspx" />
     <Content Include="SiteServer\Cms\pageLeftSiteSelect.aspx" />
     <Content Include="SiteServer\Cms\pageNodeGroup.aspx" />
+    <Content Include="SiteServer\Cms\pagePartyIntroduce.aspx" />
     <Content Include="SiteServer\Cms\pageProgressBar.aspx" />
     <Content Include="SiteServer\Cms\PagePublishmentSystem.aspx" />
     <Content Include="SiteServer\Cms\pagePushInCheck.aspx" />
@@ -493,6 +499,34 @@
     <Compile Include="SiteServer\Admin\PageUser.aspx.designer.cs">
       <DependentUpon>PageUser.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\pageBranchIntroduce.aspx.cs">
+      <DependentUpon>pageBranchIntroduce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageBranchIntroduce.aspx.designer.cs">
+      <DependentUpon>pageBranchIntroduce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentCare.aspx.cs">
+      <DependentUpon>pageContentCare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentCare.aspx.designer.cs">
+      <DependentUpon>pageContentCare.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentLeaderBox.aspx.cs">
+      <DependentUpon>pageContentLeaderBox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentLeaderBox.aspx.designer.cs">
+      <DependentUpon>pageContentLeaderBox.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentOrganization.aspx.cs">
+      <DependentUpon>pageContentOrganization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentOrganization.aspx.designer.cs">
+      <DependentUpon>pageContentOrganization.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\pageContentPushIn.aspx.cs">
       <DependentUpon>pageContentPushIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -520,6 +554,20 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentTeachers.aspx.designer.cs">
       <DependentUpon>pageContentTeachers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentWishWall.aspx.cs">
+      <DependentUpon>pageContentWishWall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentWishWall.aspx.designer.cs">
+      <DependentUpon>pageContentWishWall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePartyIntroduce.aspx.cs">
+      <DependentUpon>pagePartyIntroduce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pagePartyIntroduce.aspx.designer.cs">
+      <DependentUpon>pagePartyIntroduce.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\PagePublishmentSystem.aspx.cs">
       <DependentUpon>PagePublishmentSystem.aspx</DependentUpon>
