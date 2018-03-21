@@ -601,7 +601,103 @@ namespace BaiRong.Core.Provider
 
             return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString.ToString());
         }
+        public string GetSelectCommendByConditionLower(string nodeCollection,ETableStyle tableStyle, string tableName, int publishmentSystemId, List<int> nodeIdList, string searchType, string keyword, string dateFrom, string dateTo, ETriState checkedState, bool isNoDup, bool isTrashContent, bool isWritingOnly, string userNameOnly)
+        {
+            if (nodeIdList == null || nodeIdList.Count == 0)
+            {
+                return null;
+            }
 
+            var orderByString = ETaxisTypeUtils.GetContentOrderByString(ETaxisType.OrderByTaxisDesc);
+
+            var dateString = string.Empty;
+            if (!string.IsNullOrEmpty(dateFrom))
+            {
+                dateString = $" AND AddDate >= '{dateFrom}' ";
+            }
+            if (!string.IsNullOrEmpty(dateTo))
+            {
+                dateTo = DateUtils.GetDateString(TranslateUtils.ToDateTime(dateTo).AddDays(1));
+                dateString += $" AND AddDate <= '{dateTo}' ";
+            }
+            var whereString = new StringBuilder("WHERE ");
+
+            if (isTrashContent)
+            {
+                for (var i = 0; i < nodeIdList.Count; i++)
+                {
+                    var theNodeId = nodeIdList[i];
+                    nodeIdList[i] = -theNodeId;
+                }
+            }
+
+            if (nodeIdList.Count == 1)
+            {
+                whereString.Append($"PublishmentSystemID = {publishmentSystemId} AND NodeID In ({nodeCollection}) ");
+            }
+            else
+            {
+                whereString.Append(
+                    $"PublishmentSystemID = {publishmentSystemId} AND (NodeID IN ({TranslateUtils.ToSqlInStringWithoutQuote(nodeIdList)})) ");
+            }
+
+            if (StringUtils.EqualsIgnoreCase(searchType, ContentAttribute.IsTop) || StringUtils.EqualsIgnoreCase(searchType, BackgroundContentAttribute.IsRecommend) || StringUtils.EqualsIgnoreCase(searchType, BackgroundContentAttribute.IsColor) || StringUtils.EqualsIgnoreCase(searchType, BackgroundContentAttribute.IsHot))
+            {
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    whereString.Append($"AND ({ContentAttribute.Title} LIKE '%{keyword}%') ");
+                }
+                whereString.Append($" AND {searchType} = '{true}'");
+            }
+            else if (!string.IsNullOrEmpty(keyword))
+            {
+                var columnExists = false;
+                var columnNameList = BaiRongDataProvider.TableStructureDao.GetColumnNameList(tableName);
+                foreach (var columnName in columnNameList)
+                {
+                    if (StringUtils.EqualsIgnoreCase(columnName, searchType))
+                    {
+                        columnExists = true;
+                        whereString.Append($"AND ({searchType} LIKE '%{keyword}%') ");
+                        break;
+                    }
+                }
+                if (!columnExists)
+                {
+                    whereString.Append($"AND (SettingsXML LIKE '%{searchType}={keyword}%') ");
+                }
+            }
+
+            whereString.Append(dateString);
+
+            if (checkedState == ETriState.True)
+            {
+                whereString.Append("AND IsChecked='True' ");
+            }
+            else if (checkedState == ETriState.False)
+            {
+                whereString.Append("AND IsChecked='False' ");
+            }
+
+            if (isNoDup)
+            {
+                var sqlString = BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, "MIN(ID)", whereString + " GROUP BY Title");
+                whereString.Append($"AND ID IN ({sqlString})");
+            }
+
+            if (!string.IsNullOrEmpty(userNameOnly))
+            {
+                whereString.Append($" AND AddUserName = '{userNameOnly}' ");
+            }
+            if (isWritingOnly)
+            {
+                whereString.Append(" AND WritingUserName <> '' ");
+            }
+
+            whereString.Append(" ").Append(orderByString);
+
+            return BaiRongDataProvider.TableStructureDao.GetSelectSqlString(tableName, SqlUtils.Asterisk, whereString.ToString());
+        }
         public string GetSelectCommendByWhere(string tableName, int publishmentSystemId, List<int> nodeIdList, string where, ETriState checkedState)
         {
             if (nodeIdList == null || nodeIdList.Count == 0)

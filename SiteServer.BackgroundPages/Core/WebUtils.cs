@@ -38,7 +38,7 @@ namespace SiteServer.BackgroundPages.Core
             else if (contentInfo.IsChecked)
             {
                 url =
-                    $"<a href='{PageUtility.GetContentUrl(publishmentSystemInfo, contentInfo, true)}' target='blank'>{displayString}</a>";
+                    $"<a href='javascript:void(0)' target='blank'>{displayString}</a>";//{PageUtility.GetContentUrl(publishmentSystemInfo, contentInfo, true)}
             }
             else
             {
@@ -243,15 +243,15 @@ namespace SiteServer.BackgroundPages.Core
                     $@"<a href=""javascript:;"" onclick=""{ModalContentExport.GetOpenWindowString(
                         publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">导 出</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
                 //设置
-                if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit))
-                {
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{ModalContentAttributes.GetOpenWindowString(
-                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置属性</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{ModalAddToGroup.GetOpenWindowStringToContent(
-                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置内容组</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                }
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentAttributes.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置属性</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalAddToGroup.GetOpenWindowStringToContent(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置内容组</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
                 //转 移
                 if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentTranslate))
                 {
@@ -270,12 +270,12 @@ namespace SiteServer.BackgroundPages.Core
                             publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">排 序</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
                 }
                 //整理
-                if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentOrder))
-                {
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{ModalContentTidyUp.GetOpenWindowString(
-                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">整 理</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                }
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentOrder))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentTidyUp.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">整 理</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
                 //审 核
                 if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentCheck))
                 {
@@ -284,27 +284,27 @@ namespace SiteServer.BackgroundPages.Core
                             publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">审 核</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
                 }
                 //归 档
-                if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentArchive))
-                {
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{ModalContentArchive.GetOpenWindowString(
-                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">归 档</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                }
-                //跨站转发
-                if (CrossSiteTransUtility.IsTranslatable(publishmentSystemInfo, nodeInfo))
-                {
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{ModalContentCrossSiteTrans.GetOpenWindowString(
-                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">跨站转发</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                }
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentArchive))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentArchive.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">归 档</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                ////跨站转发
+                //if (CrossSiteTransUtility.IsTranslatable(publishmentSystemInfo, nodeInfo))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentCrossSiteTrans.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">跨站转发</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
                 //生 成
-                if (!isCheckPage && (AdminUtility.HasWebsitePermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, AppManager.Cms.Permission.WebSite.Create) || AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.CreatePage)))
-                {
-                    builder.Append(
-                        $@"<a href=""javascript:;"" onclick=""{Cms.ModalProgressBar
-                            .GetOpenWindowStringWithCreateContentsOneByOne(publishmentSystemInfo.PublishmentSystemId,
-                                nodeInfo.NodeId)}"">生 成</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
-                }
+                //if (!isCheckPage && (AdminUtility.HasWebsitePermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, AppManager.Cms.Permission.WebSite.Create) || AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.CreatePage)))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{Cms.ModalProgressBar
+                //            .GetOpenWindowStringWithCreateContentsOneByOne(publishmentSystemInfo.PublishmentSystemId,
+                //                nodeInfo.NodeId)}"">生 成</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
             }
 
             //选择显示项

@@ -62,6 +62,7 @@ namespace SiteServer.CMS.Core
             list.Add(new ContentModelInfo("Box", 1, "领导信箱", false, "siteserver_leadermailbox", EAuxiliaryTableType.Service, "", ""));
             list.Add(new ContentModelInfo("Wish", 1, "心愿墙", false, "siteserver_wishwall", EAuxiliaryTableType.Wish, "", ""));
             list.Add(new ContentModelInfo("Organization", 1, "组织活动", false, "model_organizationactivity", EAuxiliaryTableType.Organization, "", ""));
+            list.Add(new ContentModelInfo("Mien", 1, "党员风采", false, "siteserver_partymembermien", EAuxiliaryTableType.Organization, "", ""));
 
 
             return list;

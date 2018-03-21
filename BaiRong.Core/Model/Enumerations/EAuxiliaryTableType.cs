@@ -17,6 +17,7 @@ namespace BaiRong.Core.Model.Enumerations
         Box,
         Wish,
         Organization,
+        Mien,
         UserDefined             //自定义
 	}
 

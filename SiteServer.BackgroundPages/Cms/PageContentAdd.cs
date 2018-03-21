@@ -688,8 +688,8 @@ $('#TbTags').keyup(function (e) {
 
                     Body.AddSiteLog(PublishmentSystemId, _nodeInfo.NodeId, contentId, "修改内容",
                         $"栏目:{NodeManager.GetNodeNameNavigation(PublishmentSystemId, contentInfo.NodeId)},内容标题:{contentInfo.Title}");
-
-                    PageUtils.Redirect(ReturnUrl);
+                    PageUtils.Redirect($@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID={Body.GetQueryString("PublishmentSystemID")}&NodeID={Body.GetQueryString("NodeId")}");
+                    //PageUtils.Redirect(ReturnUrl);
                 }
                 savedContentId = contentId;
             }

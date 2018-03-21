@@ -763,7 +763,8 @@ namespace BaiRong.Core
 
         public static void Redirect(string url)
         {
-            HttpContext.Current.Response.Redirect(url, true);
+             HttpContext.Current.Response.Redirect(url, true); 
+           
         }
 
         public static void Download(HttpResponse response, string filePath, string fileName)

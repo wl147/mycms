@@ -98,13 +98,23 @@ namespace SiteServer.BackgroundPages.Cms
                     ? Body.AdministratorName
                     : string.Empty;
 
-            if (Body.IsQueryExists("SearchType")&& Body.IsQueryExists("ChildNodeId"))
+            if (Body.IsQueryExists("SearchType"))
             {
-                List<int> owningNodeIdList = new List<int>
+
+                string nodeListString = Body.GetQueryString("ChildNodeId");
+                string[] nodeArray = nodeListString.Split(new char[] { ',' });
+                List<int> owningNodeIdList=new List<int>();
+                foreach(string node in nodeArray)
                 {
-                    nodeID,3,4,6,9
-                };
-                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                    if (!string.IsNullOrEmpty(node))
+                    {
+                        int nodeId = Convert.ToInt32(node);
+                        owningNodeIdList.Add(nodeId);
+                        contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                    }                 
+                }
+                nodeListString = nodeListString.TrimEnd(',');
+                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommendForLower(nodeListString,tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
             else
             {
@@ -159,15 +169,51 @@ namespace SiteServer.BackgroundPages.Cms
                         }
                     }
                 }
-                var listitemAll = new ListItem("全部", nodeID.ToString());
-                ChannelCategory.Items.Add(listitemAll);
+                string NodeIdAll = nodeID+",";
                 if (category != null)
                 {
                     foreach (var chanelCategory in category)
+
                     {
-                        var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
-                        ChannelCategory.Items.Add(listitem);
+                        NodeIdAll = NodeIdAll + chanelCategory.Value+",";
+                        var nodechildId= DataProvider.NodeDao.GetNodeInfoListByParentId(1,Convert.ToInt32( chanelCategory.Value));
+                        if (nodechildId != null && nodechildId.Count > 0)
+                        {
+                            string chidNodeList = string.Empty;
+                            foreach (var child in nodechildId)
+                            {
+                                NodeIdAll = NodeIdAll + child.NodeId + ",";
+                                chidNodeList = chidNodeList + child.NodeId + ",";
+                            }
+                            var listitem = new ListItem(chanelCategory.Key, chidNodeList);
+                            ChannelCategory.Items.Add(listitem);
+                        }
+                        else
+                        {
+                            var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
+                            NodeIdAll = NodeIdAll + chanelCategory.Value + ",";
+                            ChannelCategory.Items.Add(listitem);
+                        }
+                      
                     }
+                }
+                var listitemAll = new ListItem("全部", NodeIdAll);
+                ChannelCategory.Items.Add(listitemAll);
+                ListItem listItemSelect = null;
+                foreach (ListItem listItem in ChannelCategory.Items)
+                {
+                    if (listItem.Value.Equals(Body.GetQueryString("ChildNodeId")))
+                    {
+                        listItemSelect = listItem;
+                    }
+                }
+                if(listItemSelect != null)
+                {
+                    listItemSelect.Selected = true;
+                }
+                else
+                {
+                    listitemAll.Selected = true;
                 }
                 //添加隐藏属性
                 SearchType.Items.Add(new ListItem("内容ID", ContentAttribute.Id));
@@ -236,7 +282,10 @@ $(document).ready(function() {
         {
             PageUtils.Redirect(PageUrl);
         }
-
+        public void ChannelCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(PageUrl, true);
+        }
         private string _pageUrl;
         private string PageUrl
         {
@@ -273,6 +322,10 @@ $(document).ready(function() {
                     });
 
         }
-        
+        public void DdlContentModelId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(PageUrl, true);
+        }
+
     }
 }

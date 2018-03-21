@@ -37,9 +37,7 @@
   </div>
 
   <table id="contents" class="table table-bordered table-hover">
-    <tr class="info thead">
-      <td width="250">内容标题</td>
-      <td width="200">所属分类</td>
+    <tr class="info thead"> 
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
       <td width="50"> 状态 </td>
       <td width="30">&nbsp;</td>
@@ -51,12 +49,6 @@
     <asp:Repeater ID="rptContents" runat="server">
       <itemtemplate>
         <tr>
-          <td>
-            <asp:Literal ID="ltlItemTitle" runat="server"></asp:Literal>
-          </td>
-             <td>
-            <asp:Literal ID="ltlCategory" runat="server"></asp:Literal>
-          </td>
           <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
           <td class="center" nowrap>
             <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>

@@ -198,19 +198,19 @@ $(document).ready(function() {
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
+                //var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
                 var ltlColumnItemRows = e.Item.FindControl("ltlColumnItemRows") as Literal;
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
-                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
+                //var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
 
-                ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
+                //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
 
                 var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
-                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
+                //ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
 
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(

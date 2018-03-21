@@ -129,7 +129,7 @@ namespace SiteServer.BackgroundPages.Cms
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
                 nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = "select * from model_Study";
+                spContents.SelectCommand = $@"select * from model_Study where NodeId in({nodeCollectionIdStr}) AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();

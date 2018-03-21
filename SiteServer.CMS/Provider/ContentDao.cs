@@ -612,6 +612,30 @@ namespace SiteServer.CMS.Provider
 
             return BaiRongDataProvider.ContentDao.GetSelectCommendByCondition(tableStyle, tableName, publishmentSystemId, list, searchType, keyword, dateFrom, dateTo, checkedState, isNoDup, isTrashContent, isWritingOnly, userNameOnly);
         }
+
+        public string GetSelectCommendForLower(string nodeCollection,ETableStyle tableStyle, string tableName, int publishmentSystemId, int nodeId, bool isSystemAdministrator, List<int> owningNodeIdList, string searchType, string keyword, string dateFrom, string dateTo, bool isSearchChildren, ETriState checkedState, bool isNoDup, bool isTrashContent, bool isWritingOnly, string userNameOnly)
+        {
+            var nodeInfo = NodeManager.GetNodeInfo(publishmentSystemId, nodeId);
+            var nodeIdList = DataProvider.NodeDao.GetNodeIdListByScopeType(nodeInfo, isSearchChildren ? EScopeType.All : EScopeType.Self, string.Empty, string.Empty, nodeInfo.ContentModelId);
+
+            var list = new List<int>();
+            if (isSystemAdministrator)
+            {
+                list = nodeIdList;
+            }
+            else
+            {
+                foreach (int theNodeId in nodeIdList)
+                {
+                    if (owningNodeIdList.Contains(theNodeId))
+                    {
+                        list.Add(theNodeId);
+                    }
+                }
+            }
+
+            return BaiRongDataProvider.ContentDao.GetSelectCommendByConditionLower(nodeCollection,tableStyle, tableName, publishmentSystemId, list, searchType, keyword, dateFrom, dateTo, checkedState, isNoDup, isTrashContent, isWritingOnly, userNameOnly);
+        }
         public string GetSelectCommendByChanelCategory(ETableStyle tableStyle, string tableName, int publishmentSystemId, int nodeId, bool isSystemAdministrator, List<int> owningNodeIdList, string searchType, string keyword, string dateFrom, string dateTo, bool isSearchChildren, ETriState checkedState, bool isNoDup, bool isTrashContent, bool isWritingOnly, string userNameOnly)
         {
             var nodeInfo = NodeManager.GetNodeInfo(publishmentSystemId, nodeId);

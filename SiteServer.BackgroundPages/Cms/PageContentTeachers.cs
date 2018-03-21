@@ -98,13 +98,16 @@ namespace SiteServer.BackgroundPages.Cms
                     ? Body.AdministratorName
                     : string.Empty;
 
-            if (Body.IsQueryExists("SearchType") && Body.IsQueryExists("ChildNodeId"))
+            if (Body.IsQueryExists("SearchType"))
             {
                 List<int> owningNodeIdList = new List<int>
                 {
                     nodeID,3,4,6,9
                 };
                 spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                //string keyWords = Body.GetQueryString("Keyword");
+                //spContents.SelectCommand = $@"select * from siteserver_teacherlibrary where PublishmentSystemId={PublishmentSystemId} AND NodeId={nodeID} AND Title Like '%{keyWords}%'";
+                //   contentNum=nodeInfo.ContentNum;
             }
             else
             {
@@ -129,7 +132,7 @@ namespace SiteServer.BackgroundPages.Cms
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
                 nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = "select * from siteserver_teacherlibrary";
+                spContents.SelectCommand = $@"select * from siteserver_teacherlibrary where PublishmentSystemId={PublishmentSystemId} AND NodeId={nodeID}";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
