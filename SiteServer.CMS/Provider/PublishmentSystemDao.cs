@@ -691,5 +691,53 @@ ORDER BY a.Taxis";
             }
             return retval;
         }
+        public string GetPublishmentSystemPartyIntroduce(int publishmentSystemId)
+        {
+            var publishmentSystemPuartyIntroduce = string.Empty;
+
+            var sqlString = "SELECT CommitteeIntroduce FROM siteserver_PublishmentSystemDetails WHERE PublishmentSystemID = " + publishmentSystemId;
+
+            using (var rdr = ExecuteReader(sqlString))
+            {
+                if (rdr.Read())
+                {
+                    publishmentSystemPuartyIntroduce = GetString(rdr, 0);
+                }
+                rdr.Close();
+            }
+            return publishmentSystemPuartyIntroduce;
+        }
+        public string GetPublishmentSystemBranchIntroduce(int publishmentSystemId)
+        {
+            var publishmentSystemBranchIntroduce = string.Empty;
+
+            var sqlString = "SELECT BranchIntroduce FROM siteserver_PublishmentSystemDetails WHERE PublishmentSystemID = " + publishmentSystemId;
+
+            using (var rdr = ExecuteReader(sqlString))
+            {
+                if (rdr.Read())
+                {
+                    publishmentSystemBranchIntroduce = GetString(rdr, 0);
+                }
+                rdr.Close();
+            }
+            return publishmentSystemBranchIntroduce;
+        }
+        public bool UpdatePublishmentSystemPartyIntroduce(int publishmentSystemId,string content)
+        {
+
+            var sqlString = $@"Update siteserver_PublishmentSystemDetails set CommitteeIntroduce='{content}' WHERE PublishmentSystemID = " + publishmentSystemId;
+
+            int result=ExecuteNonQuery(sqlString);
+            return result ==1;
+        }
+        public bool UpdatePublishmentSystemBranchIntroduce(int publishmentSystemId, string content)
+        {
+
+            var sqlString = $@"Update siteserver_PublishmentSystemDetails set BranchIntroduce='{content}' WHERE PublishmentSystemID = " + publishmentSystemId;
+
+            int result = ExecuteNonQuery(sqlString);
+            return result == 1;
+        }
     }
 }

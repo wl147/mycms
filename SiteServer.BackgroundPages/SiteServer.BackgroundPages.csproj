@@ -186,6 +186,9 @@
     <Compile Include="Analysis\PageLogUser.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageBranchIntroduce.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Cms\PageComments.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -217,6 +220,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cms\PagePartyIntroduce.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PagePushInCheck.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cms\PagePushOutCheck.cs">

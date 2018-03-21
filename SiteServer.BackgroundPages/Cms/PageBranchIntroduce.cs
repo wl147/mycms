@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PagePartyIntroduce : BasePageCms
+    public class PageBranchIntroduce : BasePageCms
     {
         public TextBox Content;
 
@@ -50,15 +50,15 @@ namespace SiteServer.BackgroundPages.Cms
 
         public void Page_Load(object sender, EventArgs e)
         {
-            Content.Text = "22222";
-            //Content.Text =DataProvider.PublishmentSystemDao.GetPublishmentSystemPartyIntroduce( PublishmentSystemInfo.PublishmentSystemId);
+
+            Content.Text = DataProvider.PublishmentSystemDao.GetPublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId);
         }
         public override void Submit_OnClick(object sender, EventArgs e)
         {
             if (Page.IsPostBack && Page.IsValid)
             {
-              var a=  Content.Text;
-                DataProvider.PublishmentSystemDao.UpdatePublishmentSystemPartyIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
+
+                DataProvider.PublishmentSystemDao.UpdatePublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
             }
         }
     }
