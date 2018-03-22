@@ -315,6 +315,7 @@
     <Content Include="SiteServer\Cms\pageContentChannel.aspx" />
     <Content Include="SiteServer\Cms\pageContentCheck.aspx" />
     <Content Include="SiteServer\Cms\pageContentDelete.aspx" />
+    <Content Include="SiteServer\Cms\PageContentExaminationAdd.aspx" />
     <Content Include="SiteServer\Cms\pageContentGroup.aspx" />
     <Content Include="SiteServer\Cms\pageContentLeaderBox.aspx" />
     <Content Include="SiteServer\Cms\pageContentMain.aspx" />
@@ -323,6 +324,7 @@
     <Content Include="SiteServer\Cms\pageContentPhotoUpload.aspx" />
     <Content Include="SiteServer\Cms\pageContentPushIn.aspx" />
     <Content Include="SiteServer\Cms\pageContentPushOut.aspx" />
+    <Content Include="SiteServer\Cms\pageContentReview.aspx" />
     <Content Include="SiteServer\Cms\pageContentSearch.aspx" />
     <Content Include="SiteServer\Cms\pageContentsGroup.aspx" />
     <Content Include="SiteServer\Cms\pageContentStudy.aspx" />
@@ -339,6 +341,7 @@
     <Content Include="SiteServer\Cms\pageCreateFile.aspx" />
     <Content Include="SiteServer\Cms\pageCreateIndex.aspx" />
     <Content Include="SiteServer\Cms\pageCreateTask.aspx" />
+    <Content Include="SiteServer\Cms\pageExamination.aspx" />
     <Content Include="SiteServer\Cms\pageFileMain.aspx" />
     <Content Include="SiteServer\Cms\pageFileManagement.aspx" />
     <Content Include="SiteServer\Cms\pageFunctionNodeTree.aspx" />
@@ -377,6 +380,7 @@
     <Content Include="SiteServer\Cms\PageSiteEdit.aspx" />
     <Content Include="SiteServer\Cms\pageSpecialCheck.aspx" />
     <Content Include="SiteServer\Cms\pageStlTag.aspx" />
+    <Content Include="SiteServer\Cms\pageStudyRecord.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyle.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyleChannel.aspx" />
     <Content Include="SiteServer\Cms\pageTableStyleContent.aspx" />
@@ -513,6 +517,13 @@
     <Compile Include="SiteServer\Cms\pageContentCare.aspx.designer.cs">
       <DependentUpon>pageContentCare.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\PageContentExaminationAdd.aspx.cs">
+      <DependentUpon>PageContentExaminationAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageContentExaminationAdd.aspx.designer.cs">
+      <DependentUpon>PageContentExaminationAdd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\pageContentLeaderBox.aspx.cs">
       <DependentUpon>pageContentLeaderBox.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -541,6 +552,13 @@
     <Compile Include="SiteServer\Cms\pageContentPushOut.aspx.designer.cs">
       <DependentUpon>pageContentPushOut.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SiteServer\Cms\pageContentReview.aspx.cs">
+      <DependentUpon>pageContentReview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentReview.aspx.designer.cs">
+      <DependentUpon>pageContentReview.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteServer\Cms\pageContentStudy.aspx.cs">
       <DependentUpon>pageContentStudy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -561,6 +579,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentWishWall.aspx.designer.cs">
       <DependentUpon>pageContentWishWall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageExamination.aspx.cs">
+      <DependentUpon>pageExamination.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageExamination.aspx.designer.cs">
+      <DependentUpon>pageExamination.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\pagePartyIntroduce.aspx.cs">
       <DependentUpon>pagePartyIntroduce.aspx</DependentUpon>
@@ -624,6 +649,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentService.aspx.designer.cs">
       <DependentUpon>pageContentService.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageStudyRecord.aspx.cs">
+      <DependentUpon>pageStudyRecord.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageStudyRecord.aspx.designer.cs">
+      <DependentUpon>pageStudyRecord.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>

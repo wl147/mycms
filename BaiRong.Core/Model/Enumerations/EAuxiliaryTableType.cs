@@ -18,6 +18,8 @@ namespace BaiRong.Core.Model.Enumerations
         Wish,
         Organization,
         Mien,
+        Examination,
+        Review,
         UserDefined             //自定义
 	}
 

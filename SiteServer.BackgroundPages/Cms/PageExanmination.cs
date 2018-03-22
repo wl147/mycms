@@ -18,7 +18,7 @@ using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContentStudy : BasePageCms
+    public class PageExanmination : BasePageCms
     {
         public Repeater rptContents;
         public SqlPager spContents;
@@ -54,16 +54,14 @@ namespace SiteServer.BackgroundPages.Cms
             if (IsForbidden) return;
 
             var permissions = PermissionsManager.GetPermissions(Body.AdministratorName);
-            var mainPublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
+
             PageUtils.CheckRequestParameter("PublishmentSystemID", "NodeID");
-            var nodeID = Body.GetQueryInt("NodeID");
-            var childNodeId = Body.GetQueryInt("ChildNodeId");
+            var nodeID = Body.GetQueryInt("NodeID");           
             relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeID);
             nodeInfo = NodeManager.GetNodeInfo(1, nodeID);
-            tableName = NodeManager.GetTableName(mainPublishmentSystemInfo, nodeInfo);
-            tableStyle = NodeManager.GetTableStyle(mainPublishmentSystemInfo, nodeInfo);
+            tableName = NodeManager.GetTableName(PublishmentSystemInfo, nodeInfo);
+            tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, nodeInfo);
             styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
-            var styleInfoList2 = TableStyleManager.GetTableStyleInfoList(tableStyle, "siteserver_Node", relatedIdentities);
             Dictionary<string, string> category = DataProvider.NodeDao.GetNodeIdListLevel(2, nodeID);
             int contentNum = 0;
 
@@ -98,47 +96,38 @@ namespace SiteServer.BackgroundPages.Cms
                     ? Body.AdministratorName
                     : string.Empty;
 
-            if (Body.IsQueryExists("SearchType") && Body.IsQueryExists("ChildNodeId"))
+            if (Body.IsQueryExists("SearchType"))
             {
-                List<int> owningNodeIdList = new List<int>
+
+                string nodeListString = Body.GetQueryString("ChildNodeId");
+                string[] nodeArray = nodeListString.Split(new char[] { ',' });
+                List<int> owningNodeIdList = new List<int>();
+                foreach (string node in nodeArray)
                 {
-                    nodeID,3,4,6,9
-                };
-                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                    if (!string.IsNullOrEmpty(node))
+                    {
+                        int nodeId = Convert.ToInt32(node);
+                        owningNodeIdList.Add(nodeId);
+                        contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                    }
+                }
+                nodeListString = nodeListString.TrimEnd(',');
+                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommendForLower(nodeListString, tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
             else
             {
-                var test = tableName;
-                List<int> nodeList = new List<int>();
-                nodeList.Add(nodeID);
-                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1, nodeID);
-                if (firstChildList != null && firstChildList.Count > 0)
-                {
-                    nodeList.AddRange(firstChildList);
-                    foreach (var firstchild in firstChildList)
-                    {
-
-                        var secondList = DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
-                        if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
-                    }
-                }
-                var nodeCollectionIdStr = string.Empty;
-                foreach (int nodeId in nodeList)
-                {
-                    nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
-                    contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
-                }
-                nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = $@"select * from model_Study where NodeId in({nodeCollectionIdStr}) AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
+                //spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName, base.PublishmentSystemId);
+                spContents.SelectCommand = "select * from siteserver_examination";
+                
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
             spContents.SortMode = SortMode.DESC;
-            spContents.OrderByString = "ORDER BY Taxis Desc";
+            spContents.OrderByString = ETaxisTypeUtils.GetOrderByString(tableStyle, ETaxisType.OrderByTaxisDesc);
 
             //分页的时候，不去查询总条数，直接使用栏目的属性：ContentNum
             spContents.IsQueryTotalCount = false;
-            spContents.TotalCount = contentNum;//nodeInfo.ContentNum;
+            spContents.TotalCount = nodeInfo.ContentNum;//nodeInfo.ContentNum;
 
             if (!IsPostBack)
             {
@@ -159,15 +148,51 @@ namespace SiteServer.BackgroundPages.Cms
                         }
                     }
                 }
-                var listitemAll = new ListItem("全部", nodeID.ToString());
-                ChannelCategory.Items.Add(listitemAll);
+                string NodeIdAll = nodeID + ",";
                 if (category != null)
                 {
                     foreach (var chanelCategory in category)
+
                     {
-                        var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
-                        ChannelCategory.Items.Add(listitem);
+                        NodeIdAll = NodeIdAll + chanelCategory.Value + ",";
+                        var nodechildId = DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(chanelCategory.Value));
+                        if (nodechildId != null && nodechildId.Count > 0)
+                        {
+                            string chidNodeList = string.Empty;
+                            foreach (var child in nodechildId)
+                            {
+                                NodeIdAll = NodeIdAll + child.NodeId + ",";
+                                chidNodeList = chidNodeList + child.NodeId + ",";
+                            }
+                            var listitem = new ListItem(chanelCategory.Key, chidNodeList);
+                            ChannelCategory.Items.Add(listitem);
+                        }
+                        else
+                        {
+                            var listitem = new ListItem(chanelCategory.Key, chanelCategory.Value);
+                            NodeIdAll = NodeIdAll + chanelCategory.Value + ",";
+                            ChannelCategory.Items.Add(listitem);
+                        }
+
                     }
+                }
+                var listitemAll = new ListItem("全部", NodeIdAll);
+                ChannelCategory.Items.Add(listitemAll);
+                ListItem listItemSelect = null;
+                foreach (ListItem listItem in ChannelCategory.Items)
+                {
+                    if (listItem.Value.Equals(Body.GetQueryString("ChildNodeId")))
+                    {
+                        listItemSelect = listItem;
+                    }
+                }
+                if (listItemSelect != null)
+                {
+                    listItemSelect.Selected = true;
+                }
+                else
+                {
+                    listitemAll.Selected = true;
                 }
                 //添加隐藏属性
                 SearchType.Items.Add(new ListItem("内容ID", ContentAttribute.Id));
@@ -198,27 +223,23 @@ $(document).ready(function() {
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
+                //var ltlItemTitle = e.Item.FindControl("ltlItemTitle") as Literal;
                 var ltlColumnItemRows = e.Item.FindControl("ltlColumnItemRows") as Literal;
-                var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
+                //var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
-                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
-                var ltlStudyRecord = e.Item.FindControl("ltlStudyRecord") as Literal;
-                var ltlExamination= e.Item.FindControl("ltlExamination") as Literal;
+                //var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
-                ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
-                
-                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
-                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
-                //ltlStudyRecord.Text = $@"<a href=""javascript:;"" title=""人员列表""  onclick=""window.open('/siteserver/cms/pageStudyRecord.aspx?ArticleId={contentInfo.Id}')"" target=""_self"" "" >人员列表</a>";
-                ltlStudyRecord.Text = $@"<a href=""pageStudyRecord.aspx?ArticleId={contentInfo.Id}"" title=""人员列表""  target=""_self"" "" >人员列表</a>";
 
-                ltlExamination.Text = WebUtils.GetStudyExaminationHref(contentInfo);
-                ltlItemStatus.Text =
-                    $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
-                        PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
+                //ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
+
+                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+                //ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
+
+                //ltlItemStatus.Text =
+                 //   $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
+                  //      PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
 
                 //if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 //{
@@ -228,7 +249,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrl(EContentModelType.Examination, contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -240,7 +261,10 @@ $(document).ready(function() {
         {
             PageUtils.Redirect(PageUrl);
         }
-
+        public void ChannelCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(PageUrl, true);
+        }
         private string _pageUrl;
         private string PageUrl
         {
@@ -276,6 +300,10 @@ $(document).ready(function() {
                         {"ChildNodeId",ChannelCategory.SelectedValue }
                     });
 
+        }
+        public void DdlContentModelId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(PageUrl, true);
         }
 
     }

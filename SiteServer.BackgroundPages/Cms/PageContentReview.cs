@@ -18,7 +18,7 @@ using SiteServer.CMS.Model;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContentStudy : BasePageCms
+    public class PageContentReview : BasePageCms
     {
         public Repeater rptContents;
         public SqlPager spContents;
@@ -108,28 +108,8 @@ namespace SiteServer.BackgroundPages.Cms
             }
             else
             {
-                var test = tableName;
-                List<int> nodeList = new List<int>();
-                nodeList.Add(nodeID);
-                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1, nodeID);
-                if (firstChildList != null && firstChildList.Count > 0)
-                {
-                    nodeList.AddRange(firstChildList);
-                    foreach (var firstchild in firstChildList)
-                    {
 
-                        var secondList = DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
-                        if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
-                    }
-                }
-                var nodeCollectionIdStr = string.Empty;
-                foreach (int nodeId in nodeList)
-                {
-                    nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
-                    contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
-                }
-                nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = $@"select * from model_Study where NodeId in({nodeCollectionIdStr}) AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
+                spContents.SelectCommand = $@"select * from siteserver_examinationpaper where NodeId ={nodeID} AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -138,7 +118,7 @@ namespace SiteServer.BackgroundPages.Cms
 
             //分页的时候，不去查询总条数，直接使用栏目的属性：ContentNum
             spContents.IsQueryTotalCount = false;
-            spContents.TotalCount = contentNum;//nodeInfo.ContentNum;
+            spContents.TotalCount = nodeInfo.ContentNum;//nodeInfo.ContentNum;
 
             if (!IsPostBack)
             {
@@ -203,19 +183,19 @@ $(document).ready(function() {
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
-                var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
-                var ltlStudyRecord = e.Item.FindControl("ltlStudyRecord") as Literal;
-                var ltlExamination= e.Item.FindControl("ltlExamination") as Literal;
+                //var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
+                //var ltlStudyRecord = e.Item.FindControl("ltlStudyRecord") as Literal;
+                //var ltlExamination = e.Item.FindControl("ltlExamination") as Literal;
 
                 var contentInfo = new ContentInfo(e.Item.DataItem);
                 ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
-                
-                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
-                ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
-                //ltlStudyRecord.Text = $@"<a href=""javascript:;"" title=""人员列表""  onclick=""window.open('/siteserver/cms/pageStudyRecord.aspx?ArticleId={contentInfo.Id}')"" target=""_self"" "" >人员列表</a>";
-                ltlStudyRecord.Text = $@"<a href=""pageStudyRecord.aspx?ArticleId={contentInfo.Id}"" title=""人员列表""  target=""_self"" "" >人员列表</a>";
 
-                ltlExamination.Text = WebUtils.GetStudyExaminationHref(contentInfo);
+                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+                //ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
+                //ltlStudyRecord.Text = $@"<a href=""javascript:;"" title=""人员列表""  onclick=""window.open('/siteserver/cms/pageStudyRecord.aspx?ArticleId={contentInfo.Id}')"" target=""_self"" "" >人员列表</a>";
+                //ltlStudyRecord.Text = $@"<a href=""pageStudyRecord.aspx?ArticleId={contentInfo.Id}"" title=""人员列表""  target=""_self"" "" >人员列表</a>";
+
+                //ltlExamination.Text = WebUtils.GetStudyExaminationHref(contentInfo);
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
                         PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";

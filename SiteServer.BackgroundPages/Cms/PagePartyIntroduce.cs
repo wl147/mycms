@@ -50,8 +50,10 @@ namespace SiteServer.BackgroundPages.Cms
 
         public void Page_Load(object sender, EventArgs e)
         {
-            Content.Text = "22222";
-            //Content.Text =DataProvider.PublishmentSystemDao.GetPublishmentSystemPartyIntroduce( PublishmentSystemInfo.PublishmentSystemId);
+            if (!IsPostBack)
+            {
+                Content.Text = DataProvider.PublishmentSystemDao.GetPublishmentSystemPartyIntroduce(PublishmentSystemInfo.PublishmentSystemId);
+            }
         }
         public override void Submit_OnClick(object sender, EventArgs e)
         {
@@ -59,6 +61,7 @@ namespace SiteServer.BackgroundPages.Cms
             {
               var a=  Content.Text;
                 DataProvider.PublishmentSystemDao.UpdatePublishmentSystemPartyIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
+                SuccessMessage("党委信息修改成功！");
             }
         }
     }

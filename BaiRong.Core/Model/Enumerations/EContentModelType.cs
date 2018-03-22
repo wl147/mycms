@@ -12,6 +12,7 @@ namespace BaiRong.Core.Model.Enumerations
         Vote,
         Job,
         TeacherLib,
+        Examination,
         UserDefined
 	}
 
@@ -121,7 +122,7 @@ namespace BaiRong.Core.Model.Enumerations
             else if (Equals(EContentModelType.Job, typeStr))
             {
                 retval = EContentModelType.Job;
-            }
+            }            
             else if (Equals(EContentModelType.UserDefined, typeStr))
             {
                 retval = EContentModelType.UserDefined;

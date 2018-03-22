@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContentAdd : BasePageCms
+    public class PageContentExaminationAdd : BasePageCms
     {
         public Literal LtlPageTitle;
 
@@ -54,7 +54,7 @@ namespace SiteServer.BackgroundPages.Cms
         private string _tableName;
 
         protected override bool IsSinglePage => true;
-        protected new int PublishmentSystemId=1;
+        protected new int PublishmentSystemId = 1;
         protected new PublishmentSystemInfo PublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
         public static string GetRedirectUrlOfAdd(int publishmentSystemId, int nodeId, string returnUrl)
         {
@@ -69,16 +69,6 @@ namespace SiteServer.BackgroundPages.Cms
         public static string GetRedirectUrlOfEdit(int publishmentSystemId, int nodeId, int id, string returnUrl)
         {
             return PageUtils.GetCmsUrl(nameof(PageContentAdd), new NameValueCollection
-            {
-                {"PublishmentSystemID", publishmentSystemId.ToString()},
-                {"NodeID", nodeId.ToString()},
-                {"ID", id.ToString()},
-                {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
-            });
-        }
-        public static string GetRedirectUrlOfEditExamination(int publishmentSystemId, int nodeId, int id, string returnUrl)
-        {
-            return PageUtils.GetCmsUrl("PageContentExaminationAdd", new NameValueCollection
             {
                 {"PublishmentSystemID", publishmentSystemId.ToString()},
                 {"NodeID", nodeId.ToString()},
@@ -164,7 +154,7 @@ var previewUrl = '{PagePreview.GetRedirectUrl(PublishmentSystemId, _nodeInfo.Nod
                     {
                         LtlPageTitle.Text += $@"
 <input type=""hidden"" id=""savedContentID"" name=""savedContentID"" value=""{contentId}"">
-<script language=""javascript"" type=""text/javascript"">setInterval(""autoSave()"",{PublishmentSystemInfo.Additional.AutoSaveContentInterval*1000});</script>
+<script language=""javascript"" type=""text/javascript"">setInterval(""autoSave()"",{PublishmentSystemInfo.Additional.AutoSaveContentInterval * 1000});</script>
 ";
                     }
                     //专题
@@ -723,15 +713,15 @@ $('#TbTags').keyup(function (e) {
         {
             var currentSelect = TbSpecial.SelectedValue;
             TbCategory.Items.Clear();
-            var childNodeId= DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(currentSelect));
+            var childNodeId = DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(currentSelect));
             if (childNodeId != null && childNodeId.Count > 0)
             {
-                foreach(var nodeInfo in childNodeId)
+                foreach (var nodeInfo in childNodeId)
                 {
                     TbCategory.Items.Add(new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString()));
                 }
             }
-          
+
         }
         private void CopyReferenceFiles(PublishmentSystemInfo targetPublishmentSystemInfo, string sourceUrl)
         {

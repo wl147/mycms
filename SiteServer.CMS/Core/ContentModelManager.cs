@@ -63,6 +63,8 @@ namespace SiteServer.CMS.Core
             list.Add(new ContentModelInfo("Wish", 1, "心愿墙", false, "siteserver_wishwall", EAuxiliaryTableType.Wish, "", ""));
             list.Add(new ContentModelInfo("Organization", 1, "组织活动", false, "model_organizationactivity", EAuxiliaryTableType.Organization, "", ""));
             list.Add(new ContentModelInfo("Mien", 1, "党员风采", false, "siteserver_partymembermien", EAuxiliaryTableType.Organization, "", ""));
+            list.Add(new ContentModelInfo("Examination", 1, "考题", false, "siteserver_examination", EAuxiliaryTableType.Examination, "", ""));
+            list.Add(new ContentModelInfo("Review", 1, "测评", false, "siteserver_examinationpaper", EAuxiliaryTableType.Review, "", ""));
 
 
             return list;

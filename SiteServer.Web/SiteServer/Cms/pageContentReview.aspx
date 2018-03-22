@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContentStudy" %>
+﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContentReview" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 <!DOCTYPE html>
 <html>
@@ -38,14 +38,12 @@
 
   <table id="contents" class="table table-bordered table-hover">
     <tr class="info thead">
-      <td width="200">内容标题</td>
-      <td width="200">分类</td>     
+      <td width="200">内容标题</td>    
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
       <td width="50"> 状态 </td>
-      <td width="50"> 学习记录</td>
-      <td width="50"> 考题 </td>
       <asp:Literal ID="ltlCommandHeadRows" runat="server"></asp:Literal>
       <td width="30"> &nbsp; </td>
+      <td width="50">测评管理</td>
       <td width="20">
         <input type="checkbox" onClick="selectRows(document.getElementById('contents'), this.checked);">
       </td>
@@ -56,23 +54,17 @@
           <td>
             <asp:Literal ID="ltlItemTitle" runat="server"></asp:Literal>
           </td>
-             <td>
-            <asp:Literal ID="ltlCategory" runat="server"></asp:Literal>
-          </td>
           <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
           <td class="center" nowrap>
             <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>
-          </td>
-             <td class="center" nowrap>
-            <asp:Literal ID="ltlStudyRecord" runat="server"></asp:Literal>
-          </td>
-             <td class="center" nowrap>
-            <asp:Literal ID="ltlExamination" runat="server"></asp:Literal>
           </td>
           <td class="center">
             <asp:Literal ID="ltlItemEditUrl" runat="server"></asp:Literal>
           </td>
           <asp:Literal ID="ltlCommandItemRows" runat="server"></asp:Literal>
+           <td class="center">
+            <asp:Literal ID="测评管理" runat="server"></asp:Literal>
+          </td>
           <td class="center">
             <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />
           </td>

@@ -193,6 +193,10 @@ namespace SiteServer.BackgroundPages.Core
             {
                 tab.Href = $@"cms/pageContentStudy.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
             }
+            else if (nodeInfo.NodeName.Equals("效果测评"))
+            {
+                tab.Href = $@"cms/pageContentReview.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
             else if (nodeInfo.NodeName.Equals("师资库"))
             {
                 tab.Href = $@"cms/pageContentTeachers.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";

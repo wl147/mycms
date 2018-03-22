@@ -167,6 +167,10 @@ namespace SiteServer.BackgroundPages.Core
             {
                 return PageVoteContentAdd.GetRedirectUrlOfEdit(publishmentSystemId, nodeId, id, returnUrl);
             }
+            if (modelType == EContentModelType.Examination)
+            {
+                return PageContentAdd.GetRedirectUrlOfEditExamination(publishmentSystemId, nodeId, id, returnUrl);
+            }
             return PageContentAdd.GetRedirectUrlOfEdit(publishmentSystemId, nodeId, id, returnUrl);
         }
 
@@ -186,6 +190,10 @@ namespace SiteServer.BackgroundPages.Core
         public static string GetContentAddEditUrl(int publishmentSystemId, NodeInfo nodeInfo, int id, string returnUrl)
         {
             var modelType = EContentModelTypeUtils.GetEnumType(nodeInfo.ContentModelId);
+            return GetContentEditUrl(modelType, publishmentSystemId, nodeInfo.NodeId, id, returnUrl);
+        }
+        public static string GetContentAddEditUrl(EContentModelType modelType , int publishmentSystemId, NodeInfo nodeInfo, int id, string returnUrl)
+        {
             return GetContentEditUrl(modelType, publishmentSystemId, nodeInfo.NodeId, id, returnUrl);
         }
 
@@ -571,6 +579,37 @@ function autoReplaceKeywords(){
             builder.Append(command);
 
             return builder.ToString();
+        }
+
+        public static string GetStudyExaminationHref(ContentInfo contentInfo)
+        {
+            string href = string.Empty;
+            if (GetIsEvaluate(contentInfo.GetSettingsXml()))
+            {
+                href= $@"<a href=""pageExamination.aspx?PublishmentSystemId=1&NodeId=11027&ArticleId={contentInfo.Id}"" target=""_self"">管理</a>";
+            }
+            else
+            {
+                href = $@"<a href=""javascript:void(0)"" target=""_self""> 无</a>";
+            }
+            return href;
+        }
+       static  bool GetIsEvaluate(string xml)
+        {
+            bool retval = false;
+            string[] arr = xml.Split('&');
+            if (arr != null && arr.Length > 0)
+            {
+                foreach(string field in arr)
+                {
+                    string[] arrField = field.Split('=');
+                    if (arrField[0].Equals("IsEvaluate", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (arrField[1] == "1") return true;
+                    }
+                }
+            }
+            return retval;
         }
     }
 }

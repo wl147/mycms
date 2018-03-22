@@ -50,8 +50,10 @@ namespace SiteServer.BackgroundPages.Cms
 
         public void Page_Load(object sender, EventArgs e)
         {
-
-            Content.Text = DataProvider.PublishmentSystemDao.GetPublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId);
+            if (!IsPostBack)
+            {
+                Content.Text = DataProvider.PublishmentSystemDao.GetPublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId);
+            }
         }
         public override void Submit_OnClick(object sender, EventArgs e)
         {
@@ -59,6 +61,7 @@ namespace SiteServer.BackgroundPages.Cms
             {
 
                 DataProvider.PublishmentSystemDao.UpdatePublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
+                SuccessMessage("支部信息修改成功！");
             }
         }
     }

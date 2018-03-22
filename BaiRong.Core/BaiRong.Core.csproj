@@ -143,6 +143,7 @@
     <Compile Include="Model\Enumerations\ECmsType.cs" />
     <Compile Include="Model\Enumerations\EPermission.cs" />
     <Compile Include="Model\PartyTransCheckInfo.cs" />
+    <Compile Include="Model\StudyRecord.cs" />
     <Compile Include="Provider\PartyDao.cs" />
     <Compile Include="SiteFilesAssets.cs" />
     <Compile Include="SiteServerAssets.cs" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContentStudy" %>
+﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageExanmination" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 <!DOCTYPE html>
 <html>
@@ -25,7 +25,7 @@
     <asp:Literal ID="ltlContentButtons" runat="server"></asp:Literal>
     <div id="contentSearch" style="display:block;margin-top:10px;">
        分类：
-      <asp:DropDownList ID="ChannelCategory" class="input-medium" runat="server"> </asp:DropDownList>
+      <asp:DropDownList ID="ChannelCategory" AutoPostBack="true" OnSelectedIndexChanged="ChannelCategory_SelectedIndexChanged" class="input-medium" runat="server"> </asp:DropDownList>
       时间从：
       <bairong:DateTimeTextBox ID="DateFrom" class="input-small" Columns="12" runat="server" />
       目标：
@@ -38,37 +38,17 @@
 
   <table id="contents" class="table table-bordered table-hover">
     <tr class="info thead">
-      <td width="200">内容标题</td>
-      <td width="200">分类</td>     
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
-      <td width="50"> 状态 </td>
-      <td width="50"> 学习记录</td>
-      <td width="50"> 考题 </td>
+      <td width="30">&nbsp;</td>
       <asp:Literal ID="ltlCommandHeadRows" runat="server"></asp:Literal>
-      <td width="30"> &nbsp; </td>
       <td width="20">
         <input type="checkbox" onClick="selectRows(document.getElementById('contents'), this.checked);">
       </td>
     </tr>
     <asp:Repeater ID="rptContents" runat="server">
       <itemtemplate>
-        <tr>
-          <td>
-            <asp:Literal ID="ltlItemTitle" runat="server"></asp:Literal>
-          </td>
-             <td>
-            <asp:Literal ID="ltlCategory" runat="server"></asp:Literal>
-          </td>
-          <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
-          <td class="center" nowrap>
-            <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>
-          </td>
-             <td class="center" nowrap>
-            <asp:Literal ID="ltlStudyRecord" runat="server"></asp:Literal>
-          </td>
-             <td class="center" nowrap>
-            <asp:Literal ID="ltlExamination" runat="server"></asp:Literal>
-          </td>
+        <tr>         
+          <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>         
           <td class="center">
             <asp:Literal ID="ltlItemEditUrl" runat="server"></asp:Literal>
           </td>
