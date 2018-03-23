@@ -229,6 +229,10 @@ namespace SiteServer.BackgroundPages.Core
             {
                 tab.Href = $@"cms/pageContentOrganization.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
             }
+            else if (nodeInfo.NodeName.Equals("组织报道"))
+            {
+                tab.Href = $@"cms/pageOrganizationReach.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
             else
             {
                 tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";

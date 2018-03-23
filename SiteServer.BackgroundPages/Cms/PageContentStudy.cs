@@ -104,7 +104,9 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     nodeID,3,4,6,9
                 };
-                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                contentNum = nodeInfo.ContentNum;
+                //spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                spContents.SelectCommand= $@"select * from model_Study where NodeId in({Body.GetQueryString("ChildNodeId")}) AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
             }
             else
             {
@@ -240,7 +242,10 @@ $(document).ready(function() {
         {
             PageUtils.Redirect(PageUrl);
         }
-
+        public void ChannelCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(PageUrl, true);
+        }
         private string _pageUrl;
         private string PageUrl
         {
@@ -248,7 +253,7 @@ $(document).ready(function() {
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentStudy", new NameValueCollection
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
@@ -265,7 +270,7 @@ $(document).ready(function() {
         private string GetPageUrlForContent(ContentInfo contentInfo)
         {
 
-            return _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+            return _pageUrl = PageUtils.GetCmsUrl("PageContentStudy", new NameValueCollection
                     {
                         {"PublishmentSystemID", contentInfo.PublishmentSystemId.ToString()},
                         {"NodeID",contentInfo.NodeId.ToString()},

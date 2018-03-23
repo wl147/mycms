@@ -95,7 +95,8 @@ namespace SiteServer.BackgroundPages.Cms
 
             var nodeId = Body.GetQueryInt("NodeID");
             var contentId = Body.GetQueryInt("ID");
-            ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
+            ReturnUrl = $@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID=1&NodeId={nodeId}";
+            //ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
             _isAjaxSubmit = Body.GetQueryBool("isAjaxSubmit");
             _isPreview = Body.GetQueryBool("isPreview");
 

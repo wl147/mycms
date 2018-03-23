@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Serialization;
 using BaiRong.Core.Model.Enumerations;
+using BaiRong.Core.Data;
 
 namespace SiteServer.CMS.Model
 {
@@ -68,6 +69,13 @@ namespace SiteServer.CMS.Model
         public PublishmentSystemInfo()
 		{
 		}
+        public PublishmentSystemInfo(object dataItem)
+        {
+            if (dataItem == null) return;
+            PublishmentSystemId = SqlUtils.EvalInt(dataItem, "PublishmentSystemId");
+            PublishmentSystemName = SqlUtils.EvalString(dataItem, "PublishmentSystemName");
+          
+        }
 
         public PublishmentSystemInfo(int publishmentSystemId, string publishmentSystemName, EPublishmentSystemType publishmentSystemType, string auxiliaryTableForContent, string auxiliaryTableForGovPublic, string auxiliaryTableForGovInteract, string auxiliaryTableForVote, string auxiliaryTableForJob, bool isCheckContentUseLevel, int checkContentLevel, string publishmentSystemDir, string publishmentSystemUrl, bool isHeadquarters, int parentPublishmentSystemId, int taxis, string settingsXml) 
 		{

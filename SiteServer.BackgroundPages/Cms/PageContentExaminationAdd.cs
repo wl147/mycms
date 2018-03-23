@@ -85,7 +85,8 @@ namespace SiteServer.BackgroundPages.Cms
 
             var nodeId = Body.GetQueryInt("NodeID");
             var contentId = Body.GetQueryInt("ID");
-            ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
+            //ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
+            ReturnUrl = $@"/siteserver/cms/pagecontentexaminationadd.aspx?PublishmentSystemID=1&NodeID=11027";
             _isAjaxSubmit = Body.GetQueryBool("isAjaxSubmit");
             _isPreview = Body.GetQueryBool("isPreview");
 
@@ -685,11 +686,11 @@ $('#TbTags').keyup(function (e) {
                     {
                         CreateManager.CreateContentAndTrigger(PublishmentSystemId, _nodeInfo.NodeId, contentId);
                     }
-
+                   
                     Body.AddSiteLog(PublishmentSystemId, _nodeInfo.NodeId, contentId, "修改内容",
                         $"栏目:{NodeManager.GetNodeNameNavigation(PublishmentSystemId, contentInfo.NodeId)},内容标题:{contentInfo.Title}");
                     PageUtils.Redirect($@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID={Body.GetQueryString("PublishmentSystemID")}&NodeID={Body.GetQueryString("NodeId")}");
-                    //PageUtils.Redirect(ReturnUrl);
+                    PageUtils.Redirect(ReturnUrl);
                 }
                 savedContentId = contentId;
             }

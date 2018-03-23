@@ -359,6 +359,7 @@
     <Content Include="SiteServer\Cms\pageLeft.aspx" />
     <Content Include="SiteServer\Cms\pageLeftSiteSelect.aspx" />
     <Content Include="SiteServer\Cms\pageNodeGroup.aspx" />
+    <Content Include="SiteServer\Cms\pageOrganizationReach.aspx" />
     <Content Include="SiteServer\Cms\pagePartyIntroduce.aspx" />
     <Content Include="SiteServer\Cms\pageProgressBar.aspx" />
     <Content Include="SiteServer\Cms\PagePublishmentSystem.aspx" />
@@ -586,6 +587,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageExamination.aspx.designer.cs">
       <DependentUpon>pageExamination.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageOrganizationReach.aspx.cs">
+      <DependentUpon>pageOrganizationReach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageOrganizationReach.aspx.designer.cs">
+      <DependentUpon>pageOrganizationReach.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\pagePartyIntroduce.aspx.cs">
       <DependentUpon>pagePartyIntroduce.aspx</DependentUpon>

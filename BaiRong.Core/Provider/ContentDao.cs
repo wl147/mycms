@@ -1688,6 +1688,10 @@ group by tmp.userName";
         {
             return "Taxis";
         }
+        public string GetSortPublishmentSystem()
+        {
+            return "ParentsCount";
+        }
 
         public List<int> GetContentIdListCheck(int publishmentSystemId, int nodeId, string tableName)
         {

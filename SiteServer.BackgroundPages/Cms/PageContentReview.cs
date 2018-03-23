@@ -183,7 +183,7 @@ $(document).ready(function() {
                 var ltlItemStatus = e.Item.FindControl("ltlItemStatus") as Literal;
                 var ltlItemEditUrl = e.Item.FindControl("ltlItemEditUrl") as Literal;
                 var ltlCommandItemRows = e.Item.FindControl("ltlCommandItemRows") as Literal;
-                //var ltlCategory = e.Item.FindControl("ltlCategory") as Literal;
+                var ltlReview = e.Item.FindControl("ltlReview") as Literal;
                 //var ltlStudyRecord = e.Item.FindControl("ltlStudyRecord") as Literal;
                 //var ltlExamination = e.Item.FindControl("ltlExamination") as Literal;
 
@@ -213,6 +213,7 @@ $(document).ready(function() {
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
                 ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
+                ltlReview.Text = WebUtils.GetReviewExaminationHref(contentInfo);
             }
         }
 

@@ -272,7 +272,7 @@ $(document).ready(function() {
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl("PageExamination", new NameValueCollection
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
@@ -289,7 +289,7 @@ $(document).ready(function() {
         private string GetPageUrlForContent(ContentInfo contentInfo)
         {
 
-            return _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+            return _pageUrl = PageUtils.GetCmsUrl("PageExamination", new NameValueCollection
                     {
                         {"PublishmentSystemID", contentInfo.PublishmentSystemId.ToString()},
                         {"NodeID",contentInfo.NodeId.ToString()},

@@ -63,7 +63,7 @@
           </td>
           <asp:Literal ID="ltlCommandItemRows" runat="server"></asp:Literal>
            <td class="center">
-            <asp:Literal ID="测评管理" runat="server"></asp:Literal>
+            <asp:Literal ID="ltlReview" runat="server"></asp:Literal>
           </td>
           <td class="center">
             <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />

@@ -101,7 +101,7 @@
                     <tr>
                         <td class="center">
                             <asp:Button class="btn btn-primary" itemIndex="1" ID="BtnSubmit" Text="确 定" OnClick="Submit_OnClick" runat="server" />
-                            <input class="btn btn-info" type="button" onClick="previewSave();" value="预 览" />
+
                             <%if (!string.IsNullOrEmpty(ReturnUrl))
                               {%>
                             <input class="btn" type="button" onclick="location.href='<%=ReturnUrl%>    ';return false;" value="返 回" />

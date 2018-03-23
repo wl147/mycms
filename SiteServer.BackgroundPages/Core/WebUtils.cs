@@ -594,7 +594,12 @@ function autoReplaceKeywords(){
             }
             return href;
         }
-       static  bool GetIsEvaluate(string xml)
+        public static string GetReviewExaminationHref(ContentInfo contentInfo)
+        {
+
+            return $@"<a href=""pageExamination.aspx?PublishmentSystemId=1&NodeId=11027&ArticleId={contentInfo.Id}"" target=""_self"">管理</a>";
+        }
+        static  bool GetIsEvaluate(string xml)
         {
             bool retval = false;
             string[] arr = xml.Split('&');
