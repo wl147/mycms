@@ -33,6 +33,8 @@ ORDER BY a.Taxis";
 
         private const string SqlInsertPublishmentSystemDetails = "INSERT INTO siteserver_publishmentsystemdetails (PublishmentSystemId, Area, OrganizationTypeId, OrganizationCategory, TelePhone, Adrress, BasicFacts, Characteristic, ImageUrl) VALUES (@PublishmentSystemID, @Area, @OrganizationTypeId, @OrganizationCategory, @TelePhone, @Adrress, @BasicFacts, @Characteristic, @ImageUrl)";
 
+        private const string SqlInsertOrganizationReach = "INSERT INTO siteserver_organizationreach(OrganizationId,ChargeName,TelePhone,ReachOrganizationId,ReachTime,ActivitiesCount)  VALUES(@OrganizationId,@ChargeName,@TelePhone,@ReachOrganizationId,@ReachTime,@ActivitiesCount)";
+
         private const string SqlUpdatePublishmentSystem = "UPDATE siteserver_PublishmentSystem SET PublishmentSystemName = @PublishmentSystemName, PublishmentSystemType = @PublishmentSystemType, AuxiliaryTableForContent = @AuxiliaryTableForContent, AuxiliaryTableForGovPublic = @AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract = @AuxiliaryTableForGovInteract, AuxiliaryTableForVote = @AuxiliaryTableForVote, AuxiliaryTableForJob = @AuxiliaryTableForJob, IsCheckContentUseLevel = @IsCheckContentUseLevel, CheckContentLevel = @CheckContentLevel, PublishmentSystemDir = @PublishmentSystemDir, PublishmentSystemUrl = @PublishmentSystemUrl, IsHeadquarters = @IsHeadquarters, ParentPublishmentSystemID = @ParentPublishmentSystemID, Taxis = @Taxis, SettingsXML = @SettingsXML WHERE  PublishmentSystemID = @PublishmentSystemID";
 
         private const string SqlUpdatePublishmentSystemDetails = "UPDATE siteserver_PublishmentSystemDetails SET AreaId =@AreaId,Area=@Area, OrganizationTypeId = @OrganizationTypeId, TelePhone = @TelePhone, ImageUrl = @ImageUrl, Adrress = @Adrress, BasicFacts = @BasicFacts, OrganizationCategory = @OrganizationCategory, Characteristic = @Characteristic, AdministratorAccount = @AdministratorAccount WHERE  PublishmentSystemID = @OldPublishmentSystemID";
@@ -157,6 +159,22 @@ ORDER BY a.Taxis";
 
             ExecuteNonQuery(trans, SqlInsertPublishmentSystemDetails, insertParms);
             PublishmentSystemManager.ClearCache(true);
+        }
+        public bool InsertOrganizationReach(ReachInfo info)
+        {
+            //获取排序值
+            var taxis = GetMaxTaxis() + 1;
+            var insertParms = new IDataParameter[]
+            {
+                GetParameter("@OrganizationId", EDataType.Integer, info.OrganizationId),
+                GetParameter("@TelePhone", EDataType.VarChar, 255, info.TelePhone),
+                GetParameter("@ChargeName", EDataType.VarChar,255, info.ChargeName),
+                GetParameter("ReachOrganizationId", EDataType.Integer, info.ReachOrganizationId),
+                GetParameter("@ReachTime", EDataType.DateTime,info.ReachTime),
+                GetParameter("@ActivitiesCount", EDataType.Integer, info.ActivitiesCount),
+            };
+
+            return ExecuteNonQuery(SqlInsertOrganizationReach, insertParms)==1;            
         }
 
         public void Delete(int publishmentSystemId)

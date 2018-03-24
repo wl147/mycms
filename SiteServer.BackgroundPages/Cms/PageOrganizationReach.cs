@@ -23,12 +23,13 @@ namespace SiteServer.BackgroundPages.Cms
         public TextBox Keyword;
         public Repeater rptContents;
         public SqlPager spContents;
+        public Literal ltlContentButtons;
 
         public void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-
+                ltlContentButtons.Text = WebUtils.GetContentCommandsForTransform("www.baidu.com",PublishmentSystemId);
             }
         }
         public void Search_OnClick(object sender, EventArgs e)

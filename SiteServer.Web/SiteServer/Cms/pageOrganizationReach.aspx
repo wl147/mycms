@@ -26,7 +26,8 @@
     <div id="contentSearch" style="display:block;margin-top:10px;">
      选择社区: <asp:TextBox width="400" class="input-medium" ID="Keyword"  runat="server" />
       <asp:Button class="btn" OnClick="Search_OnClick" ID="Search" Text="查询" runat="server" /></br><br>
-      <h4>请输入社区名称或地址点击查询按钮，在搜索结果中选中社区所在行，点击 <asp:Button class="btn" OnClick="Sumbmit_OnClick" ID="btnSubmintInfo" Text="确定" runat="server" /></h4><br>
+      <h4>请输入社区名称或地址点击查询按钮，在搜索结果中选中社区所在行，点击 <asp:Literal ID="ltlContentButtons" runat="server"></asp:Literal></h4></br>
+      
     </div>
   </div>
 
@@ -54,7 +55,7 @@
             <asp:Literal ID="ltlAddress" runat="server"></asp:Literal>
           </td> 
           <td class="center">
-            <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />
+            <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "PublishmentSystemId")%>' />
           </td>
         </tr>
       </itemtemplate>

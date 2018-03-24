@@ -346,6 +346,11 @@ namespace SiteServer.BackgroundPages.Core
             //}
             return builder.ToString();
         }
+        public static string GetContentCommandsForTransform(string returnUrl,int publishmentSystemId)
+        {
+            return $@"<a href=""javascript:; "" style="" font-size:24px;font-weight:blod; border:solid;"" onclick=""if (!_alertTransformCollection(document.getElementsByName('ContentIDCollection'), 
+'请选择需要审核的内容！')) {{ openWindow('组织报道', '/siteserver/cms/modalcontentTransform.aspx?ReturnUrl={returnUrl}'+'&PublishmentSystemId='+'{publishmentSystemId}' + '&ReachPublishmentSystemId=' + _getCheckBoxCollectionValue(document.getElementsByName('ContentIDCollection')), 550, 300, 'false'); }}; return false; "">确定</a> ";
+        }
 
         public static string GetChannelCommands(string administratorName, PublishmentSystemInfo publishmentSystemInfo, NodeInfo nodeInfo, string pageUrl, string currentFileName)
         {

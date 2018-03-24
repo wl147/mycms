@@ -189,6 +189,16 @@ function _alertCheckBoxCollection(checklist, alertString){
 	}
 	return false;
 }
+function _alertTransformCollection(checklist, alertString){
+	var collectionValue = _getCheckBoxCollectionValue(checklist);
+	if (collectionValue.length == 0){
+		alert("请选择转移到的组织机构!");
+		return true;
+	}else if(collectionValue.length>1){
+		alert("只能选择一个组织机构!");
+	return true;}
+	return false;
+}
 
 var _get = function(id)
 {

@@ -72,7 +72,6 @@
       </itemtemplate>
     </asp:Repeater>
   </table>
-
   <bairong:sqlPager id="spContents" runat="server" class="table table-pager" />
 
 </form>

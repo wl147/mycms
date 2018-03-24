@@ -273,6 +273,7 @@
     <Content Include="SiteServer\Cms\modalUploadSiteTemplate.aspx" />
     <Content Include="SiteServer\Cms\modalUploadVideo.aspx" />
     <Content Include="SiteServer\Cms\modalUploadWord.aspx" />
+    <Content Include="SiteServer\Cms\modalContentTransform.aspx" />
     <Content Include="SiteServer\Cms\pageActions.aspx" />
     <Content Include="SiteServer\Cms\pageAd.aspx" />
     <Content Include="SiteServer\Cms\pageAdAdd.aspx" />
@@ -503,6 +504,13 @@
     </Compile>
     <Compile Include="SiteServer\Admin\PageUser.aspx.designer.cs">
       <DependentUpon>PageUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\modalContentTransform.aspx.cs">
+      <DependentUpon>modalContentTransform.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\modalContentTransform.aspx.designer.cs">
+      <DependentUpon>modalContentTransform.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\pageBranchIntroduce.aspx.cs">
       <DependentUpon>pageBranchIntroduce.aspx</DependentUpon>

@@ -450,4 +450,15 @@ namespace SiteServer.CMS.Model
             }
         }
     }
+
+    public class ReachInfo
+    {
+        public int Id { get; set; }
+        public int OrganizationId { get; set; }
+        public string ChargeName { get; set; }
+        public string TelePhone { get; set; } 
+        public int ReachOrganizationId { get; set; }
+        public DateTime ReachTime { get; set; }
+        public int ActivitiesCount { get; set; }
+    }
 }
