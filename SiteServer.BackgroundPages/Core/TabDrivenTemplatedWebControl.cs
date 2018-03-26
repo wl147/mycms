@@ -233,6 +233,10 @@ namespace SiteServer.BackgroundPages.Core
             {
                 tab.Href = $@"cms/pageOrganizationReach.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
             }
+            else if (nodeInfo.NodeName.Equals("Ë«±¨µÀ"))
+            {
+                tab.Href = $@"cms/pageDoubleReach.aspx?PublishmentSystemID={publishmentSystemId}&NodeId={nodeInfo.NodeId}";
+            }
             else
             {
                 tab.Href = $@"cms/pagecontent.aspx?PublishmentSystemID={publishmentSystemId}&NodeID={nodeInfo.NodeId}";

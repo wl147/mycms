@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContent" %>
+﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageContentPushOut" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 <!DOCTYPE html>
 <html>
@@ -22,56 +22,43 @@
   </script>
 
   <div class="well well-small">
-    <asp:Literal ID="ltlContentButtons" runat="server"></asp:Literal>
+      <h5>首页>资料审核>推出管理</h5>
     <div id="contentSearch" style="display:block;margin-top:10px;">
-       分类：
+       内容分类：
       <asp:DropDownList ID="ChannelCategory" class="input-medium" runat="server"> </asp:DropDownList>
-      时间从：
-      <bairong:DateTimeTextBox ID="DateFrom" class="input-small" Columns="12" runat="server" />
-      目标：
-      <asp:DropDownList ID="SearchType" class="input-medium" runat="server"> </asp:DropDownList>
-      关键字：
-      <asp:TextBox class="input-medium" ID="Keyword" runat="server" />
-      <asp:Button class="btn" OnClick="Search_OnClick" ID="Search" Text="搜 索" runat="server" />
     </div>
   </div>
 
   <table id="contents" class="table table-bordered table-hover">
     <tr class="info thead">
-     <%-- <td>ID </td>--%>
-      <td>内容标题 </td>
-     
+      <td>ID </td>
+      <td>内容标题 </td>     
+      <td>类型 </td>
+      <td>推送类型 </td>
       <td>目标机构 </td>
       <td>操作时间 </td>
-      <td>审核状态 </td>
-      <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
-      <td width="50"> 状态 </td>
-        <td>推送类型 </td>
-       <td>类型 </td>
-      
-      <td width="30">&nbsp;</td>
-      <asp:Literal ID="ltlCommandHeadRows" runat="server"></asp:Literal>
-      <td width="20">
-        <input type="checkbox" onClick="selectRows(document.getElementById('contents'), this.checked);">
-      </td>
+      <td>审核状态 </td>    
     </tr>
     <asp:Repeater ID="rptContents" runat="server">
       <itemtemplate>
         <tr>
           <td>
-            <asp:Literal ID="ltlItemTitle" runat="server"></asp:Literal>
+            <asp:Literal ID="ltlID" runat="server"></asp:Literal>
           </td>
-          <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
+          <asp:Literal ID="ltlTitle" runat="server"></asp:Literal>
           <td class="center" nowrap>
-            <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>
+            <asp:Literal ID="ltlCategory" runat="server"></asp:Literal>
+          </td
+           <td class="center" nowrap>
+            <asp:Literal ID="ltlPushCategory" runat="server"></asp:Literal>
+          </td>
+          <td class="center" nowrap>
+            <asp:Literal ID="ltlGoal" runat="server"></asp:Literal>
           </td>
           <td class="center">
-            <asp:Literal ID="ltlItemEditUrl" runat="server"></asp:Literal>
+            <asp:Literal ID="ltlOperationTime" runat="server"></asp:Literal>
           </td>
-          <asp:Literal ID="ltlCommandItemRows" runat="server"></asp:Literal>
-          <td class="center">
-            <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />
-          </td>
+          <asp:Literal ID="ltlState" runat="server"></asp:Literal>
         </tr>
       </itemtemplate>
     </asp:Repeater>

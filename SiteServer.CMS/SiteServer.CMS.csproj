@@ -209,6 +209,7 @@
     <Compile Include="Controllers\Writing\ActionsGetContent.cs" />
     <Compile Include="Core\ContentUtility.cs" />
     <Compile Include="Model\OrganizationReachInfo.cs" />
+    <Compile Include="Model\PageContentPushInfo.cs" />
     <Compile Include="Provider\MechanismDao.cs" />
     <Compile Include="StlParser\Model\StlAttribute.cs" />
     <Compile Include="StlParser\StlElement\StlTemplate.cs" />

@@ -213,6 +213,12 @@
     <Compile Include="Cms\PageContentOrganization.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageContentPushIn.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PageContentPushOut.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Cms\PageContentReview.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -226,6 +232,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cms\PageContentWishWall.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PageDoubleReach.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cms\PageExanmination.cs">

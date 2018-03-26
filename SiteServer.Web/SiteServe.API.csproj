@@ -342,6 +342,7 @@
     <Content Include="SiteServer\Cms\pageCreateFile.aspx" />
     <Content Include="SiteServer\Cms\pageCreateIndex.aspx" />
     <Content Include="SiteServer\Cms\pageCreateTask.aspx" />
+    <Content Include="SiteServer\Cms\pageDoubleReach.aspx" />
     <Content Include="SiteServer\Cms\pageExamination.aspx" />
     <Content Include="SiteServer\Cms\pageFileMain.aspx" />
     <Content Include="SiteServer\Cms\pageFileManagement.aspx" />
@@ -588,6 +589,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentWishWall.aspx.designer.cs">
       <DependentUpon>pageContentWishWall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageDoubleReach.aspx.cs">
+      <DependentUpon>pageDoubleReach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageDoubleReach.aspx.designer.cs">
+      <DependentUpon>pageDoubleReach.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\pageExamination.aspx.cs">
       <DependentUpon>pageExamination.aspx</DependentUpon>
