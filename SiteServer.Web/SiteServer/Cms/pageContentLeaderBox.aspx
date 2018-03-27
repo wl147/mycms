@@ -38,17 +38,21 @@
 
   <table id="contents" class="table table-bordered table-hover">
     <tr class="info thead">
+       <td width="20">
+        <input type="checkbox" onClick="selectRows(document.getElementById('contents'), this.checked);">
+      </td>
       <asp:Literal ID="ltlColumnHeadRows" runat="server"></asp:Literal>
       <td width="50"> 状态 </td>
       <td width="30">&nbsp;</td>
       <asp:Literal ID="ltlCommandHeadRows" runat="server"></asp:Literal>
-      <td width="20">
-        <input type="checkbox" onClick="selectRows(document.getElementById('contents'), this.checked);">
-      </td>
+      
     </tr>
     <asp:Repeater ID="rptContents" runat="server">
       <itemtemplate>
-        <tr>        
+        <tr>    
+           <td class="center">
+            <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />
+          </td>    
           <asp:Literal ID="ltlColumnItemRows" runat="server"></asp:Literal>
           <td class="center" nowrap>
             <asp:Literal ID="ltlItemStatus" runat="server"></asp:Literal>
@@ -56,10 +60,7 @@
           <td class="center">
             <asp:Literal ID="ltlItemEditUrl" runat="server"></asp:Literal>
           </td>
-          <asp:Literal ID="ltlCommandItemRows" runat="server"></asp:Literal>
-          <td class="center">
-            <input type="checkbox" name="ContentIDCollection" value='<%#DataBinder.Eval(Container.DataItem, "ID")%>' />
-          </td>
+          <asp:Literal ID="ltlCommandItemRows" runat="server"></asp:Literal>         
         </tr>
       </itemtemplate>
     </asp:Repeater>

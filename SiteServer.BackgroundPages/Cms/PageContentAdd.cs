@@ -120,7 +120,7 @@ namespace SiteServer.BackgroundPages.Cms
             var contentId = Body.GetQueryInt("ID");
             string contentType = WebUtils.GetContentType(_nodeInfo.ContentModelId);
             ReturnUrl = $@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID=1&NodeId={nodeId}";
-            ReturnPUrl= $@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID=1&NodeId={Body.GetQueryInt("PNodeID")}";
+            ReturnPUrl= $@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID=1&NodeId={ (Body.GetQueryInt("PNodeID")==0? nodeId:Body.GetQueryInt("PNodeID"))}";
             //ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
             _isAjaxSubmit = Body.GetQueryBool("isAjaxSubmit");
             _isPreview = Body.GetQueryBool("isPreview");

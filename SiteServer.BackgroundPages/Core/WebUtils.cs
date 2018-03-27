@@ -806,10 +806,14 @@ function autoReplaceKeywords(){
         }
         public static string GetContentType(string str)
         {
-            string retval = "pagemain";
+            string retval = "pageContent";
             if (str.Equals("Content")) return "pageContent";
             if (str.Equals("Study")) return "pageContentStudy";
             if (str.Equals("TeacherLib")) return "pageContentTeachers";
+            if (str.Equals("Service")) return "pageContentService";
+            if (str.Equals("Box")) return "pageContentLeaderBox";
+            if (str.Equals("Wish")) return "pageContentWishWall";
+            if (str.Equals("Organization")) return "PageContentOrganization";
             return retval;
                  
         }

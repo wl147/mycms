@@ -14,6 +14,7 @@ namespace BaiRong.Core.Model.Enumerations
         TeacherLib,
         Examination,
         Study,
+        Service,
         UserDefined
 	}
 
@@ -57,6 +58,10 @@ namespace BaiRong.Core.Model.Enumerations
             else if (type == EContentModelType.Study)
             {
                 return "Study";
+            }
+            else if (type == EContentModelType.Service)
+            {
+                return "Service";
             }
             else
 			{
@@ -131,6 +136,10 @@ namespace BaiRong.Core.Model.Enumerations
             else if (Equals(EContentModelType.Study, typeStr))
             {
                 retval = EContentModelType.Study;
+            }
+            else if (Equals(EContentModelType.Service, typeStr))
+            {
+                retval = EContentModelType.Service;
             }
             else if (Equals(EContentModelType.UserDefined, typeStr))
             {

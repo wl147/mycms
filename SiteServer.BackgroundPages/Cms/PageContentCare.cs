@@ -129,7 +129,7 @@ namespace SiteServer.BackgroundPages.Cms
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
                 nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = "select * from model_voluntaryservice";
+                spContents.SelectCommand = "select * from model_voluntaryservice  where NodeId>0";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -145,7 +145,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -253,6 +253,26 @@ $(document).ready(function() {
                         {"Keyword", Keyword.Text},
                         {"page", Body.GetQueryInt("page", 1).ToString()},
                         {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrl;
+            }
+        }
+        private string PageUrlReturn
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrl))
+                {
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentCare", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},
+                        //{"DateFrom", DateFrom.Text},
+                        //{"SearchType", SearchType.SelectedValue},
+                        //{"Keyword", Keyword.Text},
+                        //{"page", Body.GetQueryInt("page", 1).ToString()},
+                        //{"ChildNodeId",ChannelCategory.SelectedValue }
                     });
                 }
                 return _pageUrl;

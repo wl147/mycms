@@ -129,7 +129,7 @@ namespace SiteServer.BackgroundPages.Cms
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
                 nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = "select * from model_voluntaryservice";
+                spContents.SelectCommand = "select * from model_voluntaryservice where NodeId>0";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -244,15 +244,15 @@ $(document).ready(function() {
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentService", new NameValueCollection
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
-                        {"DateFrom", DateFrom.Text},
-                        {"SearchType", SearchType.SelectedValue},
-                        {"Keyword", Keyword.Text},
-                        {"page", Body.GetQueryInt("page", 1).ToString()},
-                        {"ChildNodeId",ChannelCategory.SelectedValue }
+                        //{"DateFrom", DateFrom.Text},
+                        //{"SearchType", SearchType.SelectedValue},
+                        //{"Keyword", Keyword.Text},
+                        //{"page", Body.GetQueryInt("page", 1).ToString()},
+                        //{"ChildNodeId",ChannelCategory.SelectedValue }
                     });
                 }
                 return _pageUrl;
@@ -264,7 +264,7 @@ $(document).ready(function() {
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentService", new NameValueCollection
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()}              
