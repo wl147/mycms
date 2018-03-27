@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace SiteServer.BackgroundPages.Cms
 {
-    public class PageContentAdd : BasePageCms
+    public class PageContentStudyAdd : BasePageCms
     {
         public Literal LtlPageTitle;
 
@@ -54,7 +54,7 @@ namespace SiteServer.BackgroundPages.Cms
         private string _tableName;
 
         protected override bool IsSinglePage => true;
-        protected new int PublishmentSystemId=1;
+        protected new int PublishmentSystemId = 1;
         protected new PublishmentSystemInfo PublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
         public static string GetRedirectUrlOfAdd(int publishmentSystemId, int nodeId, string returnUrl)
         {
@@ -76,7 +76,7 @@ namespace SiteServer.BackgroundPages.Cms
                 {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
             });
         }
-        public static string GetRedirectUrlOfEditMulti(int publishmentSystemId, int nodeId, int id, string returnUrl,int pNodeId)
+        public static string GetRedirectUrlOfEditMulti(int publishmentSystemId, int nodeId, int id, string returnUrl, int pNodeId)
         {
             return PageUtils.GetCmsUrl(nameof(PageContentAdd), new NameValueCollection
             {
@@ -97,17 +97,6 @@ namespace SiteServer.BackgroundPages.Cms
                 {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
             });
         }
-        public static string GetRedirectUrlOfEditStudy(int publishmentSystemId, int nodeId, int id, string returnUrl, int pNodeId)
-        {
-            return PageUtils.GetCmsUrl("PageContentStudyAdd", new NameValueCollection
-            {
-                {"PublishmentSystemID", publishmentSystemId.ToString()},
-                {"NodeID", nodeId.ToString()},
-                {"ID", id.ToString()},
-                {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)},
-                 {"PNodeID", pNodeId.ToString() }
-            });
-        }
 
         public void Page_Load(object sender, EventArgs e)
         {
@@ -116,15 +105,14 @@ namespace SiteServer.BackgroundPages.Cms
             PageUtils.CheckRequestParameter("PublishmentSystemID", "NodeID", "ReturnUrl");
 
             var nodeId = Body.GetQueryInt("NodeID");
-            _nodeInfo = NodeManager.GetNodeInfo(1, nodeId);
             var contentId = Body.GetQueryInt("ID");
-            string contentType = WebUtils.GetContentType(_nodeInfo.ContentModelId);
-            ReturnUrl = $@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID=1&NodeId={nodeId}";
-            ReturnPUrl= $@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID=1&NodeId={Body.GetQueryInt("PNodeID")}";
+            ReturnUrl = $@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID=1&NodeId={nodeId}";
+            ReturnPUrl = $@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID=1&NodeId={Body.GetQueryInt("PNodeID")}";
             //ReturnUrl = StringUtils.ValueFromUrl(Body.GetQueryString("ReturnUrl"));
             _isAjaxSubmit = Body.GetQueryBool("isAjaxSubmit");
             _isPreview = Body.GetQueryBool("isPreview");
-            
+
+            _nodeInfo = NodeManager.GetNodeInfo(1, nodeId);
             _tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, _nodeInfo);
             _tableName = NodeManager.GetTableName(PublishmentSystemInfo, _nodeInfo);
             //_tableName = "model_content";
@@ -189,7 +177,7 @@ var previewUrl = '{PagePreview.GetRedirectUrl(PublishmentSystemId, _nodeInfo.Nod
                     {
                         LtlPageTitle.Text += $@"
 <input type=""hidden"" id=""savedContentID"" name=""savedContentID"" value=""{contentId}"">
-<script language=""javascript"" type=""text/javascript"">setInterval(""autoSave()"",{PublishmentSystemInfo.Additional.AutoSaveContentInterval*1000});</script>
+<script language=""javascript"" type=""text/javascript"">setInterval(""autoSave()"",{PublishmentSystemInfo.Additional.AutoSaveContentInterval * 1000});</script>
 ";
                     }
                     //专题
@@ -723,8 +711,7 @@ $('#TbTags').keyup(function (e) {
 
                     Body.AddSiteLog(PublishmentSystemId, _nodeInfo.NodeId, contentId, "修改内容",
                         $"栏目:{NodeManager.GetNodeNameNavigation(PublishmentSystemId, contentInfo.NodeId)},内容标题:{contentInfo.Title}");
-                    string contentType = WebUtils.GetContentType(_nodeInfo.ContentModelId);
-                    PageUtils.Redirect($@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID={Body.GetQueryString("PublishmentSystemID")}&NodeID={(string.IsNullOrEmpty( Body.GetQueryString("PNodeID"))? Body.GetQueryString("NodeId"): Body.GetQueryString("PNodeID"))}");
+                    PageUtils.Redirect($@"/siteserver/cms/pageContentStudy.aspx?PublishmentSystemID={Body.GetQueryString("PublishmentSystemID")}&NodeID={(string.IsNullOrEmpty(Body.GetQueryString("PNodeID")) ? Body.GetQueryString("NodeId") : Body.GetQueryString("PNodeID"))}");
                     //PageUtils.Redirect(ReturnUrl);
                 }
                 savedContentId = contentId;
@@ -749,15 +736,15 @@ $('#TbTags').keyup(function (e) {
         {
             var currentSelect = TbSpecial.SelectedValue;
             TbCategory.Items.Clear();
-            var childNodeId= DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(currentSelect));
+            var childNodeId = DataProvider.NodeDao.GetNodeInfoListByParentId(1, Convert.ToInt32(currentSelect));
             if (childNodeId != null && childNodeId.Count > 0)
             {
-                foreach(var nodeInfo in childNodeId)
+                foreach (var nodeInfo in childNodeId)
                 {
                     TbCategory.Items.Add(new ListItem(nodeInfo.NodeName, nodeInfo.NodeId.ToString()));
                 }
             }
-          
+
         }
         private void CopyReferenceFiles(PublishmentSystemInfo targetPublishmentSystemInfo, string sourceUrl)
         {

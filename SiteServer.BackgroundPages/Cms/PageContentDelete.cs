@@ -50,6 +50,18 @@ namespace SiteServer.BackgroundPages.Cms
                     {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
                 }), "ContentIDCollection", "ContentIDCollection", "请选择需要删除的内容！");
         }
+        public static string GetRedirectClickStringForMultiChannel(int publishmentSystemId, int nodeId,
+          bool isDeleteFromTrash, string returnUrl)
+        {
+            return PageUtils.GetRedirectStringWithCheckBoxValue(PageUtils.GetCmsUrl(nameof(PageContentDelete),
+                new NameValueCollection
+                {
+                    {"PublishmentSystemID", publishmentSystemId.ToString()},
+                    {"NodeID", nodeId.ToString()},
+                    {"IsDeleteFromTrash", isDeleteFromTrash.ToString()},
+                    {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
+                }), "ContentIDCollection", "ContentIDCollection", "请选择需要删除的内容！");
+        }
 
         public void Page_Load(object sender, EventArgs e)
         {

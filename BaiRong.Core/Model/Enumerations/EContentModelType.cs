@@ -13,6 +13,7 @@ namespace BaiRong.Core.Model.Enumerations
         Job,
         TeacherLib,
         Examination,
+        Study,
         UserDefined
 	}
 
@@ -52,6 +53,10 @@ namespace BaiRong.Core.Model.Enumerations
             else if (type == EContentModelType.TeacherLib)
             {
                 return "TeacherLib";
+            }
+            else if (type == EContentModelType.Study)
+            {
+                return "Study";
             }
             else
 			{
@@ -122,7 +127,11 @@ namespace BaiRong.Core.Model.Enumerations
             else if (Equals(EContentModelType.Job, typeStr))
             {
                 retval = EContentModelType.Job;
-            }            
+            }
+            else if (Equals(EContentModelType.Study, typeStr))
+            {
+                retval = EContentModelType.Study;
+            }
             else if (Equals(EContentModelType.UserDefined, typeStr))
             {
                 retval = EContentModelType.UserDefined;
@@ -140,6 +149,7 @@ namespace BaiRong.Core.Model.Enumerations
 			}
 			return false;
 		}
+
 
 		public static bool Equals(string typeStr, EContentModelType type)
 		{

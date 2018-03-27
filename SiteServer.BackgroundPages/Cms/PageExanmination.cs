@@ -117,7 +117,7 @@ namespace SiteServer.BackgroundPages.Cms
             else
             {
                 //spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName, base.PublishmentSystemId);
-                spContents.SelectCommand = "select * from siteserver_examination";
+                spContents.SelectCommand = $@"select * from siteserver_examination where ExaminationPaperId={PageUtils.FilterSqlAndXss("ArticleId")}";
                 
             }
 
@@ -134,7 +134,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -281,6 +281,22 @@ $(document).ready(function() {
                         {"Keyword", Keyword.Text},
                         {"page", Body.GetQueryInt("page", 1).ToString()},
                         {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrl;
+            }
+        }
+        private string PageUrlReturn
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrl))
+                {
+                    _pageUrl = PageUtils.GetCmsUrl("PageExamination", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},
+                        {"ArticleId", Body.GetQueryString("ArticleId")},                      
                     });
                 }
                 return _pageUrl;

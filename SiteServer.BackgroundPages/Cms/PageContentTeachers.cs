@@ -148,7 +148,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -227,7 +227,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrlMulti(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo),Body.GetQueryInt("NodeId"))}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -247,7 +247,7 @@ $(document).ready(function() {
             {
                 if (string.IsNullOrEmpty(_pageUrl))
                 {
-                    _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    _pageUrl = PageUtils.GetCmsUrl("pageContentTeachers", new NameValueCollection
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
@@ -256,6 +256,21 @@ $(document).ready(function() {
                         {"Keyword", Keyword.Text},
                         {"page", Body.GetQueryInt("page", 1).ToString()},
                         {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrl;
+            }
+        }
+        private string PageUrlReturn
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrl))
+                {
+                    _pageUrl = PageUtils.GetCmsUrl("pageContentTeachers", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},                      
                     });
                 }
                 return _pageUrl;

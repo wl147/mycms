@@ -48,7 +48,15 @@
   </table>
   <bairong:sqlPager id="SpContents" runat="server" class="table table-pager" />
 
-
+  <hr />
+   <table class="table noborder">
+      <tr>
+         <td class="center">
+             <input class="btn" type="button" onclick="window.history.back(-1);" value="返 回" />
+             <br>
+         </td>
+      </tr>
+  </table>
 </form>
 </body>
 </html>

@@ -104,7 +104,25 @@ namespace SiteServer.BackgroundPages.Cms
                 {
                     nodeID,3,4,6,9
                 };
-                contentNum = nodeInfo.ContentNum;
+                List<int> nodeList = new List<int>();
+                nodeList.Add(nodeID);
+                var firstChildList = DataProvider.NodeDao.GetNodeIdListByParentId(1, nodeID);
+                if (firstChildList != null && firstChildList.Count > 0)
+                {
+                    nodeList.AddRange(firstChildList);
+                    foreach (var firstchild in firstChildList)
+                    {
+
+                        var secondList = DataProvider.NodeDao.GetNodeIdListByParentId(1, firstchild);
+                        if (secondList != null && secondList.Count > 0) nodeList.AddRange(secondList);
+                    }
+                }
+                var nodeCollectionIdStr = string.Empty;
+                foreach (int nodeId in nodeList)
+                {
+                    nodeCollectionIdStr = nodeCollectionIdStr + nodeId + ',';
+                    contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                }
                 //spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
                 spContents.SelectCommand= $@"select * from model_Study where NodeId in({Body.GetQueryString("ChildNodeId")}) AND PublishmentSystemID={PublishmentSystemInfo.PublishmentSystemId}";
             }
@@ -147,7 +165,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommands(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -230,7 +248,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrlMulti(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo), Body.GetQueryInt("NodeId"))}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -262,6 +280,21 @@ $(document).ready(function() {
                         {"Keyword", Keyword.Text},
                         {"page", Body.GetQueryInt("page", 1).ToString()},
                         {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrl;
+            }
+        }
+        private string PageUrlReturn
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrl))
+                {
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentStudy", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},                       
                     });
                 }
                 return _pageUrl;

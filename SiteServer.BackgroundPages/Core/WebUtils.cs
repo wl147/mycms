@@ -173,6 +173,26 @@ namespace SiteServer.BackgroundPages.Core
             }
             return PageContentAdd.GetRedirectUrlOfEdit(publishmentSystemId, nodeId, id, returnUrl);
         }
+        private static string GetContentEditUrlMulti(EContentModelType modelType, int publishmentSystemId, int nodeId, int id, string returnUrl,int pNodeId)
+        {
+            if (modelType == EContentModelType.GovPublic)
+            {
+                return PageGovPublicContentAdd.GetRedirectUrlOfEdit(publishmentSystemId, nodeId, id, returnUrl);
+            }
+            if (modelType == EContentModelType.Vote)
+            {
+                return PageVoteContentAdd.GetRedirectUrlOfEdit(publishmentSystemId, nodeId, id, returnUrl);
+            }
+            if (modelType == EContentModelType.Examination)
+            {
+                return PageContentAdd.GetRedirectUrlOfEditExamination(publishmentSystemId, nodeId, id, returnUrl);
+            }
+            if (modelType == EContentModelType.Study)
+            {
+                return PageContentAdd.GetRedirectUrlOfEditStudy(publishmentSystemId, nodeId, id, returnUrl, pNodeId);
+            }
+            return PageContentAdd.GetRedirectUrlOfEditMulti(publishmentSystemId, nodeId, id, returnUrl, pNodeId);
+        }
 
         public static string GetContentAddUploadWordUrl(int publishmentSystemId, NodeInfo nodeInfo, bool isFirstLineTitle, bool isFirstLineRemove, bool isClearFormat, bool isFirstLineIndent, bool isClearFontSize, bool isClearFontFamily, bool isClearImages, int contentLevel, string fileName, string returnUrl)
         {
@@ -191,6 +211,16 @@ namespace SiteServer.BackgroundPages.Core
         {
             var modelType = EContentModelTypeUtils.GetEnumType(nodeInfo.ContentModelId);
             return GetContentEditUrl(modelType, publishmentSystemId, nodeInfo.NodeId, id, returnUrl);
+        }
+        public static string GetContentAddEditUrlMulti(int publishmentSystemId, NodeInfo nodeInfo, int id, string returnUrl,int pNodeId)
+        {
+            var modelType = EContentModelTypeUtils.GetEnumType(nodeInfo.ContentModelId);
+            return GetContentEditUrlMulti(modelType, publishmentSystemId, nodeInfo.NodeId, id, returnUrl, pNodeId);
+        }
+        public static string GetContentAddEditUrlMultiStudy(int publishmentSystemId, NodeInfo nodeInfo, int id, string returnUrl, int pNodeId)
+        {
+            var modelType = EContentModelTypeUtils.GetEnumType(nodeInfo.ContentModelId);
+            return GetContentEditUrlMulti(modelType, publishmentSystemId, nodeInfo.NodeId, id, returnUrl, pNodeId);
         }
         public static string GetContentAddEditUrl(EContentModelType modelType , int publishmentSystemId, NodeInfo nodeInfo, int id, string returnUrl)
         {
@@ -344,6 +374,159 @@ namespace SiteServer.BackgroundPages.Core
             //{
             //    builder.Length = builder.Length - 16;
             //}
+            return builder.ToString();
+        }
+        public static string GetContentCommandsStandard(string administratorName, PublishmentSystemInfo publishmentSystemInfo, NodeInfo nodeInfo, string pageUrl, string currentFileName, bool isCheckPage)
+        {
+            var iconUrl = SiteServerAssets.GetIconUrl(string.Empty);
+            var modelType = EContentModelTypeUtils.GetEnumType(nodeInfo.ContentModelId);
+
+            var builder = new StringBuilder();
+            //添加内容
+            if (!isCheckPage && AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentAdd) && nodeInfo.Additional.IsContentAddable)
+            {
+                var redirectUrl = GetContentAddAddUrl(publishmentSystemInfo.PublishmentSystemId, nodeInfo, pageUrl);
+                var title = "添加内容";
+                if (modelType == EContentModelType.GovPublic)
+                {
+                    title = "采集信息";
+                }
+                else if (modelType == EContentModelType.GovInteract)
+                {
+                    title = "新增办件";
+                }
+                else if (modelType == EContentModelType.Photo)
+                {
+                    title = "添加图片";
+                }
+                else if (modelType == EContentModelType.Vote)
+                {
+                    title = "发起投票";
+                }
+
+                builder.Append(
+                    $@"<a href=""{redirectUrl}""><img style=""margin-right: 3px"" src=""{iconUrl}/add.gif"" align=""absMiddle"" />{title}</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+
+                //builder.Append($@"<a href=""javascript:;"" onclick=""{ModalContentImport.GetOpenWindowString(publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">导入内容</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+
+                //if (modelType != EContentModelType.UserDefined && modelType != EContentModelType.Vote && modelType != EContentModelType.Job && modelType != EContentModelType.GovInteract)
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalUploadWord.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, StringUtils.ValueToUrl(pageUrl))}"">导入Word</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+            }
+            //删 除
+            //if (nodeInfo.ContentNum > 0 && AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentDelete))
+            if (true)
+            {
+                builder.Append(
+                    $@"<a href=""javascript:;"" onclick=""{PageContentDelete.GetRedirectClickStringForMultiChannel(
+                        publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, false, pageUrl)}"">删 除</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+            }
+
+            //if (nodeInfo.ContentNum > 0)
+            if(true)
+              {
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentExport.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">导 出</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //设置
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentAttributes.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置属性</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalAddToGroup.GetOpenWindowStringToContent(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">设置内容组</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                //转 移
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentTranslate))
+                if (true)
+                {
+                    var redirectUrl = PageContentTranslate.GetRedirectUrl(publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl);
+
+                    var clickString = PageUtils.GetRedirectStringWithCheckBoxValue(redirectUrl, "ContentIDCollection", "ContentIDCollection", "请选择需要转移的内容！");
+
+                    builder.Append(
+                        $@"<a href=""javascript:;"" onclick=""{clickString}"">转 移</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                }
+                //排 序
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentTaxis.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">排 序</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                //整理
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentOrder))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentTidyUp.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">整 理</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                //审 核
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentCheck))
+                if (true)
+                {
+                    builder.Append(
+                        $@"<a href=""javascript:;"" onclick=""{ModalContentCheck.GetOpenWindowString(
+                            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">审 核</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                }
+                //归 档
+                //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ContentArchive))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentArchive.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, pageUrl)}"">归 档</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                ////跨站转发
+                //if (CrossSiteTransUtility.IsTranslatable(publishmentSystemInfo, nodeInfo))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{ModalContentCrossSiteTrans.GetOpenWindowString(
+                //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId)}"">跨站转发</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+                //生 成
+                //if (!isCheckPage && (AdminUtility.HasWebsitePermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, AppManager.Cms.Permission.WebSite.Create) || AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.CreatePage)))
+                //{
+                //    builder.Append(
+                //        $@"<a href=""javascript:;"" onclick=""{Cms.ModalProgressBar
+                //            .GetOpenWindowStringWithCreateContentsOneByOne(publishmentSystemInfo.PublishmentSystemId,
+                //                nodeInfo.NodeId)}"">生 成</a> <span class=""gray"">&nbsp;|&nbsp;</span> ");
+                //}
+            }
+
+            //选择显示项
+            //if (nodeInfo.NodeType != ENodeType.BackgroundImageNode)
+            //{
+            //if (AdminUtility.HasChannelPermissions(administratorName, publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, AppManager.Cms.Permission.Channel.ChannelEdit))
+            //{
+            //    builder.Append(
+            //        $@"<a href=""javascript:;"" onclick=""{ModalSelectColumns.GetOpenWindowStringToContent(
+            //            publishmentSystemInfo.PublishmentSystemId, nodeInfo.NodeId, true)}"">显示项</a> &nbsp; &nbsp; ");
+            //}
+            //}
+
+            if (!isCheckPage && nodeInfo.ContentNum > 0)
+            {
+                if (builder.Length > 0)
+                {
+                    builder.Length = builder.Length - 15;
+                }
+
+                //builder.Append(GetContentLinks(publishmentSystemInfo, nodeInfo, contentType, currentFileName));
+
+                //builder.Append(
+                //    $@"&nbsp; <a href=""javascript:;;"" onClick=""$('#contentSearch').toggle(); return false""><img src=""{iconUrl}/search.gif"" align=""absMiddle"" alt=""快速查找"" /></a>");
+            }
+
+
+            if (builder.Length > 0)
+            {
+                builder.Length = builder.Length - 16;
+            }
             return builder.ToString();
         }
         public static string GetContentCommandsForTransform(string returnUrl,int publishmentSystemId)
@@ -620,6 +803,15 @@ function autoReplaceKeywords(){
                 }
             }
             return retval;
+        }
+        public static string GetContentType(string str)
+        {
+            string retval = "pagemain";
+            if (str.Equals("Content")) return "pageContent";
+            if (str.Equals("Study")) return "pageContentStudy";
+            if (str.Equals("TeacherLib")) return "pageContentTeachers";
+            return retval;
+                 
         }
     }
 }

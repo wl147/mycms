@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageExanmination" %>
+﻿ <%@ Page Language="C#" Inherits="SiteServer.BackgroundPages.Cms.PageExanmination" %>
 <%@ Register TagPrefix="bairong" Namespace="SiteServer.BackgroundPages.Controls" Assembly="SiteServer.BackgroundPages" %>
 <!DOCTYPE html>
 <html>
@@ -62,7 +62,15 @@
   </table>
 
   <bairong:sqlPager id="spContents" runat="server" class="table table-pager" />
-
+     <hr />
+   <table class="table noborder">
+      <tr>
+         <td class="center">
+             <input class="btn" type="button" onclick="window.history.back(-1);" value="返 回" />
+             <br>
+         </td>
+      </tr>
+  </table>
 </form>
 </body>
 </html>

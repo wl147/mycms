@@ -329,6 +329,7 @@
     <Content Include="SiteServer\Cms\pageContentSearch.aspx" />
     <Content Include="SiteServer\Cms\pageContentsGroup.aspx" />
     <Content Include="SiteServer\Cms\pageContentStudy.aspx" />
+    <Content Include="SiteServer\Cms\pageContentStudyAdd.aspx" />
     <Content Include="SiteServer\Cms\pageContentTags.aspx" />
     <Content Include="SiteServer\Cms\pageContentTeachers.aspx" />
     <Content Include="SiteServer\Cms\pageContentTranslate.aspx" />
@@ -575,6 +576,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentStudy.aspx.designer.cs">
       <DependentUpon>pageContentStudy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentStudyAdd.aspx.cs">
+      <DependentUpon>pageContentStudyAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageContentStudyAdd.aspx.designer.cs">
+      <DependentUpon>pageContentStudyAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\pageContentTeachers.aspx.cs">
       <DependentUpon>pageContentTeachers.aspx</DependentUpon>
