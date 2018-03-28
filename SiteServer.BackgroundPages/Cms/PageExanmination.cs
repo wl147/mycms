@@ -117,7 +117,7 @@ namespace SiteServer.BackgroundPages.Cms
             else
             {
                 //spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName, base.PublishmentSystemId);
-                spContents.SelectCommand = $@"select * from siteserver_examination where ExaminationPaperId={PageUtils.FilterSqlAndXss("ArticleId")}";
+                spContents.SelectCommand = $@"select * from siteserver_examination where ExaminationPaperId={PageUtils.FilterSqlAndXss(Body.GetQueryString( "ArticleId"))}";
                 
             }
 

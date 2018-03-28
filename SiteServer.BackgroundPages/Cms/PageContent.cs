@@ -102,18 +102,27 @@ namespace SiteServer.BackgroundPages.Cms
             {
 
                 string nodeListString = Body.GetQueryString("ChildNodeId");
-                string[] nodeArray = nodeListString.Split(new char[] { ',' });
-                List<int> owningNodeIdList=new List<int>();
-                foreach(string node in nodeArray)
+                List<int> owningNodeIdList = new List<int>();
+                if (!string.IsNullOrEmpty(nodeListString))
                 {
-                    if (!string.IsNullOrEmpty(node))
+                    string[] nodeArray = nodeListString.Split(new char[] { ',' });
+                   
+                    foreach (string node in nodeArray)
                     {
-                        int nodeId = Convert.ToInt32(node);
-                        owningNodeIdList.Add(nodeId);
-                        contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
-                    }                 
+                        if (!string.IsNullOrEmpty(node))
+                        {
+                            int nodeId = Convert.ToInt32(node);
+                            owningNodeIdList.Add(nodeId);
+                            contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                        }
+                    }
+                    nodeListString = nodeListString.TrimEnd(',');
                 }
-                nodeListString = nodeListString.TrimEnd(',');
+                else
+                {
+                    nodeListString= Body.GetQueryString("NodeId");
+                }
+               
                 spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommendForLower(nodeListString,tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
             else
@@ -297,11 +306,11 @@ $(document).ready(function() {
                     {
                         {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
                         {"NodeID", nodeInfo.NodeId.ToString()},
-                        //{"DateFrom", DateFrom.Text},
-                        //{"SearchType", SearchType.SelectedValue},
-                        //{"Keyword", Keyword.Text},
-                        //{"page", Body.GetQueryInt("page", 1).ToString()},
-                        //{"ChildNodeId",ChannelCategory.SelectedValue }
+                        {"DateFrom", DateFrom.Text},
+                        {"SearchType", SearchType.SelectedValue},
+                        {"Keyword", Keyword.Text},
+                        {"page", Body.GetQueryInt("page", 1).ToString()},
+                        {"ChildNodeId",ChannelCategory.SelectedValue }
                     });
                 }
                 return _pageUrl;
