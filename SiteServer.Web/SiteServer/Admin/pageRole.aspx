@@ -34,7 +34,7 @@
         DataField="Description" >
       </asp:BoundColumn>
       <asp:TemplateColumn>
-        <ItemTemplate> <a href='pageRoleAdd.aspx?RoleName=<%# DataBinder.Eval(Container.DataItem,"RoleName")%>'>修改</a> </ItemTemplate>
+        <ItemTemplate> <a href='/siteserver/cms/pageRoleEdit.aspx?RoleName=<%# DataBinder.Eval(Container.DataItem,"RoleName")%>'>修改</a> </ItemTemplate>
         <ItemStyle Width="80" cssClass="center" />
       </asp:TemplateColumn>
       <asp:TemplateColumn>

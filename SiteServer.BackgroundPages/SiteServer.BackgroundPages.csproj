@@ -258,6 +258,12 @@
     <Compile Include="Cms\PageResumeView.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Cms\PageRoleAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cms\PageRoleEdit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Cms\PageSiteAdd.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

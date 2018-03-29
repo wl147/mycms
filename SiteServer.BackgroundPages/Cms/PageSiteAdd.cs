@@ -103,7 +103,7 @@ namespace SiteServer.BackgroundPages.Cms
                 }
                 else
                 {
-                    dt = DataProvider.SystemPermissionsDao.GetList(PermissionsManager.GetPermissions(Body.AdministratorInfo.UserName).Roles[1]);
+                    dt = DataProvider.SystemPermissionsDao.GetList(PermissionsManager.GetPermissions(Body.AdministratorInfo.UserName).Roles);
                 }
 
                 rptContents.DataSource = dt;

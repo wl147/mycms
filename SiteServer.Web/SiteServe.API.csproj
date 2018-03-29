@@ -374,6 +374,8 @@
     <Content Include="SiteServer\Cms\pageRelatedFieldMain.aspx" />
     <Content Include="SiteServer\Cms\pageResumeContent.aspx" />
     <Content Include="SiteServer\Cms\pageResumeView.aspx" />
+    <Content Include="SiteServer\Cms\PageRoleAdd.aspx" />
+    <Content Include="SiteServer\Cms\PageRoleEdit.aspx" />
     <Content Include="SiteServer\Cms\pageSeoMetaList.aspx" />
     <Content Include="SiteServer\Cms\pageSeoMetaMatch.aspx" />
     <Content Include="SiteServer\Cms\pageSeoSiteMapBaidu.aspx" />
@@ -646,6 +648,20 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pagePushOutCheck.aspx.designer.cs">
       <DependentUpon>pagePushOutCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageRoleAdd.aspx.cs">
+      <DependentUpon>PageRoleAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageRoleAdd.aspx.designer.cs">
+      <DependentUpon>PageRoleAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageRoleEdit.aspx.cs">
+      <DependentUpon>PageRoleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\PageRoleEdit.aspx.designer.cs">
+      <DependentUpon>PageRoleEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\PageSiteAdd.aspx.cs">
       <DependentUpon>PageSiteAdd.aspx</DependentUpon>

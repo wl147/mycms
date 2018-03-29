@@ -402,9 +402,9 @@ namespace SiteServer.CMS.Provider
             return permissionList;
         }
 
-        public DataTable GetList(string roleName)
+        public DataTable GetList(string[] roleName)
         {
-            string sql = $@"SELECT a.ChannelPermissions,a.NodeId,a.ChannelPermissions,a.WebsitePermissions,b.NodeName from siteserver_systempermissions as a,siteserver_node as b where b.NodeId =a.NodeId and a.RoleName='{roleName}' GROUP BY a.NodeId";
+            string sql = $@"SELECT a.ChannelPermissions,a.NodeId,a.ChannelPermissions,a.WebsitePermissions,b.NodeName from siteserver_systempermissions as a,siteserver_node as b where b.NodeId =a.NodeId and ({GetWhereStringForPermission(roleName)}) GROUP BY a.NodeId";
             DataSet ds = ExecuteDataset(sql);
             //重组列表
             DataTable oldData = ds.Tables[0] as DataTable;
@@ -418,6 +418,16 @@ namespace SiteServer.CMS.Provider
             //调用迭代组合成DAGATABLE
             //GetChilds(oldData, newData, parent_id, 0);
             return oldData;
+        }
+        private string GetWhereStringForPermission(string[] roles)
+        {
+            string retval = string.Empty;
+            if (roles == null || roles.Length == 0) return "a.roleName=''";
+            foreach(string role in roles)
+            {
+                retval = retval + $" a.roleName='{role}'  or";
+            }
+            return retval.EndsWith("or") ? retval.Substring(0, retval.Length - 2) : retval;
         }
         public DataTable GetAllList()
         {

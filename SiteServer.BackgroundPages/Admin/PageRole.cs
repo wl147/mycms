@@ -94,14 +94,14 @@ namespace SiteServer.BackgroundPages.Admin
 			{
                 dgContents.PageSize = StringUtils.Constants.PageSize;
                 var permissioins = PermissionsManager.GetPermissions(Body.AdministratorName);
-                if (permissioins.IsConsoleAdministrator)
-				{
-                    dgContents.DataSource = GetDataSetByRoles(BaiRongDataProvider.RoleDao.GetAllRoles());
-				}
-				else
-				{
+    //            if (permissioins.IsConsoleAdministrator)
+				//{
+                    //dgContents.DataSource = GetDataSetByRoles(BaiRongDataProvider.RoleDao.GetAllRoles());
+				//}
+				//else
+				//{
                     dgContents.DataSource = GetDataSetByRoles(BaiRongDataProvider.RoleDao.GetAllRolesByPublishmentSystemId(Body.AdministratorInfo.PublishmentSystemId));
-				}
+				//}
                 dgContents.ItemDataBound += dgContents_ItemDataBound;
                 dgContents.DataBind();
 

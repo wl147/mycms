@@ -86,6 +86,7 @@
               <itemtemplate>
                 <tr>
                   <td>
+                    <asp:HiddenField ID="hidNodeId" Value='<%#Eval("NodeId") %>' runat="server" />
                     <asp:HiddenField ID="hidName" Value='<%#Eval("NodeName") %>' runat="server" />
                     <asp:HiddenField ID="hidActionType" Value='<%#Eval("ChannelPermissions") %>' runat="server" />
                     <%#Eval("NodeName")%>
@@ -97,6 +98,19 @@
                </tr>
               </itemtemplate>
            </asp:Repeater>
+      <asp:Repeater ID="rptWebSite" runat="server" onitemdatabound="rptWebSite_ItemDataBound">
+      <itemtemplate>
+        <tr>
+          <td>
+            <asp:HiddenField ID="hidPermission" Value='<%#((BaiRong.Core.Configuration.PermissionConfig)(Container.DataItem)).Name %>' runat="server" />           
+            <%#((BaiRong.Core.Configuration.PermissionConfig)(Container.DataItem)).Text%>
+          </td>
+          <td>
+            <asp:CheckBoxList ID="cblWebSiteType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>  
+          </td>          
+        </tr>
+      </itemtemplate>
+    </asp:Repeater>
           </td>         
         </tr>
     </table>

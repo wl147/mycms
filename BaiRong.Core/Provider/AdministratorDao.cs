@@ -385,11 +385,11 @@ namespace BaiRong.Core.Provider
             if (departmentId == 0)
             {
                 sqlString = "SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator";
-                if (!isConsoleAdministrator)
-                {
+                //if (!isConsoleAdministrator)
+                //{
                     sqlString =
                         $"SELECT UserName, Password, PasswordFormat, PasswordSalt, CreationDate, LastActivityDate, CountOfLogin, CountOfFailedLogin, CreatorUserName, IsLockedOut, PublishmentSystemIDCollection, PublishmentSystemID, DepartmentID, AreaID, DisplayName, Email, Mobile FROM bairong_Administrator WHERE PublishmentSystemId = '{PageUtils.FilterSql(PublishmentSystemId.ToString())}'";
-                }
+                //}
             }
             else
             {

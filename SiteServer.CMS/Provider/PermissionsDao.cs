@@ -52,7 +52,6 @@ namespace SiteServer.CMS.Provider
                     try
                     {
 
-
                         foreach (var systemPermissionsInfo in systemPermissionsInfoList)
                         {
                             DataProvider.SystemPermissionsDao.InsertWithTransNew(systemPermissionsInfo, trans);
@@ -83,6 +82,32 @@ namespace SiteServer.CMS.Provider
                         foreach (var systemPermissionsInfo in systemPermissionsInfoList)
                         {
                             systemPermissionsInfo.RoleName = roleName;
+                            DataProvider.SystemPermissionsDao.InsertWithTransNew(systemPermissionsInfo, trans);
+                        }
+
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public void UpdatePublishmentPermissionsForEdit(string roleName, List<SystemPermissionsInfo> systemPermissionsInfoList)
+        {
+            using (var conn = GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        DataProvider.SystemPermissionsDao.DeleteWithTrans(roleName, trans);
+                        foreach (var systemPermissionsInfo in systemPermissionsInfoList)
+                        {
+                            systemPermissionsInfo.RoleName = roleName;
                             DataProvider.SystemPermissionsDao.InsertWithTrans(systemPermissionsInfo, trans);
                         }
 
@@ -97,7 +122,7 @@ namespace SiteServer.CMS.Provider
             }
         }
 
-		public void DeleteRoleAndPermissions(string roleName)
+        public void DeleteRoleAndPermissions(string roleName)
 		{
 			using (var conn = GetConnection()) 
 			{

@@ -62,6 +62,7 @@ namespace SiteServer.BackgroundPages.Admin
 
             var permissioins = PermissionsManager.GetPermissions(Body.AdministratorName);
 
+
             _departmentId = Body.GetQueryInt("departmentID");
             var areaId = Body.GetQueryInt("areaID");
             if (_departmentId > 0)

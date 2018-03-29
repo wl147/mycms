@@ -87,6 +87,48 @@ namespace SiteServer.CMS.Core.Security
 			    return _websitePermissionDict ?? (_websitePermissionDict = new Dictionary<int, List<string>>());
 			}
 		}
+        public Dictionary<int, List<string>> WebsitePermissionDictForNodeCollection
+        {
+            get
+            {
+                if (_websitePermissionDict == null)
+                {
+                    if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
+                    {
+                        if (CacheUtils.Get(_websitePermissionDictKey) != null)
+                        {
+                            _websitePermissionDict = CacheUtils.Get(_websitePermissionDictKey) as Dictionary<int, List<string>>;
+                        }
+                        else
+                        {
+                            if (EPredefinedRoleUtils.IsSystemAdministrator(Roles))
+                            {
+                                var allWebsitePermissionList = new List<string>();
+                                foreach (PermissionConfig permission in PermissionConfigManager.Instance.WebsitePermissions)
+                                {
+                                    allWebsitePermissionList.Add(permission.Name);
+                                }
+
+                                _websitePermissionDict = new Dictionary<int, List<string>>();
+                                if (PublishmentSystemIdList.Count > 0)
+                                {
+                                    foreach (var publishmentSystemId in PublishmentSystemIdList)
+                                    {
+                                        _websitePermissionDict[publishmentSystemId] = allWebsitePermissionList;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                _websitePermissionDict = DataProvider.SystemPermissionsDao.GetWebsitePermissionSortedList(Roles);
+                            }
+                            CacheUtils.Insert(_websitePermissionDictKey, _websitePermissionDict, 30 * CacheUtils.MinuteFactor, CacheItemPriority.Normal);
+                        }
+                    }
+                }
+                return _websitePermissionDict ?? (_websitePermissionDict = new Dictionary<int, List<string>>());
+            }
+        }
         //GetChannelPermissionListByPublishmentId
         public Dictionary<int, List<string>> ChannelPermissionDictionary
         {
@@ -519,7 +561,7 @@ namespace SiteServer.CMS.Core.Security
             }
             else
             {
-                dt= DataProvider.SystemPermissionsDao.GetList(ProductPermissionsManager.Current.Roles[1]);
+                dt= DataProvider.SystemPermissionsDao.GetList(ProductPermissionsManager.Current.Roles);
             }
             return dt;
         }

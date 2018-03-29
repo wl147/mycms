@@ -31,7 +31,7 @@ ORDER BY a.Taxis";
 
         private const string SqlInsertPublishmentSystemAll = "INSERT INTO siteserver_PublishmentSystem (PublishmentSystemID, PublishmentSystemName, PublishmentSystemType, AuxiliaryTableForContent, AuxiliaryTableForGovPublic, AuxiliaryTableForGovInteract, AuxiliaryTableForVote, AuxiliaryTableForJob, IsCheckContentUseLevel, CheckContentLevel, PublishmentSystemDir, PublishmentSystemUrl, IsHeadquarters, ParentPublishmentSystemID, Taxis, SettingsXML, ParentsCount) VALUES (@PublishmentSystemID, @PublishmentSystemName, @PublishmentSystemType, @AuxiliaryTableForContent, @AuxiliaryTableForGovPublic, @AuxiliaryTableForGovInteract, @AuxiliaryTableForVote, @AuxiliaryTableForJob, @IsCheckContentUseLevel, @CheckContentLevel, @PublishmentSystemDir, @PublishmentSystemUrl, @IsHeadquarters, @ParentPublishmentSystemID, @Taxis, @SettingsXML,@ParentsCount)";
 
-        private const string SqlInsertPublishmentSystemDetails = "INSERT INTO siteserver_publishmentsystemdetails (PublishmentSystemId, Area, OrganizationTypeId, OrganizationCategory, TelePhone, Adrress, BasicFacts, Characteristic, ImageUrl) VALUES (@PublishmentSystemID, @Area, @OrganizationTypeId, @OrganizationCategory, @TelePhone, @Adrress, @BasicFacts, @Characteristic, @ImageUrl)";
+        private const string SqlInsertPublishmentSystemDetails = "INSERT INTO siteserver_publishmentsystemdetails (PublishmentSystemId, Area, OrganizationTypeId, OrganizationCategory, TelePhone, Adrress, BasicFacts, Characteristic, ImageUrl,AdministratorAccount) VALUES (@PublishmentSystemID, @Area, @OrganizationTypeId, @OrganizationCategory, @TelePhone, @Adrress, @BasicFacts, @Characteristic, @ImageUrl,@AdministratorAccount)";
 
         private const string SqlInsertOrganizationReach = "INSERT INTO siteserver_organizationreach(OrganizationId,ChargeName,TelePhone,ReachOrganizationId,ReachTime,ActivitiesCount)  VALUES(@OrganizationId,@ChargeName,@TelePhone,@ReachOrganizationId,@ReachTime,@ActivitiesCount)";
 
@@ -68,6 +68,7 @@ ORDER BY a.Taxis";
         private const string ParmParentPublishmentSystemId="@ParentPublishmentSystemId";
         private const string ParmParentsCount = "@ParentsCount";
         private const string ParmChildrenCount = "@ChildrenCount";
+        
 
 
         private const string ParmArea = "@Area";
@@ -154,7 +155,8 @@ ORDER BY a.Taxis";
                 GetParameter(ParmAdrress, EDataType.VarChar, 500, info.Address),
                 GetParameter(ParmBasicFacts, EDataType.NText, 1000, info.BasicFacts),
                 GetParameter(ParmCharacteristic, EDataType.Text, 1000, info.Characteristic),
-                GetParameter(ParmImageUrl, EDataType.VarChar, 200, info.ImageUrl),               
+                GetParameter(ParmImageUrl, EDataType.VarChar, 200, info.ImageUrl),
+                GetParameter(ParmAdministratorAccount, EDataType.VarChar, 200, info.AdministratorAccount),
             };
 
             ExecuteNonQuery(trans, SqlInsertPublishmentSystemDetails, insertParms);
@@ -672,6 +674,27 @@ ORDER BY a.Taxis";
             var count = 0;
 
             var sqlString = $@"SELECT ChildrenCount FROM siteserver_PublishmentSystem WHERE PublishmentSystemId=@PublishmentSystemID";
+            var Parms = new IDataParameter[]
+            {
+                  GetParameter(ParmPublishmentsystemId, EDataType.Integer,publishmentSystemId)
+            };
+
+
+            using (var rdr = ExecuteReader(sqlString, Parms))
+            {
+                if (rdr.Read())
+                {
+                    count = GetInt(rdr, 0);
+                }
+                rdr.Close();
+            }
+            return count;
+        }
+        public int GetParentId(int publishmentSystemId)
+        {
+            var count = 0;
+
+            var sqlString = $@"SELECT ParentPublishmentSystemId FROM siteserver_PublishmentSystem WHERE PublishmentSystemId=@PublishmentSystemID";
             var Parms = new IDataParameter[]
             {
                   GetParameter(ParmPublishmentsystemId, EDataType.Integer,publishmentSystemId)
