@@ -27,6 +27,11 @@ namespace SiteServer.BackgroundPages.Controls
             builder.Append(scripts);
             if (Page.Request.QueryString["PublishmentSystemID"] != null)
             {
+                if (!StringUtils.EqualsIgnoreCase(publishmentSystemId.ToString(), Page.Request.QueryString["PublishmentSystemID"]))
+                {
+                    PageUtils.RedirectToErrorPage("你对此站点无权限！");
+                    return;
+                }
                 try
                 {                   
                     var  publishmentSystemIdList = new List<int>() ;
@@ -35,7 +40,7 @@ namespace SiteServer.BackgroundPages.Controls
                     foreach (var publishmentSystem in publishmentSystemIdList)
                     {
                         var publishmentSystemInfo= PublishmentSystemManager.GetPublishmentSystemInfo(publishmentSystem);                      
-                        builder.Append(SiteLoading.GetSiteRowHtml(publishmentSystemInfo, publishmentSystemId));                       
+                        builder.Append(SiteLoading.GetSiteRowHtml(publishmentSystemInfo, publishmentSystemId, body.AdministratorInfo.UserName, publishmentSystemId));                       
                     }
                 }
                 catch (Exception ex)

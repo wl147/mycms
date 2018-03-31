@@ -266,7 +266,7 @@ namespace BaiRong.Core
             }
             else if (menuId == Sys.LeftMenu.Site)
             {
-                retval = "系统站点管理";
+                retval = "系统设置 ";
             }
             else if (menuId == Sys.LeftMenu.Auxiliary)
             {
@@ -440,6 +440,9 @@ namespace BaiRong.Core
                     public const string Template = "cms_template";                          //显示管理
                     public const string Configration = "cms_configration";                  //设置管理
                     public const string Create = "cms_create";                              //生成管理
+                    public const string SiteAdd = "party_organizationmanagement_add";       //组织机构
+                    public const string SiteEdit = "party_organizationmanagement_edit";
+                    public const string SiteDelete = "party_organizationmanagement_delete";
                 }
 
                 public class Channel

@@ -133,7 +133,7 @@ namespace SiteServer.BackgroundPages.Ajax
                 var parentId = TranslateUtils.ToInt(Request["parentID"]);
                 var loadingType = Request["loadingType"];
                 var additional = Request["additional"];
-                retSiteString = GetLoadingSites(parentId);
+                retSiteString = GetLoadingSites(parentId,body.AdministratorName,body.AdministratorInfo.PublishmentSystemId);
             }
             //else if (type == "GetLoadingGovPublicCategories")
             //{
@@ -316,14 +316,14 @@ namespace SiteServer.BackgroundPages.Ajax
             }
             return builder.ToString();
         }
-        public string GetLoadingSites(int parentId)
+        public string GetLoadingSites(int parentId,string administrator,int publishmentSystemId)
         {
             var arrayList = new ArrayList();
             var sitesIdList = DataProvider.PublishmentSystemDao.GetPublishmentSystemIdListByParent(parentId);
             foreach(int siteId in sitesIdList)
             {
                 var siteInfo = PublishmentSystemManager.GetPublishmentSystemInfo(siteId);
-                arrayList.Add(SiteLoading.GetSiteRowHtml(siteInfo, -1));
+                arrayList.Add(SiteLoading.GetSiteRowHtml(siteInfo, -1, administrator, publishmentSystemId));
             }
             StringBuilder builder = new StringBuilder();
             foreach(string item in arrayList)

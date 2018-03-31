@@ -82,7 +82,7 @@ namespace SiteServer.BackgroundPages.Controls
                 //    var enabled = AdminUtility.IsOwningNodeIdAll(body.AdministratorName, nodeInfo.NodeId);//管理员拥有权限的栏目
                 //}
                 if (!TabManager.IsValid(parent, PermissionList)) continue;
-                if (parent.MenuType!=null&&parent.MenuType.Equals("cmsItem", StringComparison.OrdinalIgnoreCase))
+                if (parent.MenuType != null && parent.MenuType.Equals("cmsItem", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!AdminUtility.IsOwningNodeIdByPublishmentSystem(UserName, parent.NodeId)) continue;
                 }

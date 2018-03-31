@@ -174,6 +174,46 @@ namespace SiteServer.CMS.Provider
 
             return sortedlist;
         }
+        public List<KeyValuePair<int,List<string>>> GetWebsitePermissionSortedListSimple(string[] roles)
+        {
+            var sortedlist = new List<KeyValuePair<int, List<string>>>();
+            foreach (var roleName in roles)
+            {
+                var systemPermissionsList = GetSystemPermissionsInfoList(roleName);
+                foreach (var systemPermissionsInfo in systemPermissionsList)
+                {
+                    var list = new List<string>();
+                    var websitePermissionList = TranslateUtils.StringCollectionToStringList(systemPermissionsInfo.WebsitePermissions);
+                    foreach (var websitePermission in websitePermissionList)
+                    {
+                        if (!list.Contains(websitePermission)) list.Add(websitePermission);
+                    }
+                    sortedlist.Add(new KeyValuePair<int, List<string>>(systemPermissionsInfo.PublishmentSystemId, list));
+                }
+            }
+
+            return sortedlist;
+        }
+        public Dictionary<int, List<string>> GetWebsitePermissionSortedListForSimple(string[] roles)
+        {
+            var sortedlist = new Dictionary<int, List<string>>();
+            var allPublishmentSystemWebsitePermission = GetWebsitePermissionSortedListSimple(roles);
+            foreach(KeyValuePair<int,List< string>> kv in allPublishmentSystemWebsitePermission)
+            {
+                if (sortedlist.ContainsKey(kv.Key))
+                {
+                    foreach(string permission in kv.Value)
+                    {
+                        if (!sortedlist[kv.Key].Contains(permission)) sortedlist[kv.Key].Add(permission);
+                    }
+                }
+                else
+                {
+                    sortedlist.Add(kv.Key, kv.Value);
+                }
+            }
+            return sortedlist;
+        }
 
         public Dictionary<int, List<string>> GetChannelPermissionSortedList(string[] roles)
         {

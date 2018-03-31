@@ -15,9 +15,9 @@ namespace SiteServer.BackgroundPages.Core
         {
             return SiteTreeItem.GetScript(publishmentSystemInfo, loadingType, additional);
         }
-        public static string GetSiteRowHtml(PublishmentSystemInfo publishmentSystemInfo,int carrentMainId)
+        public static string GetSiteRowHtml(PublishmentSystemInfo publishmentSystemInfo,int carrentMainId,string administratorName,int publishmentSystemId)
         {
-            var siteTreeItem = SiteTreeItem.CreateInstance(publishmentSystemInfo, carrentMainId);
+            var siteTreeItem = SiteTreeItem.CreateInstance(publishmentSystemInfo, carrentMainId, administratorName, publishmentSystemId);
             var title = siteTreeItem.GetItemHtml();
             var rowHtml = string.Empty;
             rowHtml = $@"

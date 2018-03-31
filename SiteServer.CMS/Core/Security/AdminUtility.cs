@@ -9,7 +9,7 @@ namespace SiteServer.CMS.Core.Security
         public static bool HasWebsitePermissions(string administratorName, int publishmentSystemId, params string[] websitePermissionArray)
         {
             var permissions = PermissionsManager.GetPermissions(administratorName);
-            if (permissions.IsSystemAdministrator)
+            if (permissions.IsConsoleAdministrator)
             {
                 return true;
             }

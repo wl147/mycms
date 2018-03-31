@@ -49,17 +49,17 @@ namespace SiteServer.CMS.Core.Security
 		{
 			get
 			{
-			    if (_websitePermissionDict == null)
+			    if (_websitePermissionDict== null)
 				{
                     if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
                     {
-                        if (CacheUtils.Get(_websitePermissionDictKey) != null)
+                        if (CacheUtils.Get(_websitePermissionDictKey)!= null)
                         {
                             _websitePermissionDict = CacheUtils.Get(_websitePermissionDictKey) as Dictionary<int, List<string>>;
                         }
                         else
                         {
-                            if (EPredefinedRoleUtils.IsSystemAdministrator(Roles))
+                            if (false)//EPredefinedRoleUtils.IsSystemAdministrator(Roles))
                             {
                                 var allWebsitePermissionList = new List<string>();
                                 foreach (PermissionConfig permission in PermissionConfigManager.Instance.WebsitePermissions)
@@ -78,7 +78,7 @@ namespace SiteServer.CMS.Core.Security
                             }
                             else
                             {
-                                _websitePermissionDict = DataProvider.SystemPermissionsDao.GetWebsitePermissionSortedList(Roles);
+                                _websitePermissionDict = DataProvider.SystemPermissionsDao.GetWebsitePermissionSortedListForSimple(Roles);
                             }
                             CacheUtils.Insert(_websitePermissionDictKey, _websitePermissionDict, 30 * CacheUtils.MinuteFactor, CacheItemPriority.Normal);
                         }

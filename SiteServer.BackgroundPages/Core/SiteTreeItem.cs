@@ -1,5 +1,7 @@
 ﻿using BaiRong.Core;
+using BaiRong.Core.Permissions;
 using SiteServer.BackgroundPages.Ajax;
+using SiteServer.CMS.Core.Security;
 using SiteServer.CMS.Model;
 using SiteServer.CMS.Model.Enumerations;
 using System;
@@ -28,7 +30,28 @@ namespace SiteServer.BackgroundPages.Core
         private PublishmentSystemInfo _publishmentSystemInfo;
         private string _administratorName;
         private int _currentMainId;
-
+        private int _publishmentSystemId;
+        private bool HasAddPermission
+        {
+            get
+            {
+                return AdminUtility.HasWebsitePermissions(_administratorName, _publishmentSystemId, AppManager.Cms.Permission.WebSite.SiteAdd);
+            }
+        }
+        private bool HasDeletePermission
+        {
+            get
+            {
+                return AdminUtility.HasWebsitePermissions(_administratorName, _publishmentSystemId, AppManager.Cms.Permission.WebSite.SiteDelete);
+            }
+        }
+        private bool HasEditPermission
+        {
+            get
+            {
+                return AdminUtility.HasWebsitePermissions(_administratorName, _publishmentSystemId, AppManager.Cms.Permission.WebSite.SiteEdit);
+            }
+        }
 
         private SiteTreeItem()
         {
@@ -44,17 +67,20 @@ namespace SiteServer.BackgroundPages.Core
             _iconOpenUrl= PageUtils.Combine(treeDirectoryUrl, "tree_plusmiddle.gif"); 
             _iconTreeMiddle= PageUtils.Combine(treeDirectoryUrl, "tree_middle.gif");
         }
-        public static SiteTreeItem CreateInstance(PublishmentSystemInfo publishmentSystemInfo,int currentMainId)
+        public static SiteTreeItem CreateInstance(PublishmentSystemInfo publishmentSystemInfo,int currentMainId,string administratorName,int pubishmentSystemId)
         {
             return new SiteTreeItem
             {
                 _publishmentSystemInfo = publishmentSystemInfo,
-                _currentMainId = currentMainId
+                _currentMainId = currentMainId,
+                _administratorName = administratorName,
+                _publishmentSystemId= pubishmentSystemId
             };            
         }
 
-        public  string GetItemHtml()
+        public string GetItemHtml()
         {
+            
             var htmlBuilder = new StringBuilder();
             var parentsCount = _publishmentSystemInfo.ParentsCount;
             for (var i = 0; i < parentsCount; i++)

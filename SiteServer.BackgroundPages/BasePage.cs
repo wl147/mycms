@@ -194,7 +194,7 @@ $('.operation-area').hide();
                 var pageUrl = PathUtils.GetFileName(Request.FilePath);
                 var topTitle = AppManager.GetTopMenuName(AppManager.IdSys);
                 var leftTitle = AppManager.GetLeftMenuName(leftMenuId);
-                ltlBreadCrumb.Text = StringUtils.GetBreadCrumbHtml(AppManager.IdSys, topTitle, leftMenuId, leftTitle, String.Empty, string.Empty, pageUrl, pageTitle, string.Empty);
+                ltlBreadCrumb.Text = StringUtils.GetBreadCrumbHtml(AppManager.IdSys, string.Empty, leftMenuId, leftTitle, String.Empty, string.Empty, pageUrl, pageTitle, string.Empty);
             }
 
             if (!string.IsNullOrEmpty(permission))
