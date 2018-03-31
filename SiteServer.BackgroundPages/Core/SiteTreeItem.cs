@@ -83,10 +83,12 @@ namespace SiteServer.BackgroundPages.Core
             
             var htmlBuilder = new StringBuilder();
             var parentsCount = _publishmentSystemInfo.ParentsCount;
+            //根据站点级别构建站点数
             for (var i = 0; i < parentsCount; i++)
             {
                 htmlBuilder.Append($@"<img align=""absmiddle"" src=""{_iconEmptyUrl}"" />");
             }
+            //若果有子站点添加下展开图标
             if (_publishmentSystemInfo.ChildrenCount > 0)
             {
                 if (_publishmentSystemInfo.PublishmentSystemId == _currentMainId)
@@ -107,9 +109,14 @@ namespace SiteServer.BackgroundPages.Core
 
             htmlBuilder.Append($@"&nbsp;<a href=""PagePublishmentSystem.aspx?PublishmentSystemID={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""{_publishmentSystemInfo}"">{_publishmentSystemInfo.PublishmentSystemName}</a>&nbsp;");
 
-            htmlBuilder.Append($@"&nbsp;<a href=""PageSiteAdd.aspx?PublishmentSystemID={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
-
-            htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemdelete.aspx?NodeId={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
+            if (HasAddPermission)
+            {
+                htmlBuilder.Append($@"&nbsp;<a href=""PageSiteAdd.aspx?PublishmentSystemID={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""添加""><img align=""absmiddle"" border=""0"" src=""{_iconAddSiteUrl}"" /></a>&nbsp;");
+            }
+            if (HasDeletePermission)
+            {
+                htmlBuilder.Append($@"&nbsp;<a href=""pagepublishmentsystemdelete.aspx?NodeId={_publishmentSystemInfo.PublishmentSystemId}"" target=""content"" title=""删除""><img align=""absmiddle"" border=""0"" src=""{_iconDeleteSiteUrl}"" /></a>&nbsp;");
+            }
 
             return htmlBuilder.ToString();
         }

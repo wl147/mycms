@@ -20,7 +20,7 @@ namespace SiteServer.BackgroundPages.Controls
             //GetCmsMenu(builder, ECmsType.Partake, false);
             //GetCmsMenu(builder, ECmsType.Branch, false);
             //BuildNavigationTree(builder, GetTabs(), 0, true);
-            BuildNavigationTree(builder, GetAllTabs(PublishmentSystemId), 0, true);
+            BuildNavigationTree(builder, GetAllTabs(1), 0, true);
             writer.Write(builder);
         }
 //        protected void GetCmsMenu(StringBuilder builder,ECmsType type,bool isOpen )
@@ -81,7 +81,7 @@ namespace SiteServer.BackgroundPages.Controls
                 //    var nodeInfo = NodeManager.GetNodeInfo(1,nodeId);//子站继承主站栏目
                 //    var enabled = AdminUtility.IsOwningNodeIdAll(body.AdministratorName, nodeInfo.NodeId);//管理员拥有权限的栏目
                 //}
-                if (!TabManager.IsValid(parent, PermissionList)) continue;
+                //if (!TabManager.IsValid(parent, PermissionList)) continue;
                 if (parent.MenuType != null && parent.MenuType.Equals("cmsItem", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!AdminUtility.IsOwningNodeIdByPublishmentSystem(UserName, parent.NodeId)) continue;

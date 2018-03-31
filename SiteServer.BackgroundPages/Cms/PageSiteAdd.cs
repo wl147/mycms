@@ -195,7 +195,8 @@ namespace SiteServer.BackgroundPages.Cms
                                 webSitePermissions = webSitePermissions + cblActionType.Items[n].Value + ",";
                             }
                         }
-                        webSitePermissions = webSitePermissions.TrimEnd(',');
+                        if (!string.IsNullOrEmpty(webSitePermissions)) webSitePermissions = webSitePermissions + webPermission;
+                        //webSitePermissions = webSitePermissions.TrimEnd(',');
                         if (!string.IsNullOrEmpty(webSitePermissions)) systemPermissionlist.Add(new SystemPermissionsInfo(roleName, publishmentSystemId, string.Empty, string.Empty, webSitePermissions));
                     }
                     try

@@ -119,12 +119,12 @@ namespace SiteServer.BackgroundPages
                     ICollection nodeIdCollection = ProductPermissionsManager.Current.ChannelPermissionDict.Keys;
                     foreach (int nodeId in nodeIdCollection)
                     {
-                        if (NodeManager.IsAncestorOrSelf(_publishmentSystemInfo.PublishmentSystemId, _publishmentSystemInfo.PublishmentSystemId, nodeId))
-                        {
+                        //if (NodeManager.IsAncestorOrSelf(_publishmentSystemInfo.PublishmentSystemId, _publishmentSystemInfo.PublishmentSystemId, nodeId))
+                        //{
                             showPublishmentSystem = true;
                             var list = ProductPermissionsManager.Current.ChannelPermissionDict[nodeId];
                             permissionList.AddRange(list);
-                        }
+                        //}
                     }
 
                     var publishmentSystemIdHashtable = new Hashtable();

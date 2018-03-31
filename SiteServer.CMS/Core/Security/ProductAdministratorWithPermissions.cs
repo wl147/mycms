@@ -53,7 +53,7 @@ namespace SiteServer.CMS.Core.Security
 				{
                     if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
                     {
-                        if (CacheUtils.Get(_websitePermissionDictKey)!= null)
+                        if (false)// CacheUtils.Get(_websitePermissionDictKey)== null)
                         {
                             _websitePermissionDict = CacheUtils.Get(_websitePermissionDictKey) as Dictionary<int, List<string>>;
                         }
@@ -138,7 +138,7 @@ namespace SiteServer.CMS.Core.Security
                 {
                     if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
                     {
-                        if (CacheUtils.Get(_channelPermissionDictKeyByPublishmentId) != null)//)
+                        if (false)//CacheUtils.Get(_channelPermissionDictKeyByPublishmentId) != null)//)
                         {
                             _channelPermissionDictionary = CacheUtils.Get(_channelPermissionDictKeyByPublishmentId) as Dictionary<int, List<string>>;
                         }
@@ -182,7 +182,7 @@ namespace SiteServer.CMS.Core.Security
 				{
                     if (!string.IsNullOrEmpty(UserName) && !string.Equals(UserName, AdminManager.AnonymousUserName))
                     {
-                        if (CacheUtils.Get(_channelPermissionDictKey) != null)
+                        if (false)// CacheUtils.Get(_channelPermissionDictKey) != null)
                         {
                             _channelPermissionDict = CacheUtils.Get(_channelPermissionDictKey) as Dictionary<int, List<string>>;
                         }

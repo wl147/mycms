@@ -564,7 +564,7 @@ namespace SiteServer.CMS.Core
             {
                 return true;
             }
-            var nodeInfo = GetNodeInfo(publishmentSystemId, childId);
+            var nodeInfo = GetNodeInfo(1, childId);
             if (nodeInfo == null)
             {
                 return false;

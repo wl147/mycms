@@ -42,7 +42,11 @@ namespace SiteServer.BackgroundPages.Cms
         {
             var mechanismDao = new MechanismDao();
             if (IsForbidden) return;
-
+            if (!HasWebsitePermissions(AppManager.Cms.Permission.WebSite.SiteEdit))
+            {
+                FailMessage("无站点修改权限");
+                return;
+            }
             if (!IsPostBack)
             {
                 var currentPublishmentSystemId = Body.GetQueryInt("PublishmentSystemId");
@@ -58,6 +62,7 @@ namespace SiteServer.BackgroundPages.Cms
                 Characteristic.Text = publishmentSystemInfo.Characteristic;
                 var administratorInfo = BaiRongDataProvider.AdministratorDao.GetByAccount(publishmentSystemInfo.AdministratorAccount);
                 AdministratorAccount.Text = administratorInfo.UserName;
+                AdministratorAccount.Enabled = false;
                 //AdministratorPassWord.Text = administratorInfo.Password;
                 var typeDic = DataProvider.MechanismDao.GetMechanismTypeAll();
                 var categoryDic = DataProvider.MechanismDao.GetMechanismCategoryAll();

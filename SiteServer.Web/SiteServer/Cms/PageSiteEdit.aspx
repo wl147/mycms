@@ -120,7 +120,8 @@
         <tr>
           <td class="center">
             <asp:Button class="btn btn-primary" id="Submit" text="修 改" OnClick="Submit_OnClick" runat="server"/>
-            <input type="button" class="btn" value="返 回" onClick="javascript:location.href='pagePublishmentSystem.aspx';" />
+           <%-- <input type="button" class="btn" value="返 回" onClick="javascript:location.href='pagePublishmentSystem.aspx?PublishmentSystemId=<%#ParentId%>';" />--%>
+              <input type="button" class="btn" value="返 回" onClick="window.location.history.back(-1);" />
           </td>
         </tr>
       </table>

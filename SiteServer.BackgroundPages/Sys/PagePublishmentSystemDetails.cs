@@ -23,7 +23,11 @@ namespace SiteServer.BackgroundPages.Sys
         public void Page_Load(object sender, EventArgs e)
         {
             if (IsForbidden) return;
-                       
+            if (!HasWebsitePermissions(AppManager.Cms.Permission.WebSite.SiteManagement))
+            {
+                FailMessage("无站点管理权限！");
+                return;
+            }        
             if (!IsPostBack)
             {
                 var currentPublishmentSystemId = Body.GetQueryInt("PublishmentSystemID");
@@ -63,7 +67,15 @@ namespace SiteServer.BackgroundPages.Sys
                     ltlPublishmentSystemName.Text = GetPublishmentSystemNameHtml(publishmentSystemInfo);
                     ltlPublishmentSystemAdress.Text = publishmentSystemInfo.Address;
                     ltlPublishmentSystemType.Text = mechanismDao.GetMechanismTypeTextById(publishmentSystemInfo.OrganizationTypeId); //publishmentSystemInfo.OrganizationTypeId.ToString()+"--类型表未建立，此数字代表id";
-                    ltlOperation.Text = $@"<a href=""PageSiteEdit.aspx?PublishmentSystemId={publishmentSystemInfo.PublishmentSystemId}"" target=""content"">操作</a>";
+                    if (HasWebsitePermissions(AppManager.Cms.Permission.WebSite.SiteEdit))
+                    {
+                        ltlOperation.Text = $@"<a href=""PageSiteEdit.aspx?PublishmentSystemId={publishmentSystemInfo.PublishmentSystemId}"" target=""content"">操作</a>";
+                    }
+                    else
+                    {
+                        ltlOperation.Text = $@"<a href=""javascript:void(0)"" target=""content"">无</a>";
+                    }
+                    
                     var upUrl = PageUtils.GetSysUrl(nameof(PagePublishmentSystem), new NameValueCollection
                     {
                         {"Up", "True" },

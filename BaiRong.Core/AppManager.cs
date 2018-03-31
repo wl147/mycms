@@ -443,6 +443,7 @@ namespace BaiRong.Core
                     public const string SiteAdd = "party_organizationmanagement_add";       //组织机构
                     public const string SiteEdit = "party_organizationmanagement_edit";
                     public const string SiteDelete = "party_organizationmanagement_delete";
+                    public const string SiteManagement = "party_organizationmanagement";
                 }
 
                 public class Channel
