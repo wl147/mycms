@@ -141,7 +141,7 @@ namespace BaiRong.Core.Permissions
         private static bool HasAdministratorPermissions(string administratorName, params string[] permissionArray)
         {
             var permissions = PermissionsManager.GetPermissions(administratorName);
-            if (permissions.IsSystemAdministrator)
+            if (permissions.IsConsoleAdministrator)
             {
                 return true;
             }

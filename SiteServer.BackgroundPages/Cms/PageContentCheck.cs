@@ -60,16 +60,16 @@ namespace SiteServer.BackgroundPages.Cms
             _isGovPublic = Body.GetQueryBool("IsGovPublic");
             if (_isGovPublic)
             {
-                nodeId = PublishmentSystemInfo.Additional.GovPublicNodeId;
+                nodeId = MainSiteInfo.Additional.GovPublicNodeId;
                 if (nodeId == 0)
                 {
                     nodeId = PublishmentSystemId;
                 }
             }
             _relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeId);
-            _nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, nodeId);
-            _tableName = NodeManager.GetTableName(PublishmentSystemInfo, _nodeInfo);
-            _tableStyle = NodeManager.GetTableStyle(PublishmentSystemInfo, _nodeInfo);
+            _nodeInfo = NodeManager.GetNodeInfo(1, 1);
+            _tableName = NodeManager.GetTableName(MainSiteInfo, _nodeInfo);
+            _tableStyle = NodeManager.GetTableStyle(MainSiteInfo, _nodeInfo);
             _tableStyleInfoList = TableStyleManager.GetTableStyleInfoList(_tableStyle, _tableName, _relatedIdentities);
             _attributesOfDisplay = TranslateUtils.StringCollectionToStringCollection(NodeManager.GetContentAttributesOfDisplay(PublishmentSystemId, nodeId));
 
@@ -82,7 +82,7 @@ namespace SiteServer.BackgroundPages.Cms
                 foreach (var owningNodeId in ProductPermissionsManager.Current.OwningNodeIdList)
                 {
                     int checkedLevelByNodeId;
-                    var isCheckedByNodeId = CheckManager.GetUserCheckLevel(Body.AdministratorName, PublishmentSystemInfo, owningNodeId, out checkedLevelByNodeId);
+                    var isCheckedByNodeId = CheckManager.GetUserCheckLevel(Body.AdministratorName, MainSiteInfo, owningNodeId, out checkedLevelByNodeId);
                     if (checkedLevel > checkedLevelByNodeId)
                     {
                         checkedLevel = checkedLevelByNodeId;
@@ -93,7 +93,7 @@ namespace SiteServer.BackgroundPages.Cms
                     }
                 }
 
-                LevelManager.LoadContentLevelToList(State, PublishmentSystemInfo, PublishmentSystemId, isChecked, checkedLevel);
+                LevelManager.LoadContentLevelToList(State, MainSiteInfo, PublishmentSystemId, isChecked, checkedLevel);
 
                 if (_isGovPublic)
                 {
@@ -102,7 +102,7 @@ namespace SiteServer.BackgroundPages.Cms
                 else
                 {
                     PhContentModel.Visible = true;
-                    var contentModelInfoList = ContentModelManager.GetContentModelInfoList(PublishmentSystemInfo);
+                    var contentModelInfoList = ContentModelManager.GetContentModelInfoList(MainSiteInfo);
                     foreach (var modelInfo in contentModelInfoList)
                     {
                         DdlContentModelId.Items.Add(new ListItem(modelInfo.ModelName, modelInfo.ModelId));
@@ -121,7 +121,7 @@ namespace SiteServer.BackgroundPages.Cms
                 }
 
                 SpContents.ControlToPaginate = RptContents;
-                SpContents.ItemsPerPage = PublishmentSystemInfo.Additional.PageSize;
+                SpContents.ItemsPerPage = MainSiteInfo.Additional.PageSize;
 
                 var checkLevelArrayList = new ArrayList();
 
@@ -131,12 +131,12 @@ namespace SiteServer.BackgroundPages.Cms
                 }
                 else
                 {
-                    checkLevelArrayList = LevelManager.LevelInt.GetCheckLevelArrayList(PublishmentSystemInfo, isChecked, checkedLevel);
+                    checkLevelArrayList = LevelManager.LevelInt.GetCheckLevelArrayList(MainSiteInfo, isChecked, checkedLevel);
                 }
-                var tableName = NodeManager.GetTableName(PublishmentSystemInfo, DdlContentModelId.SelectedValue);
+                var tableName = NodeManager.GetTableName(MainSiteInfo, DdlContentModelId.SelectedValue);
                 if (_isGovPublic)
                 {
-                    tableName = PublishmentSystemInfo.AuxiliaryTableForGovPublic;
+                    tableName = MainSiteInfo.AuxiliaryTableForGovPublic;
                 }
 
                 var owningNodeIdList = new List<int>();
@@ -181,8 +181,8 @@ namespace SiteServer.BackgroundPages.Cms
                 var showPopWinString = ModalContentCheck.GetOpenWindowStringForMultiChannels(PublishmentSystemId, PageUrl);
                 BtnCheck.Attributes.Add("onclick", showPopWinString);
 
-                LtlColumnHeadRows.Text = ContentUtility.GetColumnHeadRowsHtml(_tableStyleInfoList, _attributesOfDisplay, _tableStyle, PublishmentSystemInfo);
-                LtlCommandHeadRows.Text = ContentUtility.GetCommandHeadRowsHtml(Body.AdministratorName, _tableStyle, PublishmentSystemInfo, _nodeInfo);
+                LtlColumnHeadRows.Text = ContentUtility.GetColumnHeadRowsHtml(_tableStyleInfoList, _attributesOfDisplay, _tableStyle, MainSiteInfo);
+                LtlCommandHeadRows.Text = ContentUtility.GetCommandHeadRowsHtml(Body.AdministratorName, _tableStyle, MainSiteInfo, _nodeInfo);
             }
 
             if (!HasChannelPermissions(PublishmentSystemId, AppManager.Cms.Permission.Channel.ContentDelete))
@@ -210,7 +210,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var contentInfo = new ContentInfo(e.Item.DataItem);
                 var nodeInfo = NodeManager.GetNodeInfo(PublishmentSystemId, contentInfo.NodeId);
 
-                ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
+                ltlItemTitle.Text = WebUtils.GetContentTitle(MainSiteInfo, contentInfo, PageUrl);
                 var nodeName = _valueHashtable[contentInfo.NodeId] as string;
                 if (nodeName == null)
                 {
@@ -222,7 +222,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
                 ltlItemStatus.Text =
                     $@"<a href=""javascript:;"" title=""设置内容状态"" onclick=""{showPopWinString}"">{LevelManager.GetCheckState(
-                        PublishmentSystemInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
+                        MainSiteInfo, contentInfo.IsChecked, contentInfo.CheckedLevel)}</a>";
 
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
@@ -235,7 +235,7 @@ namespace SiteServer.BackgroundPages.Cms
 
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(_tableStyleInfoList, _attributesOfDisplay, _valueHashtable, _tableStyle, PublishmentSystemInfo, contentInfo);
 
-                ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(_tableStyle, PublishmentSystemInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
+                ltlCommandItemRows.Text = TextUtility.GetCommandItemRowsHtml(_tableStyle, MainSiteInfo, nodeInfo, contentInfo, PageUrl, Body.AdministratorName);
             }
         }
 

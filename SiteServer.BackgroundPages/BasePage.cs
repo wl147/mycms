@@ -197,10 +197,10 @@ $('.operation-area').hide();
                 ltlBreadCrumb.Text = StringUtils.GetBreadCrumbHtml(AppManager.IdSys, string.Empty, leftMenuId, leftTitle, String.Empty, string.Empty, pageUrl, pageTitle, string.Empty);
             }
 
-            if (!string.IsNullOrEmpty(permission))
-            {
-                AdminManager.VerifyAdministratorPermissions(Body.AdministratorName, permission);
-            }
+            //if (!string.IsNullOrEmpty(permission))
+            //{
+            //    AdminManager.VerifyAdministratorPermissions(Body.AdministratorName, permission);
+            //}
         }
 
         public void BreadCrumbAdmin(string leftMenuId, string pageTitle, string permission)
@@ -213,10 +213,10 @@ $('.operation-area').hide();
                 ltlBreadCrumb.Text = StringUtils.GetBreadCrumbHtml(AppManager.IdAdmin, topTitle, leftMenuId, leftTitle, string.Empty, string.Empty, pageUrl, pageTitle, string.Empty);
             }
 
-            if (!string.IsNullOrEmpty(permission))
-            {
-                AdminManager.VerifyAdministratorPermissions(Body.AdministratorName, permission);
-            }
+            //if (!string.IsNullOrEmpty(permission))
+            //{
+            //    AdminManager.VerifyAdministratorPermissions(Body.AdministratorName, permission);
+            //}
         }
 
         public void BreadCrumbUser(string leftMenuId, string pageTitle, string permission)

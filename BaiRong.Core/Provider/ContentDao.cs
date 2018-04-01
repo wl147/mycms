@@ -1365,7 +1365,7 @@ group by tmp.userName";
         {
             string whereString;
 
-            if (isSystemAdministrator)
+            if (true)
             {
                 whereString =
                     $"WHERE PublishmentSystemID = {publishmentSystemId} AND NodeID > 0 AND IsChecked='{false}' AND CheckedLevel IN ({TranslateUtils.ToSqlInStringWithoutQuote(checkLevelArrayList)})  AND NodeId  NOT IN ({nodeIdAll}) ";
