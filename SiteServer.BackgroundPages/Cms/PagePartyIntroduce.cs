@@ -59,9 +59,16 @@ namespace SiteServer.BackgroundPages.Cms
         {
             if (Page.IsPostBack && Page.IsValid)
             {
-              var a=  Content.Text;
-                DataProvider.PublishmentSystemDao.UpdatePublishmentSystemPartyIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
-                SuccessMessage("党委信息修改成功！");
+                try
+                {
+                    var a = Content.Text;
+                    DataProvider.PublishmentSystemDao.UpdatePublishmentSystemPartyIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
+                    SuccessMessage("党委信息修改成功！");
+                }
+                catch
+                {
+                    FailMessage("修改失败！");
+                }
             }
         }
     }

@@ -57,6 +57,7 @@ namespace SiteServer.BackgroundPages.Cms
             var mainPublishmentSystemInfo = PublishmentSystemManager.GetPublishmentSystemInfo(1);
             PageUtils.CheckRequestParameter("PublishmentSystemID", "NodeID");
             var nodeID = Body.GetQueryInt("NodeID");
+            var articleId= Body.GetQueryInt("ArticleId");
             var childNodeId = Body.GetQueryInt("ChildNodeId");
             relatedIdentities = RelatedIdentities.GetChannelRelatedIdentities(PublishmentSystemId, nodeID);
             nodeInfo = NodeManager.GetNodeInfo(1, nodeID);
@@ -248,7 +249,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrlMulti(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo), Body.GetQueryInt("NodeId"))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrlMulti(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, PageUrlEdit, Body.GetQueryInt("NodeId"))}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -265,6 +266,7 @@ $(document).ready(function() {
             Response.Redirect(PageUrl, true);
         }
         private string _pageUrl;
+        private string _pageUrlEdit;
         private string PageUrl
         {
             get
@@ -283,6 +285,21 @@ $(document).ready(function() {
                     });
                 }
                 return _pageUrl;
+            }
+        }
+        private string PageUrlEdit
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrlEdit))
+                {
+                    _pageUrlEdit = PageUtils.GetCmsUrl("PageContentStudy", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()}
+                    });
+                }
+                return _pageUrlEdit;
             }
         }
         private string PageUrlReturn

@@ -885,6 +885,45 @@ $(document).ready(function(){{
                 }
             }
         }
+        public static void AddValuesToAttributes(ETableStyle tableStyle, string tableName, PublishmentSystemInfo publishmentSystemInfo, List<int> relatedIdentities, NameValueCollection formCollection, NameValueCollection attributes, List<string> dontAddAttributes, bool isSaveImage, Dictionary<string,string> extendField)
+        {
+            var styleInfoList = TableStyleManager.GetTableStyleInfoList(tableStyle, tableName, relatedIdentities);
+            foreach (var styleInfo in styleInfoList)
+            {
+                if (styleInfo.IsVisible == false || dontAddAttributes.Contains(styleInfo.AttributeName.ToLower())) continue;
+                var theValue = GetValueByForm(styleInfo, publishmentSystemInfo, formCollection, isSaveImage);
+
+                if (!EInputTypeUtils.EqualsAny(styleInfo.InputType, EInputType.TextEditor, EInputType.Image, EInputType.File, EInputType.Video) && styleInfo.AttributeName != BackgroundContentAttribute.LinkUrl)
+                {
+                    theValue = PageUtils.FilterSqlAndXss(theValue);
+                }
+                if(extendField!=null&& extendField.Count > 0)
+                {
+                    foreach(KeyValuePair<string,string> kv in extendField)
+                    {
+                        ExtendedAttributes.SetExtendedAttribute(attributes, kv.Key, kv.Value);
+                    }
+                }
+                ExtendedAttributes.SetExtendedAttribute(attributes, styleInfo.AttributeName, theValue);
+
+                if (styleInfo.Additional.IsFormatString)
+                {
+                    var formatString = TranslateUtils.ToBool(formCollection[styleInfo.AttributeName + "_formatStrong"]);
+                    var formatEm = TranslateUtils.ToBool(formCollection[styleInfo.AttributeName + "_formatEM"]);
+                    var formatU = TranslateUtils.ToBool(formCollection[styleInfo.AttributeName + "_formatU"]);
+                    var formatColor = formCollection[styleInfo.AttributeName + "_formatColor"];
+                    var theFormatString = ContentUtility.GetTitleFormatString(formatString, formatEm, formatU, formatColor);
+
+                    ExtendedAttributes.SetExtendedAttribute(attributes, ContentAttribute.GetFormatStringAttributeName(styleInfo.AttributeName), theFormatString);
+                }
+
+                if (EInputTypeUtils.EqualsAny(styleInfo.InputType, EInputType.Image, EInputType.Video, EInputType.File))
+                {
+                    var attributeName = ContentAttribute.GetExtendAttributeName(styleInfo.AttributeName);
+                    ExtendedAttributes.SetExtendedAttribute(attributes, attributeName, formCollection[attributeName]);
+                }
+            }
+        }
 
         public static void AddValuesToAttributes(ETableStyle tableStyle, string tableName, PublishmentSystemInfo publishmentSystemInfo, List<int> relatedIdentities, NameValueCollection formCollection, NameValueCollection attributes)
         {

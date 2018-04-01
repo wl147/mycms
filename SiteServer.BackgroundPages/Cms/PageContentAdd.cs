@@ -76,6 +76,16 @@ namespace SiteServer.BackgroundPages.Cms
                 {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
             });
         }
+        public static string GetRedirectUrlOfEditForExamiantion(int publishmentSystemId, int nodeId, int ArticleId, string returnUrl)
+        {
+            return PageUtils.GetCmsUrl(nameof(PageContentAdd), new NameValueCollection
+            {
+                {"PublishmentSystemID", publishmentSystemId.ToString()},
+                {"NodeID", nodeId.ToString()},
+                {"ArticleId", ArticleId.ToString()},
+                {"ReturnUrl", StringUtils.ValueToUrl(returnUrl)}
+            });
+        }
         public static string GetRedirectUrlOfEditMulti(int publishmentSystemId, int nodeId, int id, string returnUrl,int pNodeId)
         {
             return PageUtils.GetCmsUrl(nameof(PageContentAdd), new NameValueCollection
@@ -496,7 +506,12 @@ $('#TbTags').keyup(function (e) {
                     contentInfo.LastEditDate = DateTime.Now;
 
                     //自动保存的时候，不保存编辑器的图片
-                    InputTypeParser.AddValuesToAttributes(_tableStyle, _tableName, PublishmentSystemInfo, _relatedIdentities, Request.Form, contentInfo.Attributes, ContentAttribute.HiddenAttributes, !_isAjaxSubmit);
+                    var dic = new Dictionary<string, string>();
+                    if (Body.GetQueryInt("ArticleId") > 0)
+                    {                       
+                        dic.Add("ExaminationPaperId", Body.GetQueryString("ArticleId"));
+                    }
+                    InputTypeParser.AddValuesToAttributes(_tableStyle, _tableName, PublishmentSystemInfo, _relatedIdentities, Request.Form, contentInfo.Attributes, ContentAttribute.HiddenAttributes, !_isAjaxSubmit, dic);
 
                     StringCollection tagCollection;
 
@@ -570,7 +585,11 @@ $('#TbTags').keyup(function (e) {
                         $"栏目:{NodeManager.GetNodeNameNavigation(PublishmentSystemId, contentInfo.NodeId)},内容标题:{contentInfo.Title}");
 
                     ContentUtility.Translate(PublishmentSystemInfo, _nodeInfo.NodeId, contentInfo.Id, Request.Form["translateCollection"], ETranslateContentTypeUtils.GetEnumType(DdlTranslateType.SelectedValue), Body.AdministratorName);
-
+                    string contentType = WebUtils.GetContentType(_nodeInfo.ContentModelId);
+                    if (contentType.Equals("PageExamination"))
+                    {
+                        PageUtils.Redirect($@"/siteserver/cms/{contentType}.aspx?PublishmentSystemID={Body.GetQueryString("PublishmentSystemID")}&NodeID={(string.IsNullOrEmpty(Body.GetQueryString("PNodeID")) ? Body.GetQueryString("NodeId") : Body.GetQueryString("PNodeID"))}&ArticleId={Body.GetQueryString("ArticleId")}");
+                    }
                     PageUtils.Redirect(EContentModelTypeUtils.Equals(_nodeInfo.ContentModelId, EContentModelType.Photo)
                         ? PageContentPhotoUpload.GetRedirectUrl(PublishmentSystemId, _nodeInfo.NodeId, contentInfo.Id,
                             Body.GetQueryString("ReturnUrl"))

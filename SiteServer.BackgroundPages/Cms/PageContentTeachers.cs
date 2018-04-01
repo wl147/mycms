@@ -100,14 +100,29 @@ namespace SiteServer.BackgroundPages.Cms
 
             if (Body.IsQueryExists("SearchType"))
             {
-                List<int> owningNodeIdList = new List<int>
+                string nodeListString = Body.GetQueryString("ChildNodeId");
+                List<int> owningNodeIdList = new List<int>();
+                if (!string.IsNullOrEmpty(nodeListString))
                 {
-                    nodeID,3,4,6,9
-                };
-                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
-                //string keyWords = Body.GetQueryString("Keyword");
-                //spContents.SelectCommand = $@"select * from siteserver_teacherlibrary where PublishmentSystemId={PublishmentSystemId} AND NodeId={nodeID} AND Title Like '%{keyWords}%'";
-                //   contentNum=nodeInfo.ContentNum;
+                    string[] nodeArray = nodeListString.Split(new char[] { ',' });
+
+                    foreach (string node in nodeArray)
+                    {
+                        if (!string.IsNullOrEmpty(node))
+                        {
+                            int nodeId = Convert.ToInt32(node);
+                            owningNodeIdList.Add(nodeId);
+                            contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                        }
+                    }
+                    nodeListString = nodeListString.TrimEnd(',');
+                }
+                else
+                {
+                    nodeListString = Body.GetQueryString("NodeId");
+                }
+
+                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommendForLower(nodeListString, tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
             else
             {
@@ -237,10 +252,31 @@ $(document).ready(function() {
 
         public void Search_OnClick(object sender, EventArgs e)
         {
-            PageUtils.Redirect(PageUrl);
+            PageUtils.Redirect(PageUrlRedirect);
         }
 
         private string _pageUrl;
+        private string _pageUrlRedirect;
+        private string PageUrlRedirect
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrlRedirect))
+                {
+                    _pageUrlRedirect = PageUtils.GetCmsUrl("pageContentTeachers", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},
+                        {"DateFrom", DateFrom.Text},
+                        {"SearchType", SearchType.SelectedValue},
+                        {"Keyword", Keyword.Text},
+                        {"page", Body.GetQueryInt("page", 1).ToString()},
+                        {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrlRedirect;
+            }
+        }
         private string PageUrl
         {
             get

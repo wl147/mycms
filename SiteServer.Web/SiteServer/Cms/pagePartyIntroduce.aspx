@@ -21,7 +21,7 @@
         <div class="popover popover-static">
             <h3 class="popover-title"><asp:Literal ID="LtlPageTitle" runat="server" /></h3>
             <div class="popover-content">
-
+                </br>
                 <table class="table table-fixed noborder" style="position: relative; top: -30px;">
                      <asp:PlaceHolder ID="PhSpecial" Visible="true" runat="server">
                         <tr>
@@ -38,14 +38,9 @@
                 <table class="table noborder">
                     <tr>
                         <td class="center">
-                            <asp:Button class="btn btn-primary" itemIndex="1" ID="BtnSubmit" Text="确 定" OnClick="Submit_OnClick" runat="server" />
-                            <input class="btn btn-info" type="button" onClick="previewSave();" value="预 览" />
-                            <%if (!string.IsNullOrEmpty("1"))
-                              {%>
+                            <asp:Button class="btn btn-primary" itemIndex="1" ID="BtnSubmit" Text="保存" OnClick="Submit_OnClick" runat="server" />
                             <input class="btn" type="button" onclick="location.href='#    ';return false;" value="返 回" />
-                            <%}%>
-                            <br>
-                            <span class="gray">提示：按CTRL+回车可以快速提交</span>
+
                         </td>
                     </tr>
                 </table>

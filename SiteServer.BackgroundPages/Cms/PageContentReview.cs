@@ -208,7 +208,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrl(contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, PageUrlEdit)}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -223,6 +223,7 @@ $(document).ready(function() {
         }
 
         private string _pageUrl;
+        private string _pageUrlEdit;
         private string PageUrl
         {
             get
@@ -238,6 +239,21 @@ $(document).ready(function() {
                         {"Keyword", Keyword.Text},
                         {"page", Body.GetQueryInt("page", 1).ToString()},
                         {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrl;
+            }
+        }
+        private string PageUrlEdit
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrl))
+                {
+                    _pageUrl = PageUtils.GetCmsUrl("PageContentReview", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()}
                     });
                 }
                 return _pageUrl;

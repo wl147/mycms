@@ -158,14 +158,11 @@ namespace SiteServer.BackgroundPages.Cms
             //分页的时候，不去查询总条数，直接使用栏目的属性：ContentNum
             spContents.IsQueryTotalCount = false;
             spContents.TotalCount = contentNum;//nodeInfo.ContentNum;
-
+            ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
             if (!IsPostBack)
             {
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
-                //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
-
-                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrl, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
-                spContents.DataBind();
+                //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);              
 
                 if (styleInfoList != null)
                 {
@@ -246,6 +243,7 @@ $(document).ready(function() {
 
                 ltlColumnHeadRows.Text = ContentUtility.GetColumnHeadRowsHtml(styleInfoList, attributesOfDisplay, tableStyle, PublishmentSystemInfo);
                 ltlCommandHeadRows.Text = ContentUtility.GetCommandHeadRowsHtml(Body.AdministratorName, tableStyle, PublishmentSystemInfo, nodeInfo);
+                spContents.DataBind();
             }
         }
 
@@ -264,7 +262,7 @@ $(document).ready(function() {
 
                 ltlItemTitle.Text = WebUtils.GetContentTitle(PublishmentSystemInfo, contentInfo, PageUrl);
 
-                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, PageUrl);
+                var showPopWinString = ModalCheckState.GetOpenWindowString(PublishmentSystemId, contentInfo, $@"/siteserver/cms/pagecontent.aspx?PublishmentSystemID={PublishmentSystemId}&NodeID={nodeInfo.NodeId}&DateFrom=&SearchType=&Keyword=&page=1&ChildNodeId={ChannelCategory.SelectedValue}");
                 ltlCategory.Text = NodeManager.GetNodeNameNavigation(1, contentInfo.NodeId);
 
                 ltlItemStatus.Text =
@@ -296,6 +294,7 @@ $(document).ready(function() {
             Response.Redirect(PageUrl, true);
         }
         private string _pageUrl;
+        private string _pageUrlReturn;
         private string PageUrl
         {
             get
@@ -314,6 +313,22 @@ $(document).ready(function() {
                     });
                 }
                 return _pageUrl;
+            }
+        }
+        private string PageUrlReturn
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrlReturn))
+                {
+                    _pageUrlReturn = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},
+                        {"ChildNodeId",ChannelCategory.SelectedValue }
+                    });
+                }
+                return _pageUrlReturn;
             }
         }
         private string GetPageUrlForContent(ContentInfo contentInfo,int nodeId)

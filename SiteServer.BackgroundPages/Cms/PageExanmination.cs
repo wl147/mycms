@@ -117,7 +117,7 @@ namespace SiteServer.BackgroundPages.Cms
             else
             {
                 //spContents.SelectCommand = BaiRongDataProvider.ContentDao.GetSelectCommendForLowerLevel(tableName, nodeCollectionIdStr, ETriState.All, administratorName, base.PublishmentSystemId);
-                spContents.SelectCommand = $@"select * from siteserver_examination where ExaminationPaperId={PageUtils.FilterSqlAndXss(Body.GetQueryString( "ArticleId"))}";
+                spContents.SelectCommand = $@"select * from siteserver_examination where ExaminationPaperId={PageUtils.FilterSqlAndXss(Body.GetQueryString( "ArticleId"))}  and NodeId={PageUtils.FilterSqlAndXss(Body.GetQueryString("NodeId"))}";
                 
             }
 
@@ -134,7 +134,7 @@ namespace SiteServer.BackgroundPages.Cms
                 var nodeName = NodeManager.GetNodeNameNavigation(PublishmentSystemId, nodeID);
                 //BreadCrumbWithItemTitle(AppManager.Cms.LeftMenu.IdContent, "内容管理", nodeName, string.Empty);
 
-                ltlContentButtons.Text = WebUtils.GetContentCommandsStandard(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false);
+                ltlContentButtons.Text = WebUtils.GetContentCommandsStandardForExamination(Body.AdministratorName, PublishmentSystemInfo, nodeInfo, PageUrlReturn, GetRedirectUrl(base.PublishmentSystemId, nodeInfo.NodeId), false,Body.GetQueryInt("ArticleId"));
                 spContents.DataBind();
 
                 if (styleInfoList != null)
@@ -249,7 +249,7 @@ $(document).ready(function() {
                 if (HasChannelPermissions(contentInfo.NodeId, AppManager.Cms.Permission.Channel.ContentEdit) || Body.AdministratorName == contentInfo.AddUserName)
                 {
                     ltlItemEditUrl.Text =
-                        $"<a href=\"{WebUtils.GetContentAddEditUrl(EContentModelType.Examination, contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, GetPageUrlForContent(contentInfo))}\">编辑</a>";
+                        $"<a href=\"{WebUtils.GetContentAddEditUrl(EContentModelType.Examination, contentInfo.PublishmentSystemId, DataProvider.NodeDao.GetNodeInfo(contentInfo.NodeId), contentInfo.Id, PageUrlEdit)}\">编辑</a>";
                 }
                 ltlColumnItemRows.Text = TextUtility.GetColumnItemRowsHtml(styleInfoList, attributesOfDisplay, valueHashtable, tableStyle, PublishmentSystemInfo, contentInfo);
 
@@ -266,6 +266,7 @@ $(document).ready(function() {
             Response.Redirect(PageUrl, true);
         }
         private string _pageUrl;
+        private string _pageUrlEdit;
         private string PageUrl
         {
             get
@@ -284,6 +285,22 @@ $(document).ready(function() {
                     });
                 }
                 return _pageUrl;
+            }
+        }
+        private string PageUrlEdit
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_pageUrlEdit))
+                {
+                    _pageUrlEdit = PageUtils.GetCmsUrl("PageExamination", new NameValueCollection
+                    {
+                        {"PublishmentSystemID", base.PublishmentSystemId.ToString()},
+                        {"NodeID", nodeInfo.NodeId.ToString()},                       
+                        {"ArticleId",Body.GetQueryString("ArticleId")}
+                    });
+                }
+                return _pageUrlEdit;
             }
         }
         private string PageUrlReturn

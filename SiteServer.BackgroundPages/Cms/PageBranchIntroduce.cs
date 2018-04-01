@@ -59,9 +59,16 @@ namespace SiteServer.BackgroundPages.Cms
         {
             if (Page.IsPostBack && Page.IsValid)
             {
-
-                DataProvider.PublishmentSystemDao.UpdatePublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
-                SuccessMessage("支部信息修改成功！");
+                try
+                {
+                    DataProvider.PublishmentSystemDao.UpdatePublishmentSystemBranchIntroduce(PublishmentSystemInfo.PublishmentSystemId, Content.Text);
+                    SuccessMessage("支部信息修改成功！");
+                }
+                catch
+                {
+                    FailMessage("支部信息修改失败！");
+                }
+                
             }
         }
     }

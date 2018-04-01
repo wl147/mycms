@@ -100,11 +100,29 @@ namespace SiteServer.BackgroundPages.Cms
 
             if (Body.IsQueryExists("SearchType") && Body.IsQueryExists("ChildNodeId"))
             {
-                List<int> owningNodeIdList = new List<int>
+                string nodeListString = Body.GetQueryString("ChildNodeId");
+                List<int> owningNodeIdList = new List<int>();
+                if (!string.IsNullOrEmpty(nodeListString))
                 {
-                    nodeID,3,4,6,9
-                };
-                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommend(tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
+                    string[] nodeArray = nodeListString.Split(new char[] { ',' });
+
+                    foreach (string node in nodeArray)
+                    {
+                        if (!string.IsNullOrEmpty(node))
+                        {
+                            int nodeId = Convert.ToInt32(node);
+                            owningNodeIdList.Add(nodeId);
+                            contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
+                        }
+                    }
+                    nodeListString = nodeListString.TrimEnd(',');
+                }
+                else
+                {
+                    nodeListString = Body.GetQueryString("NodeId");
+                }
+
+                spContents.SelectCommand = DataProvider.ContentDao.GetSelectCommendForLower(nodeListString, tableStyle, tableName, PublishmentSystemId, nodeID, permissions.IsSystemAdministrator, owningNodeIdList, Body.GetQueryString("SearchType"), Body.GetQueryString("Keyword"), Body.GetQueryString("DateFrom"), string.Empty, false, ETriState.All, false, false, false, administratorName);
             }
             else
             {
@@ -129,7 +147,7 @@ namespace SiteServer.BackgroundPages.Cms
                     contentNum = contentNum + DataProvider.NodeDao.GetNodeInfo(nodeId).ContentNum;
                 }
                 nodeCollectionIdStr = nodeCollectionIdStr.TrimEnd(',');
-                spContents.SelectCommand = "select * from siteserver_wishwall where NodeId>0";
+                spContents.SelectCommand =$@"select * from siteserver_wishwall where NodeId>0 and PublishmentSystemId={PublishmentSystemId}";
             }
 
             spContents.SortField = BaiRongDataProvider.ContentDao.GetSortFieldName();
@@ -280,7 +298,7 @@ $(document).ready(function() {
         private string GetPageUrlForContent(ContentInfo contentInfo)
         {
 
-            return _pageUrl = PageUtils.GetCmsUrl(nameof(PageContent), new NameValueCollection
+            return _pageUrl = PageUtils.GetCmsUrl("PageContentWishWall", new NameValueCollection
                     {
                         {"PublishmentSystemID", contentInfo.PublishmentSystemId.ToString()},
                         {"NodeID",contentInfo.NodeId.ToString()},
