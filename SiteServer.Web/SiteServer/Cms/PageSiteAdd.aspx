@@ -9,6 +9,13 @@
     <title></title>
 </head>
 <body>
+     <script type="text/javascript">
+  $(document).ready(function()
+  {
+    loopRows(document.getElementById('contentsRole'), function(cur){ cur.onclick = chkSelect; });
+    $(".popover-hover").popover({trigger:'hover',html:true});
+  });
+  </script>
      <script type="text/javascript" language="javascript">
     jQuery.fn.center = function () {
         this.css("position", "absolute");
@@ -113,7 +120,7 @@
     }
 </script>
  
-
+    全选 <input type="checkbox" onclick="selectRows(document.getElementById('contentRole'), this.checked);"/>
     <form class="form-inline" runat="server">
   <asp:Literal id="ltlBreadCrumb" runat="server" />
   <bairong:alerts runat="server" />
@@ -122,7 +129,7 @@
     <h3 class="popover-title">新增组织机构</h3>
     <div class="popover-content">
 
-      <table class="table noborder table-hover">
+      <table class="table noborder table-hover" id="contentRole">
         <tr>
           <td width="160">地区：</td>
           <td><asp:TextBox Columns="25" MaxLength="50" id="PublishmentSystemArea" runat="server"/></td>

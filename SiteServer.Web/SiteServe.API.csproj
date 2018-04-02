@@ -368,6 +368,7 @@
     <Content Include="SiteServer\Cms\PagePublishmentSystem.aspx" />
     <Content Include="SiteServer\Cms\pagePushInCheck.aspx" />
     <Content Include="SiteServer\Cms\pagePushOutCheck.aspx" />
+    <Content Include="SiteServer\Cms\pageReachDetails.aspx" />
     <Content Include="SiteServer\Cms\pageRedirect.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedField.aspx" />
     <Content Include="SiteServer\Cms\pageRelatedFieldItem.aspx" />
@@ -648,6 +649,13 @@
     </Compile>
     <Compile Include="SiteServer\Cms\pagePushOutCheck.aspx.designer.cs">
       <DependentUpon>pagePushOutCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageReachDetails.aspx.cs">
+      <DependentUpon>pageReachDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteServer\Cms\pageReachDetails.aspx.designer.cs">
+      <DependentUpon>pageReachDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteServer\Cms\PageRoleAdd.aspx.cs">
       <DependentUpon>PageRoleAdd.aspx</DependentUpon>

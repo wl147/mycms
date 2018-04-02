@@ -48,7 +48,7 @@ namespace SiteServer.BackgroundPages.Cms
             reachInfo.ReachOrganizationId = reachId;
             if (DataProvider.PublishmentSystemDao.InsertOrganizationReach(reachInfo))
             {
-                PageUtils.CloseModalPageAndRedirect(Page, "");
+                PageUtils.CloseModalPageAndRedirect(Page, $@"/siteserver/cms/pageReachDetails.aspx?PublishmentSystemId={PublishmentSystemId}");
             }
             else
             {

@@ -128,6 +128,10 @@ namespace BaiRong.Core.Model.Enumerations
         {
             return GetOrderByString(tableStyle, taxisType, string.Empty, null);
         }
+        public static string GetOrderByStringForReport()
+        {
+            return "ORDER BY ReachTime";
+        }
 
         public static string GetOrderByString(ETableStyle tableStyle, ETaxisType taxisType, string orderByString, ArrayList orderedContentIdArrayList)
         {

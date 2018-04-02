@@ -187,5 +187,8 @@ namespace SiteServer.CMS.Core
 
         private static MechanismDao _mechanismDao;
         public static MechanismDao MechanismDao => _mechanismDao ?? (_mechanismDao = new MechanismDao());
+
+        public static OranizationReachDao _organizationDao;
+        public static OranizationReachDao OrganizationDao => _organizationDao ?? (_organizationDao = new OranizationReachDao());
     }
 }
